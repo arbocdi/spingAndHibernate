@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <!-- acessing properties file -->
+    <context:property-placeholder location="classpath:sport.properties"/>
+
+    <!-- Define your beans here -->
+    <bean id="myFortuneService" class="com.luv2code.springdemo.HappyFortuneService">
+        
+    </bean>
+    <bean id="randomFortuneService" class="com.luv2code.springdemo.RandomFortuneService">
+        
+    </bean>
+    <bean id="myCoach" class="com.luv2code.springdemo.TrackCoach">
+        <!--constructor dependency injection -->
+        <constructor-arg ref="randomFortuneService"/>
+    </bean>
+    <bean id="bodyCoach" class="com.luv2code.springdemo.BodybuildingCoach">
+        
+    </bean>
+    <bean id="myCricketCoach" class="com.luv2code.springdemo.CricketCoach">
+        <!-- setter injection -->
+        <property name="fortuneService" ref="myFortuneService"/>
+        <!-- injecting literal values, referencing properties from sports.properties -->
+        <property name="emailAddress" value="${foo.email}"/>
+        <property name="team" value="${foo.team}"/>
+        
+    </bean>
+</beans>
+
+
+
+
+

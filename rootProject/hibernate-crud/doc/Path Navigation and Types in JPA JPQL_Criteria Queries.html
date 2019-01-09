@@ -1,0 +1,813 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" class="not-super not-editor not-user" lang="en"><script src="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/inject.js"></script><head>
+    <!-- Page generated on 2018-12-11T04:39:47--><title>Path Navigation and Types in JPA JPQL/Criteria Queries</title>
+    <meta name="robots" content="noarchive">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="application-name" content="ObjectDB">
+    <meta name="msapplication-TileColor" content="#334477">
+    <meta name="theme-color" content="#ffffff">
+		<link rel="apple-touch-icon" sizes="180x180" href="https://www.objectdb.com/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="https://www.objectdb.com/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="https://www.objectdb.com/favicon-16x16.png">
+		<link rel="manifest" href="https://www.objectdb.com/site.webmanifest">
+    <link rel="mask-icon" href="https://www.objectdb.com/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="apple-mobile-web-app-title" content="ObjectDB">
+    <link rel="shortcut icon" href="https://www.objectdb.com/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Explains how to use object expressions (path navigation, type) in JPA/JPQL."><meta name="keywords" content="object, database, java, jpa, persistence, api, jdo, Criteria&amp;nbsp;API, JPQL, dot, expression, join, navigation, null, object, path, query, type"><script>var odb=new Object();var html=document.documentElement;function readCookie(b){b=b.replace(/([.*+?^=!:${}()|[\]\/\\])/g,"\\$1");
+var c=new RegExp("(?:^|;)\\s?"+b+"=(.*?)(?:;|$)","i"),a=document.cookie.match(c);return a&&a[1]}var odbCookie=readCookie("odbi");
+if(odbCookie){if(odbCookie.substring(0,1)=="_"){odbCookie=decodeURIComponent(odbCookie.substring(1)).replace(/\+/g," ")
+}else{odbCookie=odbCookie.replace(/\'/g,'"').replace(/\|/g,",")}odb.user=JSON.parse(odbCookie);html.classList.add("not-guest");
+odb.user.roles={user:true};if(odb.user.role=="super"){odb.user.roles.admin=odb.user.roles.editor=true
+}else{html.classList.add("not-super");if(odb.user.role=="editor"){odb.user.roles.editor=true}else{html.classList.add("not-editor")
+}}}else{html.classList.add("not-super","not-editor","not-user");odb.user={role:"guest",roles:{guest:true}}
+};</script><link rel="stylesheet" href="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/_Basic2701401506.css"><link rel="stylesheet" type="text/css" href="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/prettify.css"></head>
+
+  <body class="objectdb menu-object-db -manual sidebar-left page-servlet item-page page-java-jpa-query-jpql-path section-java section-java-jpa" data-id="page-237" data-ver="0">
+    <div id="page">
+
+      <input type="checkbox" id="menu-mode">
+      <div id="header" class="img-header"><div class="block" id="header-links-block"><div id="header-links">
+    <ul class="menu">
+        <li class="hidden-sm-down"><a href="https://www.objectdb.com/download">Download</a></li>
+        <li class="hidden-sm-down"><a href="https://www.objectdb.com/forum">Forum</a></li>
+        <li class="guest active" style="border: none;"><a href="https://www.objectdb.com/login" id="login">Login</a></li>
+        <li class="user"><a href="https://www.objectdb.com/user/account" id="account">My Account</a></li>
+        <li class="super hidden-xs-down"><a href="https://www.objectdb.com/admin">Admin</a></li>
+        <li class="super hidden-sm-up"><a href="https://www.objectdb.com/admin">A</a></li>
+        <li class="user" "="" style="border: none;"><a href="https://www.objectdb.com/logout" id="logout">Logout</a></li>
+    </ul>
+</div>
+</div><div class="block hidden-md-down" id="slogan-block"><div id="site-slogan">Fast Object Database for Java - with JPA/JDO support</div>
+</div><div class="block" id="logo-and-name-block"><div id="header-logo">
+  <a href="https://www.objectdb.com/" title="Home">
+    <i class="icon size32 img-logo32"></i>
+  </a>
+</div>
+<div id="header-name">
+  <a href="https://www.objectdb.com/" title="Home">
+    <span id="header-name-shadow">
+        <strong class="object">Object</strong><strong class="db">DB</strong>
+    </span>
+    <span id="header-name-no-shadow">
+        <strong class="object">Object</strong><strong class="db">DB</strong>
+    </span>
+  </a>
+</div>
+</div></div>
+      <div id="header-bar">
+        <label for="menu-mode" id="menu-icon-label">
+          <span class="bar"></span> <span class="bar"></span> <span class="bar"></span>
+        </label>
+        <form id="search-box" method="get" action="/object/database">
+            <label id="search-text-label">
+              <input name="q" id="search-text" type="text" title="Enter the terms you wish to search for." value="search...">
+            </label>
+            <input type="hidden" name="op" value="search">
+            <label id="search-submit-label">
+              <input id="search-submit" value=" " type="submit" class="img-search">
+            </label>
+        </form>
+      </div>
+
+      <div id="menu"><ul class="menu">
+ <li class="page-2"><a href="https://www.objectdb.com/database/about" class="icon img-folder">ObjectDB</a><input type="checkbox" id="sm1"><label for="sm1" class="s-icon"></label><i class="l-icon"></i>
+  <ul>
+   <li class="page-105"><a href="https://www.objectdb.com/database/overview" class="icon img-page">Overview</a></li>
+   <li class="page-106"><a href="https://www.objectdb.com/database/features" class="icon img-list">Features</a></li>
+   <li class="page-4"><a href="https://www.objectdb.com/download" class="icon img-download">Download</a></li>
+   <li class="page-198"><a href="https://www.objectdb.com/database/purchase" class="icon img-licence">License</a></li>
+   <li class="page-108"><a href="https://www.objectdb.com/database/company" class="icon img-company">Company</a></li>
+  </ul></li>
+ <li class="page-200"><a href="https://www.objectdb.com/tutorial" class="icon img-folder">Tutorials</a><input type="checkbox" id="sm2"><label for="sm2" class="s-icon"></label><i class="l-icon"></i>
+  <ul>
+   <li class="page-288"><a href="https://www.objectdb.com/tutorial/jpa/start" class="icon img-teacher">Quick Start with JPA</a><input type="checkbox" id="sm3"><label for="sm3" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-201"><a href="https://www.objectdb.com/tutorial/jpa/eclipse" class="icon img-eclipse">Eclipse JPA Tutorial</a><input type="checkbox" id="sm4"><label for="sm4" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-203"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/project" class="icon img-page">Step 1: New Project</a></li>
+       <li class="page-204"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-205"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/store" class="icon img-page">Step 3: Main Class</a></li>
+       <li class="page-206"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/running" class="icon img-page">Step 4: Running</a></li>
+      </ul></li>
+     <li class="page-202"><a href="https://www.objectdb.com/tutorial/jpa/netbeans" class="icon img-net-beans">NetBeans JPA Tutorial</a><input type="checkbox" id="sm5"><label for="sm5" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-207"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/project" class="icon img-page">Step 1: New Project</a></li>
+       <li class="page-208"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-209"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/store" class="icon img-page">Step 3: Main Class</a></li>
+       <li class="page-210"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/running" class="icon img-page">Step 4: Running</a></li>
+      </ul></li>
+     <li class="page-300"><a href="https://www.objectdb.com/tutorial/jpa/start/maven" class="icon img-download">Download and Run</a><input type="checkbox" id="sm6"><label for="sm6" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-301"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/maven" class="icon img-eclipse">Eclipse Project</a></li>
+       <li class="page-302"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/maven" class="icon img-net-beans">NetBeans Project</a></li>
+       <li class="page-303"><a href="https://www.objectdb.com/tutorial/jpa/intellij/maven" class="icon img-inteli-j">IntelliJ Project</a></li>
+      </ul></li>
+     <li class="page-319"><a href="https://www.objectdb.com/tutorial/tool/report/birt" class="icon img-chart">BIRT Report Generator</a><input type="checkbox" id="sm7"><label for="sm7" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-320"><a href="https://www.objectdb.com/tutorial/tool/report/birt/install" class="icon img-page">Step 1: Installation</a></li>
+       <li class="page-321"><a href="https://www.objectdb.com/tutorial/tool/report/birt/project" class="icon img-page">Step 2: New Report</a></li>
+       <li class="page-322"><a href="https://www.objectdb.com/tutorial/tool/report/birt/data/source" class="icon img-page">Step 3: Data Source</a></li>
+       <li class="page-323"><a href="https://www.objectdb.com/tutorial/tool/report/birt/data/set" class="icon img-page">Step 4: JPA Data Set</a></li>
+       <li class="page-325"><a href="https://www.objectdb.com/tutorial/tool/report/birt/chart" class="icon img-page">Step 5: Chart Design</a></li>
+       <li class="page-324"><a href="https://www.objectdb.com/tutorial/tool/report/birt/table" class="icon img-page">Step 6: Table Design</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-289"><a href="https://www.objectdb.com/tutorial/jpa/web" class="icon img-teacher">JPA Web App (Tomcat)</a><input type="checkbox" id="sm8"><label for="sm8" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-252"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web" class="icon img-eclipse">Eclipse JPA Web App</a><input type="checkbox" id="sm9"><label for="sm9" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-253"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/project" class="icon img-page">Step 1: Web Project</a></li>
+       <li class="page-254"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-255"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/listener" class="icon img-page">Step 3: Listener Class</a></li>
+       <li class="page-256"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/servlet" class="icon img-page">Step 4: Servlet Class</a></li>
+       <li class="page-257"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/jsp" class="icon img-page">Step 5: JSP Page</a></li>
+       <li class="page-258"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/run" class="icon img-page">Step 6: Running</a></li>
+      </ul></li>
+     <li class="page-259"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web" class="icon img-net-beans">NetBeans JPA Web App</a><input type="checkbox" id="sm10"><label for="sm10" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-260"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/project" class="icon img-page">Step 1: Web Project</a></li>
+       <li class="page-261"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-262"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/listener" class="icon img-page">Step 3: Listener Class</a></li>
+       <li class="page-263"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/servlet" class="icon img-page">Step 4: Servlet Class</a></li>
+       <li class="page-264"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/jsp" class="icon img-page">Step 5: JSP Page</a></li>
+       <li class="page-265"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/run" class="icon img-page">Step 6: Running</a></li>
+      </ul></li>
+     <li class="page-304"><a href="https://www.objectdb.com/tutorial/jpa/web/maven" class="icon img-download">Download and Run</a><input type="checkbox" id="sm11"><label for="sm11" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-305"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/web/maven" class="icon img-eclipse">Eclipse Project</a></li>
+       <li class="page-306"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/web/maven" class="icon img-net-beans">NetBeans Project</a></li>
+       <li class="page-307"><a href="https://www.objectdb.com/tutorial/jpa/intellij/web/maven" class="icon img-inteli-j">IntelliJ Project</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-290"><a href="https://www.objectdb.com/tutorial/jpa/ee" class="icon img-teacher">Java EE JPA (GlassFish)</a><input type="checkbox" id="sm12"><label for="sm12" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-273"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee" class="icon img-eclipse">Eclipse JPA Java EE</a><input type="checkbox" id="sm13"><label for="sm13" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-274"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/project" class="icon img-page">Step 1: JEE 6 Project</a></li>
+       <li class="page-275"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-276"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/ejb" class="icon img-page">Step 3: EJB Class</a></li>
+       <li class="page-277"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/servlet" class="icon img-page">Step 4: Servlet Class</a></li>
+       <li class="page-278"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/jsp" class="icon img-page">Step 5: JSP Page</a></li>
+       <li class="page-279"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/run" class="icon img-page">Step 6: Running</a></li>
+      </ul></li>
+     <li class="page-266"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee" class="icon img-net-beans">NetBeans JPA Java EE</a><input type="checkbox" id="sm14"><label for="sm14" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-267"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/project" class="icon img-page">Step 1: JEE 6 Project</a></li>
+       <li class="page-268"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-269"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/ejb" class="icon img-page">Step 3: EJB Class</a></li>
+       <li class="page-270"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/servlet" class="icon img-page">Step 4: Servlet Class</a></li>
+       <li class="page-271"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/jsp" class="icon img-page">Step 5: JSP Page</a></li>
+       <li class="page-272"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/run" class="icon img-page">Step 6: Running</a></li>
+      </ul></li>
+     <li class="page-308"><a href="https://www.objectdb.com/tutorial/jpa/ee/maven" class="icon img-download">Download and Run</a><input type="checkbox" id="sm15"><label for="sm15" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-309"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/ee/maven" class="icon img-eclipse">Eclipse Project</a></li>
+       <li class="page-310"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/ee/maven" class="icon img-net-beans">NetBeans Project</a></li>
+       <li class="page-311"><a href="https://www.objectdb.com/tutorial/jpa/intellij/ee/maven" class="icon img-inteli-j">IntelliJ Project</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-291"><a href="https://www.objectdb.com/tutorial/jpa/spring" class="icon img-teacher">Spring MVC and JPA</a><input type="checkbox" id="sm16"><label for="sm16" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-292"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring" class="icon img-eclipse">Eclipse JPA Spring</a><input type="checkbox" id="sm17"><label for="sm17" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-293"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/project" class="icon img-page">Step 1: Maven Project</a></li>
+       <li class="page-294"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-295"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/dao" class="icon img-page">Step 3: DAO Class</a></li>
+       <li class="page-296"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/controller" class="icon img-page">Step 4: Controller</a></li>
+       <li class="page-297"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/jsp" class="icon img-page">Step 5: JSP Page</a></li>
+       <li class="page-298"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/xml" class="icon img-page">Step 6: Spring XML</a></li>
+       <li class="page-299"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/run" class="icon img-page">Step 7: Running</a></li>
+      </ul></li>
+     <li class="page-280"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring" class="icon img-net-beans">NetBeans JPA Spring</a><input type="checkbox" id="sm18"><label for="sm18" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-281"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/project" class="icon img-page">Step 1: Maven Project</a></li>
+       <li class="page-282"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/entity" class="icon img-page">Step 2: Entity Class</a></li>
+       <li class="page-283"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/dao" class="icon img-page">Step 3: DAO Class</a></li>
+       <li class="page-287"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/controller" class="icon img-page">Step 4: Controller</a></li>
+       <li class="page-286"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/jsp" class="icon img-page">Step 5: JSP Page</a></li>
+       <li class="page-284"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/xml" class="icon img-page">Step 6: Spring XML</a></li>
+       <li class="page-285"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/run" class="icon img-page">Step 7: Running</a></li>
+      </ul></li>
+     <li class="page-312"><a href="https://www.objectdb.com/tutorial/jpa/spring/maven" class="icon img-download">Download and Run</a><input type="checkbox" id="sm19"><label for="sm19" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-313"><a href="https://www.objectdb.com/tutorial/jpa/eclipse/spring/maven" class="icon img-eclipse">Eclipse Project</a></li>
+       <li class="page-314"><a href="https://www.objectdb.com/tutorial/jpa/netbeans/spring/maven" class="icon img-net-beans">NetBeans Project</a></li>
+       <li class="page-315"><a href="https://www.objectdb.com/tutorial/jpa/intellij/spring/maven" class="icon img-inteli-j">IntelliJ Project</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+ <li class="page-111 active-trail"><a href="https://www.objectdb.com/java/jpa" class="icon img-folder">Manual</a><input type="checkbox" id="sm20" checked="checked"><label for="sm20" class="s-icon"></label><i class="l-icon"></i>
+  <ul>
+   <li class="page-223"><a href="https://www.objectdb.com/java/jpa/getting/started" class="icon img-1">Quick Tour</a><input type="checkbox" id="sm21"><label for="sm21" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-224"><a href="https://www.objectdb.com/java/jpa/start/entity" class="icon img-page">Entity Class</a></li>
+     <li class="page-225"><a href="https://www.objectdb.com/java/jpa/start/connection" class="icon img-page">Database Connection</a></li>
+     <li class="page-226"><a href="https://www.objectdb.com/java/jpa/start/crud" class="icon img-page">CRUD Operations</a></li>
+     <li class="page-227"><a href="https://www.objectdb.com/java/jpa/start/tools" class="icon img-page">What is Next?</a></li>
+    </ul></li>
+   <li class="page-110"><a href="https://www.objectdb.com/java/jpa/entity" class="icon img-2">Entity Classes</a><input type="checkbox" id="sm22"><label for="sm22" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-116"><a href="https://www.objectdb.com/java/jpa/entity/types" class="icon img-page">Persistable Types</a></li>
+     <li class="page-117"><a href="https://www.objectdb.com/java/jpa/entity/fields" class="icon img-page">Entity Fields</a></li>
+     <li class="page-118"><a href="https://www.objectdb.com/java/jpa/entity/id" class="icon img-page">Primary Key</a></li>
+     <li class="page-119"><a href="https://www.objectdb.com/java/jpa/entity/generated" class="icon img-page">Generated Values</a></li>
+     <li class="page-141"><a href="https://www.objectdb.com/java/jpa/entity/index" class="icon img-page">Index Definition</a></li>
+     <li class="page-121"><a href="https://www.objectdb.com/java/jpa/entity/schema" class="icon img-page">Schema Evolution</a></li>
+     <li class="page-120"><a href="https://www.objectdb.com/java/jpa/entity/persistence-unit" class="icon img-page">Persistence Unit</a></li>
+    </ul></li>
+   <li class="page-122"><a href="https://www.objectdb.com/java/jpa/persistence" class="icon img-3">Using JPA</a><input type="checkbox" id="sm23"><label for="sm23" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-123"><a href="https://www.objectdb.com/java/jpa/persistence/overview" class="icon img-page">Database Connection</a></li>
+     <li class="page-112"><a href="https://www.objectdb.com/java/jpa/persistence/managed" class="icon img-page">Managed Entity Objects</a></li>
+     <li class="page-250"><a href="https://www.objectdb.com/java/jpa/persistence/crud" class="icon img-folder">CRUD Operations</a><input type="checkbox" id="sm24"><label for="sm24" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-124"><a href="https://www.objectdb.com/java/jpa/persistence/store" class="icon img-page">Storing Entities</a></li>
+       <li class="page-125"><a href="https://www.objectdb.com/java/jpa/persistence/retrieve" class="icon img-page">Retrieving Entities</a></li>
+       <li class="page-126"><a href="https://www.objectdb.com/java/jpa/persistence/update" class="icon img-page">Updating Entities</a></li>
+       <li class="page-127"><a href="https://www.objectdb.com/java/jpa/persistence/delete" class="icon img-page">Deleting Entities</a></li>
+      </ul></li>
+     <li class="page-251"><a href="https://www.objectdb.com/java/jpa/persistence/advanced" class="icon img-folder">Advanced Topics</a><input type="checkbox" id="sm25"><label for="sm25" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-128"><a href="https://www.objectdb.com/java/jpa/persistence/detach" class="icon img-page">Detached Entities</a></li>
+       <li class="page-129"><a href="https://www.objectdb.com/java/jpa/persistence/lock" class="icon img-page">Lock Management</a></li>
+       <li class="page-130"><a href="https://www.objectdb.com/java/jpa/persistence/event" class="icon img-page">Lifecycle Events</a></li>
+       <li class="page-136"><a href="https://www.objectdb.com/java/jpa/persistence/cache" class="icon img-page">Shared L2 Cache</a></li>
+       <li class="page-135"><a href="https://www.objectdb.com/java/jpa/persistence/metamodel" class="icon img-page">Metamodel API</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-131 active-trail"><a href="https://www.objectdb.com/java/jpa/query" class="icon img-4">JPA Queries</a><input type="checkbox" id="sm26" checked="checked"><label for="sm26" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-132"><a href="https://www.objectdb.com/java/jpa/query/api" class="icon img-folder">Query API</a><input type="checkbox" id="sm27"><label for="sm27" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-234"><a href="https://www.objectdb.com/java/jpa/query/execute" class="icon img-page">Running Queries</a></li>
+       <li class="page-240"><a href="https://www.objectdb.com/java/jpa/query/parameter" class="icon img-page">Query Parameters</a></li>
+       <li class="page-235"><a href="https://www.objectdb.com/java/jpa/query/named" class="icon img-page">Named Queries</a></li>
+       <li class="page-318"><a href="https://www.objectdb.com/java/jpa/query/criteria" class="icon img-page">Criteria Query API</a></li>
+       <li class="page-241"><a href="https://www.objectdb.com/java/jpa/query/setting" class="icon img-page">Setting &amp; Tuning</a></li>
+      </ul></li>
+     <li class="page-134"><a href="https://www.objectdb.com/java/jpa/query/jpql/structure" class="icon img-folder">Query Structure</a><input type="checkbox" id="sm28"><label for="sm28" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-228"><a href="https://www.objectdb.com/java/jpa/query/jpql/select" class="icon img-page">JPQL SELECT</a></li>
+       <li class="page-229"><a href="https://www.objectdb.com/java/jpa/query/jpql/from" class="icon img-page">JPQL FROM</a></li>
+       <li class="page-230"><a href="https://www.objectdb.com/java/jpa/query/jpql/where" class="icon img-page">JPQL WHERE</a></li>
+       <li class="page-232"><a href="https://www.objectdb.com/java/jpa/query/jpql/group" class="icon img-page">JPQL GROUP BY</a></li>
+       <li class="page-231"><a href="https://www.objectdb.com/java/jpa/query/jpql/order" class="icon img-page">JPQL ORDER BY</a></li>
+       <li class="page-329"><a href="https://www.objectdb.com/java/jpa/query/jpql/delete" class="icon img-page">DELETE Queries</a></li>
+       <li class="page-330"><a href="https://www.objectdb.com/java/jpa/query/jpql/update" class="icon img-page">UPDATE Queries</a></li>
+      </ul></li>
+     <li class="page-133 active-trail"><a href="https://www.objectdb.com/java/jpa/query/jpql/expression" class="icon img-folder">Query Expressions</a><input type="checkbox" id="sm29" checked="checked"><label for="sm29" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="page-236"><a href="https://www.objectdb.com/java/jpa/query/jpql/literal" class="icon img-page">JPQL Literals</a></li>
+       <li class="page-237 active active-trail"><a href="https://www.objectdb.com/java/jpa/query/jpql/path" class="icon img-page">JPQL Paths and Types</a></li>
+       <li class="page-239"><a href="https://www.objectdb.com/java/jpa/query/jpql/arithmetic" class="icon img-page">Numbers in JPQL</a></li>
+       <li class="page-243"><a href="https://www.objectdb.com/java/jpa/query/jpql/string" class="icon img-page">Strings in JPQL</a></li>
+       <li class="page-328"><a href="https://www.objectdb.com/java/jpa/query/jpql/date" class="icon img-page">Date and Time in JPQL</a></li>
+       <li class="page-244"><a href="https://www.objectdb.com/java/jpa/query/jpql/collection" class="icon img-page">Collections in JPQL</a></li>
+       <li class="page-238"><a href="https://www.objectdb.com/java/jpa/query/jpql/comparison" class="icon img-page">Comparison Operators</a></li>
+       <li class="page-242"><a href="https://www.objectdb.com/java/jpa/query/jpql/logical" class="icon img-page">Logical Operators</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-138"><a href="https://www.objectdb.com/java/jpa/tool" class="icon img-5">Tools and Utilities</a><input type="checkbox" id="sm30"><label for="sm30" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-148"><a href="https://www.objectdb.com/java/jpa/tool/explorer" class="icon img-page">Database Explorer</a></li>
+     <li class="page-143"><a href="https://www.objectdb.com/java/jpa/tool/server" class="icon img-page">Database Server</a></li>
+     <li class="page-140"><a href="https://www.objectdb.com/java/jpa/tool/enhancer" class="icon img-page">Class Enhancer</a></li>
+     <li class="page-317"><a href="https://www.objectdb.com/java/jpa/tool/replication" class="icon img-page">Replication (Cluster)</a></li>
+     <li class="page-316"><a href="https://www.objectdb.com/java/jpa/tool/backup" class="icon img-page">Online Backup</a></li>
+     <li class="page-144"><a href="https://www.objectdb.com/java/jpa/tool/doctor" class="icon img-page">Database Doctor</a></li>
+     <li class="page-142"><a href="https://www.objectdb.com/java/jpa/tool/replayer" class="icon img-page">Transaction Replayer</a></li>
+     <li class="page-326"><a href="https://www.objectdb.com/java/jpa/tool/birt" class="icon img-page">BIRT Reports Driver</a></li>
+    </ul></li>
+   <li class="page-139"><a href="https://www.objectdb.com/java/jpa/setting" class="icon img-6">Configuration</a><input type="checkbox" id="sm31"><label for="sm31" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-245"><a href="https://www.objectdb.com/java/jpa/setting/general" class="icon img-page">General and Logging</a></li>
+     <li class="page-246"><a href="https://www.objectdb.com/java/jpa/setting/database" class="icon img-page">Database Management</a></li>
+     <li class="page-247"><a href="https://www.objectdb.com/java/jpa/setting/entities" class="icon img-page">Entity Management</a></li>
+     <li class="page-233"><a href="https://www.objectdb.com/java/jpa/setting/schema" class="icon img-page">Schema Update</a></li>
+     <li class="page-146"><a href="https://www.objectdb.com/java/jpa/setting/server" class="icon img-page">Server Configuration</a></li>
+     <li class="page-145"><a href="https://www.objectdb.com/java/jpa/setting/users" class="icon img-page">Server User List</a></li>
+     <li class="page-147"><a href="https://www.objectdb.com/java/jpa/setting/ssl" class="icon img-page">SSL Configuration</a></li>
+    </ul></li>
+  </ul></li>
+ <li class="page-113"><a href="https://www.objectdb.com/api/java/jpa" class="icon img-folder">JPA</a><input type="checkbox" id="sm32"><label for="sm32" class="s-icon"></label><i class="l-icon"></i>
+  <ul>
+   <li class="doc-38"><a href="https://www.objectdb.com/api/java/jpa/Persistence" class="icon img-class">Persistence</a></li>
+   <li class="doc-60"><a href="https://www.objectdb.com/api/java/jpa/EntityManagerFactory" class="icon img-interface">EntityManagerFactory</a></li>
+   <li class="doc-26"><a href="https://www.objectdb.com/api/java/jpa/EntityManager" class="icon img-interface">EntityManager</a></li>
+   <li class="doc-56"><a href="https://www.objectdb.com/api/java/jpa/EntityTransaction" class="icon img-interface">EntityTransaction</a></li>
+   <li class="page-165"><a href="https://www.objectdb.com/api/java/jpa/annotations" class="icon img-folder">Annotations</a><input type="checkbox" id="sm33"><label for="sm33" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-168"><a href="https://www.objectdb.com/api/java/jpa/annotations/class" class="icon img-folder">Class Modifiers</a><input type="checkbox" id="sm34"><label for="sm34" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-198"><a href="https://www.objectdb.com/api/java/jpa/Cacheable" class="icon img-annotation">Cacheable</a></li>
+       <li class="doc-51"><a href="https://www.objectdb.com/api/java/jpa/Embeddable" class="icon img-annotation">Embeddable</a></li>
+       <li class="doc-35"><a href="https://www.objectdb.com/api/java/jpa/Entity" class="icon img-annotation">Entity</a></li>
+       <li class="doc-34"><a href="https://www.objectdb.com/api/java/jpa/EntityListeners" class="icon img-annotation">EntityListeners</a></li>
+       <li class="doc-22"><a href="https://www.objectdb.com/api/java/jpa/ExcludeDefaultListeners" class="icon img-annotation">ExcludeDefaultListeners</a></li>
+       <li class="doc-6"><a href="https://www.objectdb.com/api/java/jpa/ExcludeSuperclassListeners" class="icon img-annotation">ExcludeSuperclassListeners</a></li>
+       <li class="doc-2"><a href="https://www.objectdb.com/api/java/jpa/IdClass" class="icon img-annotation">IdClass</a></li>
+       <li class="doc-49"><a href="https://www.objectdb.com/api/java/jpa/MappedSuperclass" class="icon img-annotation">MappedSuperclass</a></li>
+      </ul></li>
+     <li class="page-169"><a href="https://www.objectdb.com/api/java/jpa/annotations/field" class="icon img-folder">Field Modifiers</a><input type="checkbox" id="sm35"><label for="sm35" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-18"><a href="https://www.objectdb.com/api/java/jpa/Basic" class="icon img-annotation">Basic</a></li>
+       <li class="doc-11"><a href="https://www.objectdb.com/api/java/jpa/Embedded" class="icon img-annotation">Embedded</a></li>
+       <li class="doc-196"><a href="https://www.objectdb.com/api/java/jpa/ElementCollection" class="icon img-annotation">ElementCollection</a></li>
+       <li class="doc-4"><a href="https://www.objectdb.com/api/java/jpa/Id" class="icon img-annotation">Id</a></li>
+       <li class="doc-47"><a href="https://www.objectdb.com/api/java/jpa/EmbeddedId" class="icon img-annotation">EmbeddedId</a></li>
+       <li class="doc-5"><a href="https://www.objectdb.com/api/java/jpa/Version" class="icon img-annotation">Version</a></li>
+       <li class="doc-16"><a href="https://www.objectdb.com/api/java/jpa/Transient" class="icon img-annotation">Transient</a></li>
+       <li class="doc-58"><a href="https://www.objectdb.com/api/java/jpa/Enumerated" class="icon img-annotation">Enumerated</a></li>
+       <li class="doc-192"><a href="https://www.objectdb.com/api/java/jpa/MapKeyEnumerated" class="icon img-annotation">MapKeyEnumerated</a></li>
+       <li class="doc-27"><a href="https://www.objectdb.com/api/java/jpa/EnumType" class="icon img-enum">EnumType</a></li>
+       <li class="doc-45"><a href="https://www.objectdb.com/api/java/jpa/Temporal" class="icon img-annotation">Temporal</a></li>
+       <li class="doc-52"><a href="https://www.objectdb.com/api/java/jpa/TemporalType" class="icon img-enum">TemporalType</a></li>
+       <li class="doc-189"><a href="https://www.objectdb.com/api/java/jpa/MapKeyTemporal" class="icon img-annotation">MapKeyTemporal</a></li>
+      </ul></li>
+     <li class="page-187"><a href="https://www.objectdb.com/api/java/jpa/annotations/relationship" class="icon img-folder">Relationships</a><input type="checkbox" id="sm36"><label for="sm36" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-24"><a href="https://www.objectdb.com/api/java/jpa/ManyToMany" class="icon img-annotation">ManyToMany</a></li>
+       <li class="doc-19"><a href="https://www.objectdb.com/api/java/jpa/ManyToOne" class="icon img-annotation">ManyToOne</a></li>
+       <li class="doc-61"><a href="https://www.objectdb.com/api/java/jpa/OneToMany" class="icon img-annotation">OneToMany</a></li>
+       <li class="doc-15"><a href="https://www.objectdb.com/api/java/jpa/OneToOne" class="icon img-annotation">OneToOne</a></li>
+       <li class="doc-43"><a href="https://www.objectdb.com/api/java/jpa/OrderBy" class="icon img-annotation">OrderBy</a></li>
+       <li class="doc-50"><a href="https://www.objectdb.com/api/java/jpa/MapKey" class="icon img-annotation">MapKey</a></li>
+       <li class="doc-9"><a href="https://www.objectdb.com/api/java/jpa/CascadeType" class="icon img-enum">CascadeType</a></li>
+       <li class="doc-37"><a href="https://www.objectdb.com/api/java/jpa/FetchType" class="icon img-enum">FetchType</a></li>
+      </ul></li>
+     <li class="page-194"><a href="https://www.objectdb.com/api/java/jpa/annotations/access" class="icon img-folder">Access Modes</a><input type="checkbox" id="sm37"><label for="sm37" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-201"><a href="https://www.objectdb.com/api/java/jpa/Access" class="icon img-annotation">Access</a></li>
+       <li class="doc-200"><a href="https://www.objectdb.com/api/java/jpa/AccessType" class="icon img-enum">AccessType</a></li>
+      </ul></li>
+     <li class="page-171"><a href="https://www.objectdb.com/api/java/jpa/annotations/value" class="icon img-folder">Value Generation</a><input type="checkbox" id="sm38"><label for="sm38" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-46"><a href="https://www.objectdb.com/api/java/jpa/GeneratedValue" class="icon img-annotation">GeneratedValue</a></li>
+       <li class="doc-59"><a href="https://www.objectdb.com/api/java/jpa/GenerationType" class="icon img-enum">GenerationType</a></li>
+       <li class="doc-48"><a href="https://www.objectdb.com/api/java/jpa/SequenceGenerator" class="icon img-annotation">SequenceGenerator</a></li>
+       <li class="doc-55"><a href="https://www.objectdb.com/api/java/jpa/TableGenerator" class="icon img-annotation">TableGenerator</a></li>
+      </ul></li>
+     <li class="page-167"><a href="https://www.objectdb.com/api/java/jpa/annotations/callback" class="icon img-folder">Callback Methods</a><input type="checkbox" id="sm39"><label for="sm39" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-31"><a href="https://www.objectdb.com/api/java/jpa/PrePersist" class="icon img-annotation">PrePersist</a></li>
+       <li class="doc-39"><a href="https://www.objectdb.com/api/java/jpa/PreRemove" class="icon img-annotation">PreRemove</a></li>
+       <li class="doc-17"><a href="https://www.objectdb.com/api/java/jpa/PreUpdate" class="icon img-annotation">PreUpdate</a></li>
+       <li class="doc-28"><a href="https://www.objectdb.com/api/java/jpa/PostLoad" class="icon img-annotation">PostLoad</a></li>
+       <li class="doc-41"><a href="https://www.objectdb.com/api/java/jpa/PostPersist" class="icon img-annotation">PostPersist</a></li>
+       <li class="doc-29"><a href="https://www.objectdb.com/api/java/jpa/PostRemove" class="icon img-annotation">PostRemove</a></li>
+       <li class="doc-36"><a href="https://www.objectdb.com/api/java/jpa/PostUpdate" class="icon img-annotation">PostUpdate</a></li>
+      </ul></li>
+     <li class="page-172"><a href="https://www.objectdb.com/api/java/jpa/annotations/jpql" class="icon img-folder">JPQL Queries</a><input type="checkbox" id="sm40"><label for="sm40" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-44"><a href="https://www.objectdb.com/api/java/jpa/NamedQueries" class="icon img-annotation">NamedQueries</a></li>
+       <li class="doc-20"><a href="https://www.objectdb.com/api/java/jpa/NamedQuery" class="icon img-annotation">NamedQuery</a></li>
+       <li class="doc-7"><a href="https://www.objectdb.com/api/java/jpa/QueryHint" class="icon img-annotation">QueryHint</a></li>
+      </ul></li>
+     <li class="page-170"><a href="https://www.objectdb.com/api/java/jpa/annotations/ee" class="icon img-folder">Java EE</a><input type="checkbox" id="sm41"><label for="sm41" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-23"><a href="https://www.objectdb.com/api/java/jpa/PersistenceContext" class="icon img-annotation">PersistenceContext</a></li>
+       <li class="doc-12"><a href="https://www.objectdb.com/api/java/jpa/PersistenceContextType" class="icon img-enum">PersistenceContextType</a></li>
+       <li class="doc-1"><a href="https://www.objectdb.com/api/java/jpa/PersistenceContexts" class="icon img-annotation">PersistenceContexts</a></li>
+       <li class="doc-21"><a href="https://www.objectdb.com/api/java/jpa/PersistenceProperty" class="icon img-annotation">PersistenceProperty</a></li>
+       <li class="doc-42"><a href="https://www.objectdb.com/api/java/jpa/PersistenceUnit" class="icon img-annotation">PersistenceUnit</a></li>
+       <li class="doc-54"><a href="https://www.objectdb.com/api/java/jpa/PersistenceUnits" class="icon img-annotation">PersistenceUnits</a></li>
+      </ul></li>
+     <li class="page-173"><a href="https://www.objectdb.com/api/java/jpa/annotations/orm" class="icon img-folder">Mapping (ORM)</a><input type="checkbox" id="sm42"><label for="sm42" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-169"><a href="https://www.objectdb.com/api/java/jpa/AssociationOverride" class="icon img-annotation">AssociationOverride</a></li>
+       <li class="doc-171"><a href="https://www.objectdb.com/api/java/jpa/AssociationOverrides" class="icon img-annotation">AssociationOverrides</a></li>
+       <li class="doc-183"><a href="https://www.objectdb.com/api/java/jpa/AttributeOverride" class="icon img-annotation">AttributeOverride</a></li>
+       <li class="doc-181"><a href="https://www.objectdb.com/api/java/jpa/AttributeOverrides" class="icon img-annotation">AttributeOverrides</a></li>
+       <li class="doc-197"><a href="https://www.objectdb.com/api/java/jpa/CollectionTable" class="icon img-annotation">CollectionTable</a></li>
+       <li class="doc-162"><a href="https://www.objectdb.com/api/java/jpa/Column" class="icon img-annotation">Column</a></li>
+       <li class="doc-165"><a href="https://www.objectdb.com/api/java/jpa/DiscriminatorColumn" class="icon img-annotation">DiscriminatorColumn</a></li>
+       <li class="doc-182"><a href="https://www.objectdb.com/api/java/jpa/DiscriminatorType" class="icon img-enum">DiscriminatorType</a></li>
+       <li class="doc-180"><a href="https://www.objectdb.com/api/java/jpa/DiscriminatorValue" class="icon img-annotation">DiscriminatorValue</a></li>
+       <li class="doc-170"><a href="https://www.objectdb.com/api/java/jpa/Inheritance" class="icon img-annotation">Inheritance</a></li>
+       <li class="doc-185"><a href="https://www.objectdb.com/api/java/jpa/InheritanceType" class="icon img-enum">InheritanceType</a></li>
+       <li class="doc-173"><a href="https://www.objectdb.com/api/java/jpa/JoinColumn" class="icon img-annotation">JoinColumn</a></li>
+       <li class="doc-160"><a href="https://www.objectdb.com/api/java/jpa/JoinColumns" class="icon img-annotation">JoinColumns</a></li>
+       <li class="doc-184"><a href="https://www.objectdb.com/api/java/jpa/JoinTable" class="icon img-annotation">JoinTable</a></li>
+       <li class="doc-30"><a href="https://www.objectdb.com/api/java/jpa/Lob" class="icon img-annotation">Lob</a></li>
+       <li class="doc-194"><a href="https://www.objectdb.com/api/java/jpa/MapKeyClass" class="icon img-annotation">MapKeyClass</a></li>
+       <li class="doc-193"><a href="https://www.objectdb.com/api/java/jpa/MapKeyColumn" class="icon img-annotation">MapKeyColumn</a></li>
+       <li class="doc-191"><a href="https://www.objectdb.com/api/java/jpa/MapKeyJoinColumn" class="icon img-annotation">MapKeyJoinColumn</a></li>
+       <li class="doc-190"><a href="https://www.objectdb.com/api/java/jpa/MapKeyJoinColumns" class="icon img-annotation">MapKeyJoinColumns</a></li>
+       <li class="doc-1678"><a href="https://www.objectdb.com/api/java/jpa/MapsId" class="icon img-annotation">MapsId</a></li>
+       <li class="doc-188"><a href="https://www.objectdb.com/api/java/jpa/OrderColumn" class="icon img-annotation">OrderColumn</a></li>
+       <li class="doc-175"><a href="https://www.objectdb.com/api/java/jpa/PrimaryKeyJoinColumn" class="icon img-annotation">PrimaryKeyJoinColumn</a></li>
+       <li class="doc-166"><a href="https://www.objectdb.com/api/java/jpa/PrimaryKeyJoinColumns" class="icon img-annotation">PrimaryKeyJoinColumns</a></li>
+       <li class="doc-178"><a href="https://www.objectdb.com/api/java/jpa/SecondaryTable" class="icon img-annotation">SecondaryTable</a></li>
+       <li class="doc-176"><a href="https://www.objectdb.com/api/java/jpa/SecondaryTables" class="icon img-annotation">SecondaryTables</a></li>
+       <li class="doc-177"><a href="https://www.objectdb.com/api/java/jpa/Table" class="icon img-annotation">Table</a></li>
+       <li class="doc-167"><a href="https://www.objectdb.com/api/java/jpa/UniqueConstraint" class="icon img-annotation">UniqueConstraint</a></li>
+      </ul></li>
+     <li class="page-186"><a href="https://www.objectdb.com/api/java/jpa/annotations/sql" class="icon img-folder">SQL Queries</a><input type="checkbox" id="sm43"><label for="sm43" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-172"><a href="https://www.objectdb.com/api/java/jpa/ColumnResult" class="icon img-annotation">ColumnResult</a></li>
+       <li class="doc-163"><a href="https://www.objectdb.com/api/java/jpa/EntityResult" class="icon img-annotation">EntityResult</a></li>
+       <li class="doc-168"><a href="https://www.objectdb.com/api/java/jpa/FieldResult" class="icon img-annotation">FieldResult</a></li>
+       <li class="doc-164"><a href="https://www.objectdb.com/api/java/jpa/NamedNativeQueries" class="icon img-annotation">NamedNativeQueries</a></li>
+       <li class="doc-161"><a href="https://www.objectdb.com/api/java/jpa/NamedNativeQuery" class="icon img-annotation">NamedNativeQuery</a></li>
+       <li class="doc-179"><a href="https://www.objectdb.com/api/java/jpa/SqlResultSetMapping" class="icon img-annotation">SqlResultSetMapping</a></li>
+       <li class="doc-174"><a href="https://www.objectdb.com/api/java/jpa/SqlResultSetMappings" class="icon img-annotation">SqlResultSetMappings</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-190"><a href="https://www.objectdb.com/api/java/jpa/queries" class="icon img-folder">Queries</a><input type="checkbox" id="sm44"><label for="sm44" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-3"><a href="https://www.objectdb.com/api/java/jpa/Query" class="icon img-interface">Query</a></li>
+     <li class="doc-1635"><a href="https://www.objectdb.com/api/java/jpa/TypedQuery" class="icon img-interface">TypedQuery</a></li>
+     <li class="doc-187"><a href="https://www.objectdb.com/api/java/jpa/Parameter" class="icon img-interface">Parameter</a></li>
+     <li class="doc-1758"><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder" class="icon img-interface">CriteriaBuilder</a></li>
+     <li class="doc-217"><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaQuery" class="icon img-interface">CriteriaQuery</a></li>
+     <li class="page-149"><a href="https://www.objectdb.com/api/java/jpa/query/criteria/select" class="icon img-folder">Selection and Results</a><input type="checkbox" id="sm45"><label for="sm45" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-204"><a href="https://www.objectdb.com/api/java/jpa/criteria/Selection" class="icon img-interface">Selection</a></li>
+       <li class="doc-1721"><a href="https://www.objectdb.com/api/java/jpa/criteria/CompoundSelection" class="icon img-interface">CompoundSelection</a></li>
+       <li class="doc-208"><a href="https://www.objectdb.com/api/java/jpa/criteria/Order" class="icon img-interface">Order</a></li>
+       <li class="doc-1652"><a href="https://www.objectdb.com/api/java/jpa/Tuple" class="icon img-interface">Tuple</a></li>
+       <li class="doc-1649"><a href="https://www.objectdb.com/api/java/jpa/TupleElement" class="icon img-interface">TupleElement</a></li>
+      </ul></li>
+     <li class="page-193"><a href="https://www.objectdb.com/api/java/jpa/query/criteria/from" class="icon img-folder">Criteria From Elements</a><input type="checkbox" id="sm46"><label for="sm46" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-213"><a href="https://www.objectdb.com/api/java/jpa/criteria/From" class="icon img-interface">From</a></li>
+       <li class="doc-205"><a href="https://www.objectdb.com/api/java/jpa/criteria/Root" class="icon img-interface">Root</a></li>
+       <li class="doc-212"><a href="https://www.objectdb.com/api/java/jpa/criteria/Join" class="icon img-interface">Join</a></li>
+       <li class="doc-1703"><a href="https://www.objectdb.com/api/java/jpa/criteria/PluralJoin" class="icon img-interface">PluralJoin</a></li>
+       <li class="doc-218"><a href="https://www.objectdb.com/api/java/jpa/criteria/CollectionJoin" class="icon img-interface">CollectionJoin</a></li>
+       <li class="doc-203"><a href="https://www.objectdb.com/api/java/jpa/criteria/SetJoin" class="icon img-interface">SetJoin</a></li>
+       <li class="doc-210"><a href="https://www.objectdb.com/api/java/jpa/criteria/ListJoin" class="icon img-interface">ListJoin</a></li>
+       <li class="doc-209"><a href="https://www.objectdb.com/api/java/jpa/criteria/MapJoin" class="icon img-interface">MapJoin</a></li>
+       <li class="doc-211"><a href="https://www.objectdb.com/api/java/jpa/criteria/JoinType" class="icon img-enum">JoinType</a></li>
+       <li class="doc-215"><a href="https://www.objectdb.com/api/java/jpa/criteria/Fetch" class="icon img-interface">Fetch</a></li>
+       <li class="doc-214"><a href="https://www.objectdb.com/api/java/jpa/criteria/FetchParent" class="icon img-interface">FetchParent</a></li>
+      </ul></li>
+     <li class="page-189"><a href="https://www.objectdb.com/api/java/jpa/queries/criteria" class="icon img-folder">Criteria Expressions</a><input type="checkbox" id="sm47"><label for="sm47" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-216"><a href="https://www.objectdb.com/api/java/jpa/criteria/Expression" class="icon img-interface">Expression</a></li>
+       <li class="doc-206"><a href="https://www.objectdb.com/api/java/jpa/criteria/Predicate" class="icon img-interface">Predicate</a><input type="checkbox" id="sm48"><label for="sm48" class="s-icon"></label><i class="l-icon"></i>
+        <ul>
+         <li class="doc-2112"><a href="https://www.objectdb.com/api/java/jpa/criteria/Predicate_BooleanOperator" class="icon img-enum">BooleanOperator</a></li>
+        </ul></li>
+       <li class="doc-207"><a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="icon img-interface">Path</a></li>
+       <li class="doc-1706"><a href="https://www.objectdb.com/api/java/jpa/criteria/ParameterExpression" class="icon img-interface">ParameterExpression</a></li>
+       <li class="doc-1759"><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder_Coalesce" class="icon img-interface">Coalesce</a></li>
+       <li class="doc-1957"><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder_In" class="icon img-interface">In</a></li>
+       <li class="doc-1968"><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder_Case" class="icon img-interface">Case</a></li>
+       <li class="doc-1962"><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder_SimpleCase" class="icon img-interface">SimpleCase</a></li>
+       <li class="doc-219"><a href="https://www.objectdb.com/api/java/jpa/criteria/AbstractQuery" class="icon img-interface">AbstractQuery</a></li>
+       <li class="doc-202"><a href="https://www.objectdb.com/api/java/jpa/criteria/Subquery" class="icon img-interface">Subquery</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-188"><a href="https://www.objectdb.com/api/java/jpa/metamodel" class="icon img-folder">Metamodel</a><input type="checkbox" id="sm49"><label for="sm49" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-221"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Metamodel" class="icon img-interface">Metamodel</a></li>
+     <li class="page-191"><a href="https://www.objectdb.com/api/java/jpa/metamodel/types" class="icon img-folder">Metamodel Types</a><input type="checkbox" id="sm50"><label for="sm50" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-220"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Type" class="icon img-interface">Type</a></li>
+       <li class="doc-1973"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Type_PersistenceType" class="icon img-enum">PersistenceType</a></li>
+       <li class="doc-1757"><a href="https://www.objectdb.com/api/java/jpa/metamodel/BasicType" class="icon img-interface">BasicType</a></li>
+       <li class="doc-222"><a href="https://www.objectdb.com/api/java/jpa/metamodel/ManagedType" class="icon img-interface">ManagedType</a></li>
+       <li class="doc-1755"><a href="https://www.objectdb.com/api/java/jpa/metamodel/EmbeddableType" class="icon img-interface">EmbeddableType</a></li>
+       <li class="doc-223"><a href="https://www.objectdb.com/api/java/jpa/metamodel/IdentifiableType" class="icon img-interface">IdentifiableType</a></li>
+       <li class="doc-1753"><a href="https://www.objectdb.com/api/java/jpa/metamodel/EntityType" class="icon img-interface">EntityType</a></li>
+       <li class="doc-1748"><a href="https://www.objectdb.com/api/java/jpa/metamodel/MappedSuperclassType" class="icon img-interface">MappedSuperclassType</a></li>
+      </ul></li>
+     <li class="page-192"><a href="https://www.objectdb.com/api/java/jpa/metamodel/members" class="icon img-folder">Metamodel Attributes</a><input type="checkbox" id="sm51"><label for="sm51" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-225"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Attribute" class="icon img-interface">Attribute</a></li>
+       <li class="doc-2010"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Attribute_PersistentAttributeType" class="icon img-enum">PersistentAttributeType</a></li>
+       <li class="doc-1730"><a href="https://www.objectdb.com/api/java/jpa/metamodel/SingularAttribute" class="icon img-interface">SingularAttribute</a></li>
+       <li class="doc-1735"><a href="https://www.objectdb.com/api/java/jpa/metamodel/PluralAttribute" class="icon img-interface">PluralAttribute</a></li>
+       <li class="doc-1980"><a href="https://www.objectdb.com/api/java/jpa/metamodel/PluralAttribute_CollectionType" class="icon img-enum">CollectionType</a></li>
+       <li class="doc-1756"><a href="https://www.objectdb.com/api/java/jpa/metamodel/CollectionAttribute" class="icon img-interface">CollectionAttribute</a></li>
+       <li class="doc-1738"><a href="https://www.objectdb.com/api/java/jpa/metamodel/SetAttribute" class="icon img-interface">SetAttribute</a></li>
+       <li class="doc-1749"><a href="https://www.objectdb.com/api/java/jpa/metamodel/MapAttribute" class="icon img-interface">MapAttribute</a></li>
+       <li class="doc-1752"><a href="https://www.objectdb.com/api/java/jpa/metamodel/ListAttribute" class="icon img-interface">ListAttribute</a></li>
+      </ul></li>
+     <li class="doc-224"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Bindable" class="icon img-interface">Bindable</a><input type="checkbox" id="sm52"><label for="sm52" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-2004"><a href="https://www.objectdb.com/api/java/jpa/metamodel/Bindable_BindableType" class="icon img-enum">BindableType</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-248"><a href="https://www.objectdb.com/api/java/jpa/misc" class="icon img-folder">Miscellaneous</a><input type="checkbox" id="sm53"><label for="sm53" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-1670"><a href="https://www.objectdb.com/api/java/jpa/PersistenceUtil" class="icon img-interface">PersistenceUtil</a></li>
+     <li class="doc-1673"><a href="https://www.objectdb.com/api/java/jpa/PersistenceUnitUtil" class="icon img-interface">PersistenceUnitUtil</a></li>
+     <li class="doc-199"><a href="https://www.objectdb.com/api/java/jpa/Cache" class="icon img-interface">Cache</a></li>
+     <li class="doc-1689"><a href="https://www.objectdb.com/api/java/jpa/CacheRetrieveMode" class="icon img-enum">CacheRetrieveMode</a></li>
+     <li class="doc-1683"><a href="https://www.objectdb.com/api/java/jpa/CacheStoreMode" class="icon img-enum">CacheStoreMode</a></li>
+     <li class="doc-53"><a href="https://www.objectdb.com/api/java/jpa/FlushModeType" class="icon img-enum">FlushModeType</a></li>
+     <li class="doc-10"><a href="https://www.objectdb.com/api/java/jpa/LockModeType" class="icon img-enum">LockModeType</a></li>
+     <li class="doc-1665"><a href="https://www.objectdb.com/api/java/jpa/PessimisticLockScope" class="icon img-enum">PessimisticLockScope</a></li>
+    </ul></li>
+   <li class="page-166"><a href="https://www.objectdb.com/api/java/jpa/exceptions" class="icon img-folder">Exceptions</a><input type="checkbox" id="sm54"><label for="sm54" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-33"><a href="https://www.objectdb.com/api/java/jpa/EntityExistsException" class="icon img-class">EntityExistsException</a></li>
+     <li class="doc-40"><a href="https://www.objectdb.com/api/java/jpa/EntityNotFoundException" class="icon img-class">EntityNotFoundException</a></li>
+     <li class="doc-195"><a href="https://www.objectdb.com/api/java/jpa/LockTimeoutException" class="icon img-class">LockTimeoutException</a></li>
+     <li class="doc-25"><a href="https://www.objectdb.com/api/java/jpa/NonUniqueResultException" class="icon img-class">NonUniqueResultException</a></li>
+     <li class="doc-8"><a href="https://www.objectdb.com/api/java/jpa/NoResultException" class="icon img-class">NoResultException</a></li>
+     <li class="doc-14"><a href="https://www.objectdb.com/api/java/jpa/OptimisticLockException" class="icon img-class">OptimisticLockException</a></li>
+     <li class="doc-57"><a href="https://www.objectdb.com/api/java/jpa/PersistenceException" class="icon img-class">PersistenceException</a></li>
+     <li class="doc-186"><a href="https://www.objectdb.com/api/java/jpa/PessimisticLockException" class="icon img-class">PessimisticLockException</a></li>
+     <li class="doc-1657"><a href="https://www.objectdb.com/api/java/jpa/QueryTimeoutException" class="icon img-class">QueryTimeoutException</a></li>
+     <li class="doc-32"><a href="https://www.objectdb.com/api/java/jpa/RollbackException" class="icon img-class">RollbackException</a></li>
+     <li class="doc-13"><a href="https://www.objectdb.com/api/java/jpa/TransactionRequiredException" class="icon img-class">TransactionRequiredException</a></li>
+    </ul></li>
+  </ul></li>
+ <li class="page-114"><a href="https://www.objectdb.com/api/java/jdo" class="icon img-folder">JDO</a><input type="checkbox" id="sm55"><label for="sm55" class="s-icon"></label><i class="l-icon"></i>
+  <ul>
+   <li class="doc-82"><a href="https://www.objectdb.com/api/java/jdo/JDOHelper" class="icon img-class">JDOHelper</a></li>
+   <li class="doc-74"><a href="https://www.objectdb.com/api/java/jdo/PersistenceManagerFactory" class="icon img-interface">PersistenceManagerFactory</a></li>
+   <li class="doc-73"><a href="https://www.objectdb.com/api/java/jdo/PersistenceManager" class="icon img-interface">PersistenceManager</a></li>
+   <li class="doc-80"><a href="https://www.objectdb.com/api/java/jdo/Transaction" class="icon img-interface">Transaction</a></li>
+   <li class="doc-69"><a href="https://www.objectdb.com/api/java/jdo/Query" class="icon img-interface">Query</a></li>
+   <li class="doc-72"><a href="https://www.objectdb.com/api/java/jdo/Extent" class="icon img-interface">Extent</a></li>
+   <li class="page-174"><a href="https://www.objectdb.com/api/java/jdo/annotations" class="icon img-folder">Annotations</a><input type="checkbox" id="sm56"><label for="sm56" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="page-181"><a href="https://www.objectdb.com/api/java/jdo/annotations/class" class="icon img-folder">Class Modifiers</a><input type="checkbox" id="sm57"><label for="sm57" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-93"><a href="https://www.objectdb.com/api/java/jdo/annotations/PersistenceCapable" class="icon img-annotation">PersistenceCapable</a></li>
+       <li class="doc-89"><a href="https://www.objectdb.com/api/java/jdo/annotations/PersistenceAware" class="icon img-annotation">PersistenceAware</a></li>
+       <li class="doc-119"><a href="https://www.objectdb.com/api/java/jdo/annotations/EmbeddedOnly" class="icon img-annotation">EmbeddedOnly</a></li>
+       <li class="doc-98"><a href="https://www.objectdb.com/api/java/jdo/annotations/DatastoreIdentity" class="icon img-annotation">DatastoreIdentity</a></li>
+       <li class="doc-123"><a href="https://www.objectdb.com/api/java/jdo/annotations/IdentityType" class="icon img-enum">IdentityType</a></li>
+      </ul></li>
+     <li class="page-182"><a href="https://www.objectdb.com/api/java/jdo/annotations/field" class="icon img-folder">Field Modifiers</a><input type="checkbox" id="sm58"><label for="sm58" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-131"><a href="https://www.objectdb.com/api/java/jdo/annotations/Persistent" class="icon img-annotation">Persistent</a></li>
+       <li class="doc-92"><a href="https://www.objectdb.com/api/java/jdo/annotations/NotPersistent" class="icon img-annotation">NotPersistent</a></li>
+       <li class="doc-114"><a href="https://www.objectdb.com/api/java/jdo/annotations/PersistenceModifier" class="icon img-enum">PersistenceModifier</a></li>
+       <li class="doc-116"><a href="https://www.objectdb.com/api/java/jdo/annotations/Embedded" class="icon img-annotation">Embedded</a></li>
+       <li class="doc-128"><a href="https://www.objectdb.com/api/java/jdo/annotations/NullValue" class="icon img-enum">NullValue</a></li>
+       <li class="doc-130"><a href="https://www.objectdb.com/api/java/jdo/annotations/Order" class="icon img-annotation">Order</a></li>
+       <li class="doc-91"><a href="https://www.objectdb.com/api/java/jdo/annotations/PrimaryKey" class="icon img-annotation">PrimaryKey</a></li>
+       <li class="doc-104"><a href="https://www.objectdb.com/api/java/jdo/annotations/Transactional" class="icon img-annotation">Transactional</a></li>
+       <li class="doc-113"><a href="https://www.objectdb.com/api/java/jdo/annotations/Version" class="icon img-annotation">Version</a></li>
+       <li class="doc-90"><a href="https://www.objectdb.com/api/java/jdo/annotations/VersionStrategy" class="icon img-enum">VersionStrategy</a></li>
+      </ul></li>
+     <li class="page-180"><a href="https://www.objectdb.com/api/java/jdo/annotations/indexes" class="icon img-folder">Index Definition</a><input type="checkbox" id="sm59"><label for="sm59" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-107"><a href="https://www.objectdb.com/api/java/jdo/annotations/Index" class="icon img-annotation">Index</a></li>
+       <li class="doc-110"><a href="https://www.objectdb.com/api/java/jdo/annotations/Indices" class="icon img-annotation">Indices</a></li>
+       <li class="doc-125"><a href="https://www.objectdb.com/api/java/jdo/annotations/Unique" class="icon img-annotation">Unique</a></li>
+       <li class="doc-88"><a href="https://www.objectdb.com/api/java/jdo/annotations/Uniques" class="icon img-annotation">Uniques</a></li>
+      </ul></li>
+     <li class="page-179"><a href="https://www.objectdb.com/api/java/jdo/annotations/fetch" class="icon img-folder">Fetch Settings</a><input type="checkbox" id="sm60"><label for="sm60" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-112"><a href="https://www.objectdb.com/api/java/jdo/annotations/FetchGroup" class="icon img-annotation">FetchGroup</a></li>
+       <li class="doc-101"><a href="https://www.objectdb.com/api/java/jdo/annotations/FetchGroups" class="icon img-annotation">FetchGroups</a></li>
+       <li class="doc-96"><a href="https://www.objectdb.com/api/java/jdo/annotations/FetchPlan" class="icon img-annotation">FetchPlan</a></li>
+       <li class="doc-126"><a href="https://www.objectdb.com/api/java/jdo/annotations/FetchPlans" class="icon img-annotation">FetchPlans</a></li>
+      </ul></li>
+     <li class="page-183"><a href="https://www.objectdb.com/api/java/jdo/annotations/misc" class="icon img-folder">Miscellaneous</a><input type="checkbox" id="sm61"><label for="sm61" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-99"><a href="https://www.objectdb.com/api/java/jdo/annotations/Cacheable" class="icon img-annotation">Cacheable</a></li>
+       <li class="doc-102"><a href="https://www.objectdb.com/api/java/jdo/annotations/Extension" class="icon img-annotation">Extension</a></li>
+       <li class="doc-133"><a href="https://www.objectdb.com/api/java/jdo/annotations/Extensions" class="icon img-annotation">Extensions</a></li>
+       <li class="doc-111"><a href="https://www.objectdb.com/api/java/jdo/annotations/Queries" class="icon img-annotation">Queries</a></li>
+       <li class="doc-100"><a href="https://www.objectdb.com/api/java/jdo/annotations/Query" class="icon img-annotation">Query</a></li>
+       <li class="doc-94"><a href="https://www.objectdb.com/api/java/jdo/annotations/Sequence" class="icon img-annotation">Sequence</a></li>
+       <li class="doc-115"><a href="https://www.objectdb.com/api/java/jdo/annotations/SequenceStrategy" class="icon img-enum">SequenceStrategy</a></li>
+       <li class="doc-95"><a href="https://www.objectdb.com/api/java/jdo/annotations/IdGeneratorStrategy" class="icon img-enum">IdGeneratorStrategy</a></li>
+      </ul></li>
+     <li class="page-177"><a href="https://www.objectdb.com/api/java/jdo/annotations/orm" class="icon img-folder">Mapping (ORM)</a><input type="checkbox" id="sm62"><label for="sm62" class="s-icon"></label><i class="l-icon"></i>
+      <ul>
+       <li class="doc-127"><a href="https://www.objectdb.com/api/java/jdo/annotations/Column" class="icon img-annotation">Column</a></li>
+       <li class="doc-117"><a href="https://www.objectdb.com/api/java/jdo/annotations/Columns" class="icon img-annotation">Columns</a></li>
+       <li class="doc-121"><a href="https://www.objectdb.com/api/java/jdo/annotations/Discriminator" class="icon img-annotation">Discriminator</a></li>
+       <li class="doc-132"><a href="https://www.objectdb.com/api/java/jdo/annotations/DiscriminatorStrategy" class="icon img-enum">DiscriminatorStrategy</a></li>
+       <li class="doc-103"><a href="https://www.objectdb.com/api/java/jdo/annotations/Element" class="icon img-annotation">Element</a></li>
+       <li class="doc-118"><a href="https://www.objectdb.com/api/java/jdo/annotations/ForeignKey" class="icon img-annotation">ForeignKey</a></li>
+       <li class="doc-108"><a href="https://www.objectdb.com/api/java/jdo/annotations/ForeignKeyAction" class="icon img-enum">ForeignKeyAction</a></li>
+       <li class="doc-97"><a href="https://www.objectdb.com/api/java/jdo/annotations/ForeignKeys" class="icon img-annotation">ForeignKeys</a></li>
+       <li class="doc-124"><a href="https://www.objectdb.com/api/java/jdo/annotations/Inheritance" class="icon img-annotation">Inheritance</a></li>
+       <li class="doc-106"><a href="https://www.objectdb.com/api/java/jdo/annotations/InheritanceStrategy" class="icon img-enum">InheritanceStrategy</a></li>
+       <li class="doc-120"><a href="https://www.objectdb.com/api/java/jdo/annotations/Join" class="icon img-annotation">Join</a></li>
+       <li class="doc-122"><a href="https://www.objectdb.com/api/java/jdo/annotations/Joins" class="icon img-annotation">Joins</a></li>
+       <li class="doc-129"><a href="https://www.objectdb.com/api/java/jdo/annotations/Key" class="icon img-annotation">Key</a></li>
+       <li class="doc-109"><a href="https://www.objectdb.com/api/java/jdo/annotations/Serialized" class="icon img-annotation">Serialized</a></li>
+       <li class="doc-105"><a href="https://www.objectdb.com/api/java/jdo/annotations/Value" class="icon img-annotation">Value</a></li>
+      </ul></li>
+    </ul></li>
+   <li class="page-184"><a href="https://www.objectdb.com/api/java/jdo/event/callbacks" class="icon img-folder">Callbacks</a><input type="checkbox" id="sm63"><label for="sm63" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-144"><a href="https://www.objectdb.com/api/java/jdo/listener/AttachCallback" class="icon img-interface">AttachCallback</a></li>
+     <li class="doc-152"><a href="https://www.objectdb.com/api/java/jdo/listener/ClearCallback" class="icon img-interface">ClearCallback</a></li>
+     <li class="doc-145"><a href="https://www.objectdb.com/api/java/jdo/listener/DeleteCallback" class="icon img-interface">DeleteCallback</a></li>
+     <li class="doc-151"><a href="https://www.objectdb.com/api/java/jdo/listener/DetachCallback" class="icon img-interface">DetachCallback</a></li>
+     <li class="doc-156"><a href="https://www.objectdb.com/api/java/jdo/listener/LoadCallback" class="icon img-interface">LoadCallback</a></li>
+     <li class="doc-155"><a href="https://www.objectdb.com/api/java/jdo/listener/StoreCallback" class="icon img-interface">StoreCallback</a></li>
+     <li class="doc-84"><a href="https://www.objectdb.com/api/java/jdo/InstanceCallbacks" class="icon img-interface">InstanceCallbacks</a></li>
+    </ul></li>
+   <li class="page-185"><a href="https://www.objectdb.com/api/java/jdo/event/listeners" class="icon img-folder">Listeners</a><input type="checkbox" id="sm64"><label for="sm64" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-146"><a href="https://www.objectdb.com/api/java/jdo/listener/AttachLifecycleListener" class="icon img-interface">AttachLifecycleListener</a></li>
+     <li class="doc-148"><a href="https://www.objectdb.com/api/java/jdo/listener/ClearLifecycleListener" class="icon img-interface">ClearLifecycleListener</a></li>
+     <li class="doc-147"><a href="https://www.objectdb.com/api/java/jdo/listener/CreateLifecycleListener" class="icon img-interface">CreateLifecycleListener</a></li>
+     <li class="doc-150"><a href="https://www.objectdb.com/api/java/jdo/listener/DeleteLifecycleListener" class="icon img-interface">DeleteLifecycleListener</a></li>
+     <li class="doc-153"><a href="https://www.objectdb.com/api/java/jdo/listener/DetachLifecycleListener" class="icon img-interface">DetachLifecycleListener</a></li>
+     <li class="doc-154"><a href="https://www.objectdb.com/api/java/jdo/listener/DirtyLifecycleListener" class="icon img-interface">DirtyLifecycleListener</a></li>
+     <li class="doc-158"><a href="https://www.objectdb.com/api/java/jdo/listener/LoadLifecycleListener" class="icon img-interface">LoadLifecycleListener</a></li>
+     <li class="doc-157"><a href="https://www.objectdb.com/api/java/jdo/listener/StoreLifecycleListener" class="icon img-interface">StoreLifecycleListener</a></li>
+     <li class="doc-159"><a href="https://www.objectdb.com/api/java/jdo/listener/InstanceLifecycleEvent" class="icon img-class">InstanceLifecycleEvent</a></li>
+     <li class="doc-149"><a href="https://www.objectdb.com/api/java/jdo/listener/InstanceLifecycleListener" class="icon img-interface">InstanceLifecycleListener</a></li>
+    </ul></li>
+   <li class="page-176"><a href="https://www.objectdb.com/api/java/jdo/id/classes" class="icon img-folder">Predefined ID Classes</a><input type="checkbox" id="sm65"><label for="sm65" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-143"><a href="https://www.objectdb.com/api/java/jdo/identity/ByteIdentity" class="icon img-class">ByteIdentity</a></li>
+     <li class="doc-139"><a href="https://www.objectdb.com/api/java/jdo/identity/CharIdentity" class="icon img-class">CharIdentity</a></li>
+     <li class="doc-141"><a href="https://www.objectdb.com/api/java/jdo/identity/IntIdentity" class="icon img-class">IntIdentity</a></li>
+     <li class="doc-140"><a href="https://www.objectdb.com/api/java/jdo/identity/LongIdentity" class="icon img-class">LongIdentity</a></li>
+     <li class="doc-137"><a href="https://www.objectdb.com/api/java/jdo/identity/ObjectIdentity" class="icon img-class">ObjectIdentity</a></li>
+     <li class="doc-136"><a href="https://www.objectdb.com/api/java/jdo/identity/ShortIdentity" class="icon img-class">ShortIdentity</a></li>
+     <li class="doc-138"><a href="https://www.objectdb.com/api/java/jdo/identity/StringIdentity" class="icon img-class">StringIdentity</a></li>
+     <li class="doc-142"><a href="https://www.objectdb.com/api/java/jdo/identity/SingleFieldIdentity" class="icon img-class">SingleFieldIdentity</a></li>
+    </ul></li>
+   <li class="page-178"><a href="https://www.objectdb.com/api/java/jdo/misc" class="icon img-folder">Miscellaneous</a><input type="checkbox" id="sm66"><label for="sm66" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-63"><a href="https://www.objectdb.com/api/java/jdo/Constants" class="icon img-interface">Constants</a></li>
+     <li class="doc-135"><a href="https://www.objectdb.com/api/java/jdo/datastore/DataStoreCache" class="icon img-interface">DataStoreCache</a></li>
+     <li class="doc-79"><a href="https://www.objectdb.com/api/java/jdo/FetchGroup" class="icon img-interface">FetchGroup</a></li>
+     <li class="doc-78"><a href="https://www.objectdb.com/api/java/jdo/FetchPlan" class="icon img-interface">FetchPlan</a></li>
+     <li class="doc-77"><a href="https://www.objectdb.com/api/java/jdo/ObjectState" class="icon img-enum">ObjectState</a></li>
+     <li class="doc-134"><a href="https://www.objectdb.com/api/java/jdo/datastore/Sequence" class="icon img-interface">Sequence</a></li>
+    </ul></li>
+   <li class="page-175"><a href="https://www.objectdb.com/api/java/jdo/exceptions" class="icon img-folder">Exceptions</a><input type="checkbox" id="sm67"><label for="sm67" class="s-icon"></label><i class="l-icon"></i>
+    <ul>
+     <li class="doc-68"><a href="https://www.objectdb.com/api/java/jdo/JDOCanRetryException" class="icon img-class">JDOCanRetryException</a></li>
+     <li class="doc-76"><a href="https://www.objectdb.com/api/java/jdo/JDODataStoreException" class="icon img-class">JDODataStoreException</a></li>
+     <li class="doc-67"><a href="https://www.objectdb.com/api/java/jdo/JDODetachedFieldAccessException" class="icon img-class">JDODetachedFieldAccessException</a></li>
+     <li class="doc-62"><a href="https://www.objectdb.com/api/java/jdo/JDOException" class="icon img-class">JDOException</a></li>
+     <li class="doc-75"><a href="https://www.objectdb.com/api/java/jdo/JDOFatalDataStoreException" class="icon img-class">JDOFatalDataStoreException</a></li>
+     <li class="doc-87"><a href="https://www.objectdb.com/api/java/jdo/JDOFatalException" class="icon img-class">JDOFatalException</a></li>
+     <li class="doc-66"><a href="https://www.objectdb.com/api/java/jdo/JDOFatalInternalException" class="icon img-class">JDOFatalInternalException</a></li>
+     <li class="doc-64"><a href="https://www.objectdb.com/api/java/jdo/JDOFatalUserException" class="icon img-class">JDOFatalUserException</a></li>
+     <li class="doc-65"><a href="https://www.objectdb.com/api/java/jdo/JDONullIdentityException" class="icon img-class">JDONullIdentityException</a></li>
+     <li class="doc-81"><a href="https://www.objectdb.com/api/java/jdo/JDOObjectNotFoundException" class="icon img-class">JDOObjectNotFoundException</a></li>
+     <li class="doc-85"><a href="https://www.objectdb.com/api/java/jdo/JDOOptimisticVerificationException" class="icon img-class">JDOOptimisticVerificationException</a></li>
+     <li class="doc-70"><a href="https://www.objectdb.com/api/java/jdo/JDOReadOnlyException" class="icon img-class">JDOReadOnlyException</a></li>
+     <li class="doc-83"><a href="https://www.objectdb.com/api/java/jdo/JDOUnsupportedOptionException" class="icon img-class">JDOUnsupportedOptionException</a></li>
+     <li class="doc-71"><a href="https://www.objectdb.com/api/java/jdo/JDOUserCallbackException" class="icon img-class">JDOUserCallbackException</a></li>
+     <li class="doc-86"><a href="https://www.objectdb.com/api/java/jdo/JDOUserException" class="icon img-class">JDOUserException</a></li>
+    </ul></li>
+  </ul></li>
+ <li class="page-3"><a href="https://www.objectdb.com/database/support" class="icon img-folder">Support</a><input type="checkbox" id="sm68"><label for="sm68" class="s-icon"></label><i class="l-icon"></i>
+  <ul>
+   <li class="page-5"><a href="https://www.objectdb.com/database/faq" class="icon img-question">FAQ</a></li>
+   <li class="page-6"><a href="https://www.objectdb.com/forum" class="icon img-comments">Forum</a></li>
+   <li class="page-7"><a href="https://www.objectdb.com/issue" class="icon img-bug">Issue Tracking</a></li>
+   <li class="page-8"><a href="https://www.objectdb.com/ticket/new" class="icon img-helpdesk">Help Desk</a></li>
+   <li class="page-107"><a href="https://www.objectdb.com/database/training" class="icon img-teacher">Consulting and Training</a></li>
+  </ul></li>
+</ul></div>
+      <script>
+        var request = new XMLHttpRequest();
+        request.open('GET', '/get-menu/' + odb.menuTime + '/' + odb.user.role, true);
+        request.onload = function() {
+          if (request.status >= 200 && request.status < 400) {
+            document.querySelector('#menu').innerHTML = request.responseText;
+            if (typeof(updateMenuActiveItem) === typeof(Function))
+              updateMenuActiveItem();
+          }
+        };
+        request.send();
+      </script>      
+
+      <div id="body">
+        <div id="top" class="region region-top"><div class="block" id="breadcrumbs-block"><div id="breadcrumb"><a class="hidden-sm-down" href="https://www.objectdb.com/">Home</a> » <a href="https://www.objectdb.com/java/jpa">Manual</a> » <a href="https://www.objectdb.com/java/jpa/query">JPA Queries</a> » <a href="https://www.objectdb.com/java/jpa/query/jpql/expression">Query Expressions</a> » <span class="hidden-sm-down">JPQL Paths and Types</span></div><div id="editor-links" class="editor"><i class="icon img-eye"></i><a rel="nofollow, noindex" class="nofollow editor" data-toggle="tooltip" title="Edit" href="https://www.objectdb.com/java/jpa/query/jpql/path?op=edit"><i class="icon img-edit"></i></a><a rel="nofollow, noindex" class="nofollow super" data-toggle="tooltip" title="Delete" href="https://www.objectdb.com/java/jpa/query/jpql/path?op=delete"><i class="icon img-remove"></i></a><a rel="nofollow, noindex" class="nofollow super" href="https://www.objectdb.com/java/jpa/query/jpql/path?op=new" data-toggle="tooltip" title="New Child"><i class="icon img-plus"></i></a></div><hr class="clear"></div><div class="block" id="share-block"><a class="share share-twitter" target="_blank" href="https://twitter.com/share?url=https://www.objectdb.com/java/jpa/query/jpql/path&amp;text=Paths%20and%20Types%20in%20JPQL%20and%20Criteria%20API" title="Twitter"><i class="img img-twitter-share"></i></a><a class="share share-facebook" target="_blank" href="https://facebook.com/sharer/sharer.php?u=https://www.objectdb.com/java/jpa/query/jpql/path" title="Facebook"><i class="img img-facebook-share"></i></a><a class="share share-whatsapp" target="_blank" href="whatsapp://send?text=https://www.objectdb.com/java/jpa/query/jpql/path Paths and Types in JPQL and Criteria API" title="Whatsapp"><i class="img img-whatsapp-share"></i></a><a class="share share-email" target="_blank" href="mailto:?subject=Paths and Types in JPQL and Criteria API&amp;body=https://www.objectdb.com/java/jpa/query/jpql/path" title="Email"><i class="img img-email-share"></i></a></div><div class="block" id="versions-block"><a class="editor" href="#">4 versions...</a><div id="versions" class="editor"></div></div></div>
+        <div id="main" class="clear-block"><div class="hidden-md-down region region-left" id="sidebar-left"><div id="book-menu" class="menu-object-db -manual"><div id="book-header"><a href="https://www.objectdb.com/java/jpa">ObjectDB Manual</a></div><ul class="menu"><li class="page-223"><a href="https://www.objectdb.com/java/jpa/getting/started" class="icon img-1">Quick Tour</a></li><li class="page-110"><a href="https://www.objectdb.com/java/jpa/entity" class="icon img-2">Entity Classes</a></li><li class="page-122"><a href="https://www.objectdb.com/java/jpa/persistence" class="icon img-3">Using JPA</a></li><li class="page-131 active-trail"><a href="https://www.objectdb.com/java/jpa/query" class="icon img-4">JPA Queries</a><i class="l-icon"></i><ul><li class="page-132"><a href="https://www.objectdb.com/java/jpa/query/api" class="icon img-folder">Query API</a></li><li class="page-134"><a href="https://www.objectdb.com/java/jpa/query/jpql/structure" class="icon img-folder">Query Structure</a></li><li class="page-133 active-trail"><a href="https://www.objectdb.com/java/jpa/query/jpql/expression" class="icon img-folder">Query Expressions</a><i class="l-icon"></i><ul><li class="page-236"><a href="https://www.objectdb.com/java/jpa/query/jpql/literal" class="icon img-page">JPQL Literals</a></li><li class="page-237 active active-trail"><a class="active icon img-page" href="https://www.objectdb.com/java/jpa/query/jpql/path">JPQL Paths and Types</a></li><li class="page-239"><a href="https://www.objectdb.com/java/jpa/query/jpql/arithmetic" class="icon img-page">Numbers in JPQL</a></li><li class="page-243"><a href="https://www.objectdb.com/java/jpa/query/jpql/string" class="icon img-page">Strings in JPQL</a></li><li class="page-328"><a href="https://www.objectdb.com/java/jpa/query/jpql/date" class="icon img-page">Date and Time in JPQL</a></li><li class="page-244"><a href="https://www.objectdb.com/java/jpa/query/jpql/collection" class="icon img-page">Collections in JPQL</a></li><li class="page-238"><a href="https://www.objectdb.com/java/jpa/query/jpql/comparison" class="icon img-page">Comparison Operators</a></li><li class="page-242"><a href="https://www.objectdb.com/java/jpa/query/jpql/logical" class="icon img-page">Logical Operators</a></li></ul></li></ul></li><li class="page-138"><a href="https://www.objectdb.com/java/jpa/tool" class="icon img-5">Tools and Utilities</a></li><li class="page-139"><a href="https://www.objectdb.com/java/jpa/setting" class="icon img-6">Configuration</a></li></ul></div><div class="block" id="jpab-block"><h2>Which JPA is Faster?</h2><p>
+        <i class="icon img-jpab" style="width: 185px; height: 101px;"></i>
+</p>
+<p>
+	See a comparison of&nbsp;<a class="ext" href="http://www.jpab.org/Hibernate.html" target="_blank">Hibernate</a>, <a class="ext" href="http://www.jpab.org/EclipseLink.html" target="_blank">EclipseLink</a>, <a class="ext" href="http://www.jpab.org/OpenJPA.html" target="_blank">OpenJPA</a>, <a class="ext" href="http://www.jpab.org/DataNucleus.html" target="_blank">DataNucleus</a>, <a class="ext" href="http://www.jpab.org/MySQL.html" target="_blank">MySQL</a>, <a class="ext" href="http://www.jpab.org/PostgreSQL.html" target="_blank">PostgreSQL</a>, <a class="ext" href="http://www.jpab.org/Derby.html" target="_blank">Derby</a>, <a class="ext" href="http://www.jpab.org/HSQLDB.html" target="_blank">HSQLDB</a>, <a class="ext" href="http://www.jpab.org/DB4O.html" target="_blank">DB4O&nbsp;by Versant</a>, <a class="ext" href="http://www.jpab.org/H2.html" target="_blank">H2 Database</a>, <a class="ext" href="http://www.jpab.org/SQLite.html" target="_blank">SQLite</a> and <a class="ext" href="http://www.jpab.org/ObjectDB.html" target="_blank">ObjectDB</a>
+</p>
+<div id="jpab">
+	<p>
+		in the <a href="http://www.jpab.org/All/All/All.html" target="_blank" class="ext-link">JPA Benchmark</a>.
+	</p>
+</div>
+<p>
+	&nbsp;
+</p></div></div>
+          <div id="content" class="content">
+            <div id="content-header"><h1 class="title">Paths and Types in JPQL and Criteria API</h1></div>
+            <div id="content-area"><div class="node clear-after">
+<p> Instances of user defined persistable classes (entity classes, 
+mapped super classes and embeddable classes) are represented in JPQL by 
+the following types of&nbsp;expressions: </p> <ul> 
+ <li> <a href="https://www.objectdb.com/java/jpa/query/jpql/from">Variables</a> - FROM identification variables and SELECT result variables. </li> 
+ <li> <a href="https://www.objectdb.com/java/jpa/query/parameter">Parameters</a> - when instances of these classes are assigned as arguments. </li> 
+ <li> Path expressions that navigate from one object to another. </li> 
+</ul> <p> Instances of user defined persistable classes can participate in direct comparison using the <code>=</code> and <code>&lt;&gt;</code>
+ operators. But more often they are used in JPQL path expressions that 
+navigate to values of simple types (number, boolean, string, date). </p> <p> Simple type values are more useful in queries. They have special operators and functions (e.g. for <a href="https://www.objectdb.com/java/jpa/query/jpql/string">strings</a> and for <a href="https://www.objectdb.com/java/jpa/query/jpql/arithmetic">numbers</a>), they can be compared by all six <a href="https://www.objectdb.com/java/jpa/query/jpql/comparison">comparison operators</a>, and they can be used in <a href="https://www.objectdb.com/java/jpa/query/jpql/order">ordering</a>. </p> <div id="toc" class="toc"><h3>This page covers the following topics:</h3><div class="toc-list"><ul class="menu"><li class="img-arrow"><a href="#Navigation_through_Path_Expressions_">Navigation through Path Expressions</a></li><li class="img-arrow"><a href="#Navigation_through_a_NULL_value_">Navigation through a NULL value</a></li><li class="img-arrow"><a href="#Entity_Type_Expressions_">Entity Type Expressions</a></li><li class="img-arrow"><a href="#Criteria_Query_Paths_and_Types_">Criteria Query Paths and Types</a></li></ul></div></div> <h2 id="Navigation_through_Path_Expressions_"> Navigation through Path Expressions </h2> <p>
+ A path expression always starts with an instance of a user defined 
+class (represented by a variable, parameter or prefix path expression) 
+and uses the dot (<code>.</code>) operator to navigate through persistent fields to other objects and values. </p> <p> For example - <code>c.capital</code>, where c represents a Country entity object uses the <code>capital</code> persistent field in the <code>Country</code> class to navigate to the associated <code>Capital</code> entity object. </p> <p> Path expression whose type is a persistable user class can be extended further by reusing the dot (.) operator. For example, <code>c.capital.name</code>
+ is a nested path expression that continues from the Capital entity 
+object to its name field. A path expression can be extended further only
+ if its type is also a user defined persistable class. The dot (.) 
+operator cannot be applied to collections, maps and values of simple 
+types (number, boolean, string, date). </p> <p> For a path expression to
+ be valid the user defined persistable class must contain a persistent 
+field (or property) with a matching name. The path expression, however, 
+is valid even if the persistent field is declared as private (which is 
+usually the case). </p> <h2 id="Navigation_through_a_NULL_value_"> Navigation through a NULL value </h2> <div>
+  The following query retrieves country names with their capital city names: 
+</div> <div class="pre-wrapper"><pre class="prettyprint lang-sql prettyprinted" style="" lang="query"><span class="kwd">SELECT</span><span class="pln"> c</span><span class="pun">.</span><span class="pln">name</span><span class="pun">,</span><span class="pln"> c</span><span class="pun">.</span><span class="pln">capital</span><span class="pun">.</span><span class="pln">name </span><span class="kwd">FROM</span><span class="pln"> Country c</span></pre></div> <div>
+  The c identification variables is used for iteration over all the Country objects in the database. 
+</div> <div>
+  For a country with no capital city, such as Nauru, 
+ <code>c.capital</code> is evaluated to 
+ <code>NULL</code> and c.capital.name is an attempt to navigate from a 
+ <code>NULL</code> value. In Java, a 
+ <code>NullPointerException</code> is thrown on any attempt to access a 
+field or a method via a null reference. In JPQL, the current FROM 
+variable (or FROM tuple when there are multiple variables) is simply 
+skipped. It might be easier to understand exactly how this works by 
+considering the 
+ <a href="https://www.objectdb.com/java/jpa/query/jpql/from#INNER_JOIN_">equivalent JOIN</a> query. 
+</div> <h2 id="Entity_Type_Expressions_"> Entity Type Expressions </h2> <p> The TYPE operator (which is new in JPA 2) returns the type of a specified argument, similarly to <code>java.lang.Object</code>'s <code>getClass</code> method in Java. </p> <p> The following query returns the number of all the entity objects in the database, excluding Country entity objects: </p> <div class="pre-wrapper"><pre class="prettyprint lang-sql prettyprinted" style="" lang="query"><span class="kwd">SELECT</span><span class="pln"> COUNT</span><span class="pun">(</span><span class="pln">e</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">FROM</span><span class="pln"> Object e </span><span class="kwd">WHERE</span><span class="pln"> TYPE</span><span class="pun">(</span><span class="pln">e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&gt;</span><span class="pln"> Country</span></pre></div> <p> Binding an identification variable (<code>e</code>) to the Object class is an extension of ObjectDB that can be used to iterate over all the entity objects in the database. The <code>Country</code> literal represents the Country entity class. The TYPE operator returns the actual type of the iterated <code>e</code>. Only objects whose type is not Country are passed to the SELECT. The SELECT clause counts all these objects (this is an <a href="https://www.objectdb.com/java/jpa/query/jpql/group#Global_Aggregates_no_GROUP_BY">aggregate query with no GROUP BY</a> - all the objects are considered as one group, and COUNT calculates its size). </p> <h2 id="Criteria_Query_Paths_and_Types_"> Criteria Query Paths and Types </h2> <p> Paths and navigations are represented in the JPA Criteria API&nbsp;by the <code><a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="odb-tooltip code">Path<span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Path</b></span><span><b>JPA interface</b></span><span>Represents a simple or compound attribute path from a 
+ bound type or collection, and is a "primitive" expression.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a></code> interface and by its subinterfaces (<code><a href="https://www.objectdb.com/api/java/jpa/criteria/From" class="odb-tooltip code">From<span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.From</b></span><span><b>JPA interface</b></span><span>Represents a bound type, usually an entity that appears in
+ the from clause, but may also be an embeddable belonging to
+ an entity in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a></code>, <code><a href="https://www.objectdb.com/api/java/jpa/criteria/Root" class="odb-tooltip code">Root<span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Root</b></span><span><b>JPA interface</b></span><span>A root type in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a></code>, <code><a href="https://www.objectdb.com/api/java/jpa/criteria/Join" class="odb-tooltip code">Join<span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Join</b></span><span><b>JPA interface</b></span><span>A join to an entity, embeddable, or basic type.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a></code> and <code>Join</code>'s descendants). </p> <h3> Path Expressions </h3> <p> The <a href="https://www.objectdb.com/api/java/jpa/criteria/Root" class="odb-tooltip code"><code>Root</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Root</b></span><span><b>JPA interface</b></span><span>A root type in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a> and <a href="https://www.objectdb.com/api/java/jpa/criteria/Join" class="odb-tooltip code"><code>Join</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Join</b></span><span><b>JPA interface</b></span><span>A join to an entity, embeddable, or basic type.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a> interfaces (which are subinterfaces of <a href="https://www.objectdb.com/api/java/jpa/criteria/From" class="odb-tooltip code"><code>From</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.From</b></span><span><b>JPA interface</b></span><span>Represents a bound type, usually an entity that appears in
+ the from clause, but may also be an embeddable belonging to
+ an entity in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a>) represent <a href="https://www.objectdb.com/java/jpa/query/jpql/from#FROM_and_JOIN_in_Criteria_Queries_">FROM variables</a>.
+ &nbsp;FROM variable expressions are considered as basic paths and also 
+serve as starting point for building more complex paths through 
+navigation. </p> <p> Giving a <code>Path</code> instance, a child <code>Path</code>&nbsp;expression
+ (which represents navigation from the parent path through a persistent 
+field or property), can be constructed by the <code><a href="https://www.objectdb.com/api/java/jpa/criteria/Path/get_String" class="odb-tooltip code">get<span class="odb-tooltip nocode"><span><b>get(attributeName)</b></span><span><b>Path's method</b></span><span>Create a path corresponding to the referenced attribute.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a></code> method: </p> <div class="pre-wrapper"><pre class="prettyprint lang-java prettyprinted" style="" lang="java"><span class="pln">  </span><span class="com">// FROM Variable Paths:</span><span class="pln">
+  </span><a href="https://www.objectdb.com/api/java/jpa/criteria/Root" class="odb-tooltip code"><span class="typ">Root</span><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Root</b></span><span><b>JPA interface</b></span><span>A root type in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">&lt;</span><span class="typ">Country</span><span class="pun">&gt;</span><span class="pln"> country </span><span class="pun">=</span><span class="pln"> query</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/AbstractQuery/from_Class_" class="odb-tooltip code"><span class="pln">from</span><span class="odb-tooltip nocode"><span><b>from(entityClass)</b></span><span><b>AbstractQuery's method</b></span><span>Create and add a query root corresponding to the given entity,
+ forming a cartesian product with any existing roots.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="typ">Country</span><span class="pun">.</span><span class="kwd">class</span><span class="pun">);</span><span class="pln">
+  </span><a href="https://www.objectdb.com/api/java/jpa/criteria/Join" class="odb-tooltip code"><span class="typ">Join</span><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Join</b></span><span><b>JPA interface</b></span><span>A join to an entity, embeddable, or basic type.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">&lt;</span><span class="typ">Country</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Country</span><span class="pun">&gt;</span><span class="pln"> neighborCountry </span><span class="pun">=</span><span class="pln"> country</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/From/join_String" class="odb-tooltip code"><span class="pln">join</span><span class="odb-tooltip nocode"><span><b>join(attributeName)</b></span><span><b>From's method</b></span><span>Create an inner join to the specified attribute.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="str">"neighbors"</span><span class="pun">);</span><span class="pln">
+
+  </span><span class="com">// Navigation Paths:</span><span class="pln">
+  </span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="odb-tooltip code"><span class="typ">Path</span><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Path</b></span><span><b>JPA interface</b></span><span>Represents a simple or compound attribute path from a 
+ bound type or collection, and is a "primitive" expression.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">&lt;</span><span class="typ">String</span><span class="pun">&gt;</span><span class="pln"> countryName </span><span class="pun">=</span><span class="pln"> country</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path/get_String" class="odb-tooltip code"><span class="pln">get</span><span class="odb-tooltip nocode"><span><b>get(attributeName)</b></span><span><b>Path's method</b></span><span>Create a path corresponding to the referenced attribute.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="str">"name"</span><span class="pun">);</span><span class="pln">
+  </span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="odb-tooltip code"><span class="typ">Path</span><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Path</b></span><span><b>JPA interface</b></span><span>Represents a simple or compound attribute path from a 
+ bound type or collection, and is a "primitive" expression.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">&lt;</span><span class="typ">City</span><span class="pun">&gt;</span><span class="pln"> capital </span><span class="pun">=</span><span class="pln"> country</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path/get_String" class="odb-tooltip code"><span class="pln">get</span><span class="odb-tooltip nocode"><span><b>get(attributeName)</b></span><span><b>Path's method</b></span><span>Create a path corresponding to the referenced attribute.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="str">"capital"</span><span class="pun">);</span><span class="pln">
+  </span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="odb-tooltip code"><span class="typ">Path</span><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Path</b></span><span><b>JPA interface</b></span><span>Represents a simple or compound attribute path from a 
+ bound type or collection, and is a "primitive" expression.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">&lt;</span><span class="typ">String</span><span class="pun">&gt;</span><span class="pln"> captialName </span><span class="pun">=</span><span class="pln"> capital</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path/get_MapAttribute_" class="odb-tooltip code"><span class="pln">get</span><span class="odb-tooltip nocode"><span><b>get(map)</b></span><span><b>Path's method</b></span><span>Create a path corresponding to the referenced 
+  map-valued attribute.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="str">"name"</span><span class="pun">);</span></pre></div> <p> The path expressions in the above code can be divided into two main groups: </p> <ul> 
+ <li> <a href="https://www.objectdb.com/java/jpa/query/jpql/from#FROM_and_JOIN_in_Criteria_Queries_">FROM variable expressions</a>, represented by subinterfaces of <a href="https://www.objectdb.com/api/java/jpa/criteria/From" class="odb-tooltip code"><code>From</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.From</b></span><span><b>JPA interface</b></span><span>Represents a bound type, usually an entity that appears in
+ the from clause, but may also be an embeddable belonging to
+ an entity in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a> (<a href="https://www.objectdb.com/api/java/jpa/criteria/Root" class="odb-tooltip code"><code>Root</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Root</b></span><span><b>JPA interface</b></span><span>A root type in the from clause.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a>, <a href="https://www.objectdb.com/api/java/jpa/criteria/Join" class="odb-tooltip code"><code>Join</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Join</b></span><span><b>JPA interface</b></span><span>A join to an entity, embeddable, or basic type.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a>) -<br>
+ The creation of a FROM expression automatically modifies the query by 
+adding a variable to the FROM clause (representing iteration during 
+query execution). The constructed variable expression can also be used 
+explicitly in other query clauses. </li> 
+ <li> Navigation expressions, represented by the <a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="odb-tooltip code"><code>Path</code><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Path</b></span><span><b>JPA interface</b></span><span>Represents a simple or compound attribute path from a 
+ bound type or collection, and is a "primitive" expression.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a> interface -<br>
+ The creation of a navigation path expression doesn't affect the built 
+query directly. The constructed expression must be integrated into query
+ clauses explicitly to have effect. </li> 
+</ul> <h3> Type Expressions </h3> <p> Entity type expressions can be constructed by the <code><a href="https://www.objectdb.com/api/java/jpa/criteria/Path" class="odb-tooltip code">Path<span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Path</b></span><span><b>JPA interface</b></span><span>Represents a simple or compound attribute path from a 
+ bound type or collection, and is a "primitive" expression.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a></code>'s <a href="https://www.objectdb.com/api/java/jpa/criteria/Path/type" class="odb-tooltip code"><code>type</code><span class="odb-tooltip nocode"><span><b>type()</b></span><span><b>Path's method</b></span><span>Create an expression corresponding to the type of the path.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a> method. For example, the following criteria expression checks if the type of a specified entity <code>e</code> is not&nbsp;<code>Country</code>. </p> <div class="pre-wrapper"><pre class="prettyprint lang-java prettyprinted" style="" lang="java"><a href="https://www.objectdb.com/api/java/jpa/criteria/Predicate" class="odb-tooltip code"><span class="pln">  </span><span class="typ">Predicate</span><span class="odb-tooltip nocode"><span><b>javax.persistence.criteria.Predicate</b></span><span><b>JPA interface</b></span><span>The type of a simple or compound predicate: a conjunction or
+ disjunction of restrictions.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pln"> p </span><span class="pun">=</span><span class="pln"> cb</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder/notEqual_Expression__Expression_" class="odb-tooltip code"><span class="pln">notEqual</span><span class="odb-tooltip nocode"><span><b>notEqual(x, y)</b></span><span><b>CriteriaBuilder's method</b></span><span>Create a predicate for testing the arguments for inequality.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="pln">e</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/Path/type" class="odb-tooltip code"><span class="pln">type</span><span class="odb-tooltip nocode"><span><b>type()</b></span><span><b>Path's method</b></span><span>Create an expression corresponding to the type of the path.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(),</span><span class="pln"> cb</span><span class="pun">.</span><a href="https://www.objectdb.com/api/java/jpa/criteria/CriteriaBuilder/literal_T" class="odb-tooltip code"><span class="pln">literal</span><span class="odb-tooltip nocode"><span><b>literal(value)</b></span><span><b>CriteriaBuilder's method</b></span><span>Create an expression for a literal.</span><span class="read-more">See JavaDoc Reference Page...</span></span></a><span class="pun">(</span><span class="typ">Country</span><span class="pun">.</span><span class="kwd">class</span><span class="pun">));</span></pre></div> <p> In the above example, the comparison is between the type of the <code>e </code>object (which may represent any path including a root or a join) and the entity type&nbsp;<code>Country (</code>a criteria literal). </p></div></div>
+            <div id="content-bottom" class="region region-content"><div class="block" id="book-links-block"><div class="book-links clear-after"><a class="page-previous" href="https://www.objectdb.com/java/jpa/query/jpql/literal" title="Go to previous page">&lt; JPQL Literals</a><a class="page-up" href="https://www.objectdb.com/java/jpa/query/jpql/expression" title="Go to parent page">^ Query Expressions</a><a class="page-next" href="https://www.objectdb.com/java/jpa/query/jpql/arithmetic" title="Go to next page">Numbers in JPQL &gt;</a></div></div><div class="block hidden-sm-down" id="related-tags-block"><h2>Related Tags</h2><span class="tag tag1"><a href="https://www.objectdb.com/object/database/Criteria+API">Criteria&nbsp;API</a></span><span class="tag tag1"><a href="https://www.objectdb.com/object/database/JPQL">JPQL</a></span><span class="tag tag1"><a href="https://www.objectdb.com/object/database/dot">dot</a></span><span class="tag tag5"><a href="https://www.objectdb.com/object/database/expression">expression</a></span><span class="tag tag1"><a href="https://www.objectdb.com/object/database/join">join</a></span><span class="tag tag3"><a href="https://www.objectdb.com/object/database/navigation">navigation</a></span><span class="tag tag2"><a href="https://www.objectdb.com/object/database/null">null</a></span><span class="tag tag3"><a href="https://www.objectdb.com/object/database/object">object</a></span><span class="tag tag4"><a href="https://www.objectdb.com/object/database/path">path</a></span><span class="tag tag1"><a href="https://www.objectdb.com/object/database/query">query</a></span><span class="tag tag4"><a href="https://www.objectdb.com/object/database/type">type</a></span></div></div>
+          </div>
+        </div>
+        <div id="bottom" class="region region-bottom"><div class="block" id="manual-disclaimer-block"><hr>
+<p>
+This documentation explains how to use JPA in the context of the ObjectDB Object Database&nbsp;but mostly relevant
+also for ORM JPA implementations, such as&nbsp;Hibernate (and HQL), EclipseLink, TopLink, OpenJPA and DataNucleus.
+ObjectDB is not an ORM JPA implementation but an Object Database (ODBMS) for Java with built in JPA 2 support.
+</p></div></div>
+        <div id="page-log" class="super"></div>
+        <div id="footer" class="region region-footer img-footer"><div class="block" id="copyright-block"><div id="footer-message">
+    Copyright © 2010-2018 ObjectDB Software -
+  All rights reserved - <div id="terms"><a href="https://www.objectdb.com/terms">Terms of Use</a></div>
+    <br>
+</div>
+</div></div>
+      </div>
+
+    </div>
+    <div id="closure"><script src="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/jquery.js"></script><script>window.jQuery || document.write('<scr' + 'ipt src=\'/f/1543536101055/lib/jquery-1.12.0/jquery.min.js\'></scr' + 'ipt>');</script><script src="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/bootstrap.js"></script><script>window.jQuery.fn.modal || document.write('<scr' + 'ipt src=\'/f/1543536101055/lib/bootstrap-3.3.7/js/bootstrap.min.js\'></scr' + 'ipt>');</script><script src="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/_Basic3993411595.js"></script><div class="block" id="clicky-block"><script src="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/js" type="text/javascript"></script>
+<script>
+  var clicky_custom = clicky_custom || {};
+  clicky_custom.timer = 500;
+  clicky_custom.timeout = 10;
+  clicky_custom.cookies_disable = 1;
+  clicky_custom.queue_disable = 1;
+  clicky_custom.sticky_data_disable = 1;
+  clicky_custom.outbound_disable = 0;
+  clicky_custom.video_disable = 1;
+  clicky_custom.history_disable = 1;
+  clicky_custom.ping_disable = 0;
+  clicky_custom.pageview_disable = 0;
+  clicky_custom.osa_disable = 1;
+  clicky_custom.heatmap_disable = 1;
+  try{ clicky.init(66369915); } catch(e) {}
+</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/66369915ns.gif"></p></noscript>
+</div></div>
+  
+  
+
+
+<script>odb.refreshPath = '/java/jpa/query/jpql/expression';</script><script type="text/javascript" async="" src="Path%20Navigation%20and%20Types%20in%20JPA%20JPQL_Criteria%20Queries_files/in.php"></script></body></html>

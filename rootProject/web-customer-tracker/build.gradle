@@ -1,0 +1,12 @@
+dependencies{
+    compile fileTree(dir: '../../hibernate-release-5.2.0.Final/lib/required/', include: ['*.jar'])
+    compile fileTree(dir: '../../hibernate-release-5.2.0.Final/lib/optional/c3p0/', include: ['*.jar'])
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+    compile group: 'org.glassfish.web', name: 'javax.servlet.jsp.jstl', version: '1.2.1'
+    compile group: 'javax.servlet.jsp.jstl', name: 'javax.servlet.jsp.jstl-api', version: '1.2.1'
+    //hibernate validator
+    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    compile group: 'org.hibernate', name: 'hibernate-validator-cdi', version: '6.0.0.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator-annotation-processor', version: '6.0.0.Final'
+
+}

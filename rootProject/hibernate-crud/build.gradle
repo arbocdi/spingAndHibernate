@@ -1,0 +1,4 @@
+dependencies{
+    compile fileTree(dir: '../../hibernate-release-5.2.0.Final/lib/required/', include: ['*.jar'])
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+}

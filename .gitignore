@@ -1,0 +1,13 @@
+build/
+target/
+download/
+.gradle/
+.nb-gradle/
+private/
+.nb-gradle-properties
+.settings/
+examples/
+private/
+gradle/
+Spring in Action, 4th Edition.pdf
+Spring Recipes.pdf

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html class="client-js ve-not-available" dir="ltr" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Java Persistence/JPQL - Wikibooks, open books for an open world</title>
+<script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Java_Persistence/JPQL","wgTitle":"Java Persistence/JPQL","wgCurRevisionId":3328918,"wgRevisionId":3328918,"wgArticleId":282393,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Book:Java Persistence","Book:Java Persistence/Runtime"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Java_Persistence/JPQL","wgRelevantArticleId":282393,"wgRequestId":"XA6JaApAIC8AABkPjFgAAABX","wgCSPNonce":false,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgFlaggedRevsParams":{"tags":{"value":{"levels":3,"quality":2,"pristine":3}}},"wgStableRevisionId":3328918,"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgWikiEditorEnabledModules":[],"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en","usePageImages":false,"usePageDescriptions":true},"wgMFExpandAllSectionsUserOption":true,"wgMFEnableFontChanger":true,"wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":false},"wgWMESchemaEditAttemptStepOversample":false,"wgULSCurrentAutonym":"English","wgNoticeProject":"wikibooks","wgCentralNoticeCookiesToDelete":[],"wgCentralNoticeCategoriesUsingLegacy":["Fundraising","fundraising"],"wgScoreNoteLanguages":{"arabic":"العربية","catalan":"català","deutsch":"Deutsch","english":"English","espanol":"español","italiano":"italiano","nederlands":"Nederlands","norsk":"norsk","portugues":"português","suomi":"suomi","svenska":"svenska","vlaams":"West-Vlams"},"wgScoreDefaultNoteLanguage":"nederlands","wgCentralAuthMobileDomain":false,"wgCodeMirrorEnabled":true,"wgVisualEditorToolbarScrollOffset":0,"wgVisualEditorUnsupportedEditParams":["undo","undoafter","veswitched"],"wgEditSubmitButtonLabelPublish":true});mw.loader.state({"ext.globalCssJs.user.styles":"ready","ext.globalCssJs.site.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","ext.globalCssJs.site":"ready","user":"ready","user.options":"ready","user.tokens":"loading","ext.pygments":"ready","mediawiki.legacy.shared":"ready","mediawiki.legacy.commonPrint":"ready","mediawiki.toc.styles":"ready","wikibase.client.init":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","ext.wikimediaBadges":"ready","ext.3d.styles":"ready","ext.flaggedRevs.basic":"ready","mediawiki.skinning.interface":"ready","skins.vector.styles":"ready"});mw.loader.implement("user.tokens@0tffind",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+});RLPAGEMODULES=["site","mediawiki.page.startup","mediawiki.user","mediawiki.page.ready","mediawiki.toc","mediawiki.searchSuggest","ext.gadget.wikidialog","ext.gadget.commons-file","ext.centralauth.centralautologin","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging.subscriber","ext.wikimediaEvents","ext.navigationTiming","ext.uls.eventlogger","ext.uls.init","ext.uls.compactlinks","ext.uls.interface","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.flaggedRevs.advanced","skins.vector.js"];mw.loader.load(RLPAGEMODULES);});</script>
+<link rel="stylesheet" href="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/load_002.css">
+<script async="" src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/load.php"></script>
+<style>
+.mw-editfont-monospace{font-family:monospace,monospace}.mw-editfont-sans-serif{font-family:sans-serif}.mw-editfont-serif{font-family:serif} .mw-editfont-monospace,.mw-editfont-sans-serif,.mw-editfont-serif{font-size:13px; }.mw-editfont-monospace.oo-ui-textInputWidget,.mw-editfont-sans-serif.oo-ui-textInputWidget,.mw-editfont-serif.oo-ui-textInputWidget{font-size:inherit}.mw-editfont-monospace > .oo-ui-inputWidget-input,.mw-editfont-sans-serif > .oo-ui-inputWidget-input,.mw-editfont-serif > .oo-ui-inputWidget-input{font-size:13px}
+.mw-ui-button{background-color:#f8f9fa;color:#222222;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;min-width:4em;max-width:28.75em;margin:0;padding:0.546875em 1em;border:1px solid #a2a9b1;border-radius:2px;font-family:inherit;font-size:1em;font-weight:bold;line-height:1.286;text-align:center;-webkit-appearance:none;*display:inline; zoom:1;vertical-align:middle;cursor:pointer}.mw-ui-button:visited{color:#222222}.mw-ui-button:hover{background-color:#ffffff;color:#444444;border-color:#a2a9b1}.mw-ui-button:focus{background-color:#ffffff;color:#222222;border-color:#3366cc;box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff;outline-width:0}.mw-ui-button:focus::-moz-focus-inner{border-color:transparent;padding:0}.mw-ui-button:active,.mw-ui-button.is-on{background-color:#c8ccd1;color:#000000;border-color:#72777d;box-shadow:none}.mw-ui-button:disabled,.mw-ui-button.mw-ui-quiet.mw-ui-progressive,.mw-ui-button.mw-ui-quiet.mw-ui-destructive{background-color:#c8ccd1;color:#ffffff;border-color:#c8ccd1;cursor:default}.mw-ui-button:disabled:hover,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:hover,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:hover,.mw-ui-button:disabled:active,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:active,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:active{background-color:#c8ccd1;color:#ffffff;box-shadow:none;border-color:#c8ccd1}.mw-ui-button:not(:disabled){-webkit-transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms;-moz-transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms;transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms}.mw-ui-button.mw-ui-quiet{background-color:transparent;color:#222222;border-color:transparent}.mw-ui-button.mw-ui-quiet:hover{background-color:transparent;color:#444444;border-color:transparent;box-shadow:none}.mw-ui-button.mw-ui-quiet:active{background-color:transparent;color:#000000;border-color:transparent}.mw-ui-button.mw-ui-quiet:focus{background-color:transparent;color:#222222;border-color:transparent;box-shadow:none}.mw-ui-button.mw-ui-quiet:disabled{background-color:transparent;color:#c8ccd1;border-color:transparent}.mw-ui-button.mw-ui-progressive{background-color:#3366cc;color:#fff;border:1px solid #3366cc}.mw-ui-button.mw-ui-progressive:hover{background-color:#447ff5;border-color:#447ff5}.mw-ui-button.mw-ui-progressive:focus{box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-progressive:active,.mw-ui-button.mw-ui-progressive.is-on{background-color:#2a4b8d;border-color:#2a4b8d;box-shadow:none}.mw-ui-button.mw-ui-progressive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-progressive:disabled:hover,.mw-ui-button.mw-ui-progressive:disabled:active{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1;box-shadow:none}.mw-ui-button.mw-ui-progressive.mw-ui-quiet{color:#3366cc}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:hover{background-color:transparent;color:#447ff5}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:active{color:#2a4b8d}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:focus{background-color:transparent;color:#3366cc}.mw-ui-button.mw-ui-destructive{background-color:#dd3333;color:#fff;border:1px solid #dd3333}.mw-ui-button.mw-ui-destructive:hover{background-color:#ff4242;border-color:#ff4242}.mw-ui-button.mw-ui-destructive:focus{box-shadow:inset 0 0 0 1px #dd3333,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-destructive:active,.mw-ui-button.mw-ui-destructive.is-on{background-color:#b32424;border-color:#b32424;box-shadow:none}.mw-ui-button.mw-ui-destructive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-destructive:disabled:hover,.mw-ui-button.mw-ui-destructive:disabled:active{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1;box-shadow:none}.mw-ui-button.mw-ui-destructive.mw-ui-quiet{color:#dd3333}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:hover{background-color:transparent;color:#ff4242}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:active{color:#b32424}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:focus{background-color:transparent;color:#dd3333}.mw-ui-button.mw-ui-big{font-size:1.3em}.mw-ui-button.mw-ui-block{display:block;width:100%;margin-left:auto;margin-right:auto}input.mw-ui-button::-moz-focus-inner,button.mw-ui-button::-moz-focus-inner{margin-top:-1px;margin-bottom:-1px}a.mw-ui-button{text-decoration:none}a.mw-ui-button:hover,a.mw-ui-button:focus{text-decoration:none}.mw-ui-button-group > *{min-width:48px;border-radius:0;float:left}.mw-ui-button-group > *:first-child{border-top-left-radius:2px;border-bottom-left-radius:2px}.mw-ui-button-group > *:not(:first-child){border-left:0}.mw-ui-button-group > *:last-child{border-top-right-radius:2px;border-bottom-right-radius:2px}.mw-ui-button-group .is-on .button{cursor:default}
+.suggestions{overflow:hidden;position:absolute;top:0;left:0;width:0;border:0;z-index:1099;padding:0;margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:#fff;cursor:pointer;border:1px solid #a2a9b1;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:#fff;cursor:pointer;border:1px solid #a2a9b1;padding:0;margin:0}.suggestions-result{color:#000;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left; overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.suggestions-result-current{background-color:#2a4b8d;color:#fff}.suggestions-special .special-label{color:#72777d;text-align:left}.suggestions-special .special-query{color:#000;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:#c8ccd1}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:#fff}.highlight{font-weight:bold}
+@media screen {
+	.tochidden,.toctoggle{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.toctoggle{font-size:94%}}
+@media print {
+	.toc.tochidden,.toctoggle{display:none}}
+@-webkit-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-webkit-transform:translateY(-20px)}100%{opacity:1;-webkit-transform:translateY(0)}}@-moz-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-moz-transform:translateY(-20px)}100%{opacity:1;-moz-transform:translateY(0)}}@-o-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-o-transform:translateY(-20px)}100%{opacity:1;-o-transform:translateY(0)}}@keyframes centralAuthPPersonalAnimation{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}.centralAuthPPersonalAnimation{-webkit-animation-duration:1s;-moz-animation-duration:1s;-o-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;-o-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-name:centralAuthPPersonalAnimation;-moz-animation-name:centralAuthPPersonalAnimation;-o-animation-name:centralAuthPPersonalAnimation;animation-name:centralAuthPPersonalAnimation}
+@media print{#centralNotice{display:none}}.cn-closeButton{display:inline-block;zoom:1;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAElBMVEUAAAAQEBDPz88AAABAQEDv7+9oe1vvAAAABnRSTlMA3rLe3rJS22KzAAAARElEQVQI12PAAUIUQCSTK5BwFgIxFU1AhKECUFAYKAAioXwwBeZChMGCEGGQIFQYJohgIhQgtCEMQ7ECYTHCOciOxA4AADgJTXIb9s8AAAAASUVORK5CYII=) no-repeat;background:url(/w/extensions/CentralNotice/resources/subscribing/close.png?8e3d8) no-repeat!ie;width:20px;height:20px;text-indent:20px;white-space:nowrap;overflow:hidden}
+.uls-menu{border-radius:2px; font-size:medium}.uls-search,.uls-language-settings-close-block{border-top-right-radius:2px;border-top-left-radius:2px}.uls-language-list{border-bottom-right-radius:2px;border-bottom-left-radius:2px}.uls-menu.callout:before,.uls-menu.callout:after{border-top:10px solid transparent;border-bottom:10px solid transparent;display:inline-block; top:17px;position:absolute;content:''}.uls-menu.callout.selector-right:before{ border-left:10px solid #c8ccd1; right:-11px}.uls-menu.callout.selector-right:after{ border-left:10px solid #fff; right:-10px}.uls-menu.callout.selector-left:before{ border-right:10px solid #c8ccd1; left:-11px}.uls-menu.callout.selector-left:after{ border-right:10px solid #fff; left:-10px}.uls-ui-languages button{margin:5px 15px 5px 0;white-space:nowrap;overflow:hidden}.uls-search-wrapper-wrapper{position:relative;padding-left:40px;margin-top:5px;margin-bottom:5px}.uls-icon-back{background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.png?90e9b) no-repeat scroll center center;background-image:-webkit-linear-gradient(transparent,transparent),url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.svg?e226b);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22%3E %3Cpath fill=%22%2354595d%22 d=%22M7 13.1l8.9 8.9c.8-.8.8-2 0-2.8l-6.1-6.1 6-6.1c.8-.8.8-2 0-2.8L7 13.1z%22/%3E %3C/svg%3E");background-size:28px;background-position:center center;height:32px;width:40px;display:block;position:absolute;left:0;border-right:1px solid #c8ccd1;opacity:0.8}.uls-icon-back:hover{opacity:1;cursor:pointer}.uls-menu .uls-no-results-view .uls-no-found-more{background-color:#fff}.uls-menu .uls-no-results-view h3{padding:0 28px;margin:0;color:#54595d;font-size:1em;font-weight:normal}  .skin-vector .uls-menu{border-color:#c8ccd1;-webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,0.25);box-shadow:0 2px 2px 0 rgba(0,0,0,0.25);font-size:0.875em}.skin-vector .uls-search{border-bottom-color:#c8ccd1}.skin-vector .uls-filtersuggestion{color:#72777d}.skin-vector .uls-lcd-region-title{color:#54595d}</style><style>
+.suggestions a.mw-searchSuggest-link,.suggestions a.mw-searchSuggest-link:hover,.suggestions a.mw-searchSuggest-link:active,.suggestions a.mw-searchSuggest-link:focus{color:#000;text-decoration:none}.suggestions-result-current a.mw-searchSuggest-link,.suggestions-result-current a.mw-searchSuggest-link:hover,.suggestions-result-current a.mw-searchSuggest-link:active,.suggestions-result-current a.mw-searchSuggest-link:focus{color:#fff}.suggestions a.mw-searchSuggest-link .special-query{ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ve-init-mw-tempWikitextEditorWidget{border:0;padding:0;color:inherit;line-height:1.5em;width:100%; }.ve-init-mw-tempWikitextEditorWidget:focus{outline:0;padding:0}.ve-init-mw-tempWikitextEditorWidget::selection{background:rgba(109,169,247,0.5); }
+#p-lang .body ul .uls-trigger,#p-lang .pBody ul .uls-trigger{background-image:none;padding:0} .mw-interlanguage-selector,.mw-interlanguage-selector:active{cursor:pointer;padding:4px 6px 4px 25px;font-size:13px;font-weight:normal;background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/compact-links-trigger.png?b0c8e);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2218%22 height=%2218%22 viewBox=%220 0 24 24%22%3E %3Cpath fill=%22%2372777d%22 d=%22M13 19l.8-3h5.3l.9 3h2.2L18 6h-3l-4.2 13H13zm3.5-11l2 6h-4l2-6zM5 4l.938 1.906H1V8h1.594C3.194 9.8 4 11.206 5 12.406c-1.1.7-4.313 1.781-4.313 1.781L2 16s3.487-1.387 4.688-2.188c1 .7 2.319 1.188 3.719 1.688l.594-2c-1-.3-1.988-.688-2.688-1.188 1.1-1.1 1.9-2.506 2.5-4.406h2.188l.5-2H7.938L7 4H5zm-.188 4h3.781c-.4 1.3-.906 2-1.906 3-1.1-1-1.475-1.7-1.875-3z%22/%3E %3C/svg%3E");background-size:18px;background-repeat:no-repeat;background-position:left 4px center;margin:4px 0;text-align:left}.mw-interlanguage-selector:active,.mw-interlanguage-selector.selector-open{background-color:#c8ccd1;color:#54595d}.interlanguage-uls-menu:before,.interlanguage-uls-menu:after{border-top:10px solid transparent;border-bottom:10px solid transparent;display:inline-block; top:17px;position:absolute;content:''}.interlanguage-uls-menu.selector-right:before{ border-left:10px solid #c8ccd1; right:-11px}.interlanguage-uls-menu.selector-right:after{ border-left:10px solid #fff; right:-10px}.interlanguage-uls-menu.selector-left:before{ border-right:10px solid #c8ccd1; left:-11px}.interlanguage-uls-menu.selector-left:after{ border-right:10px solid #fff; left:-10px}
+#uls-settings-block{background-color:#f8f9fa;border-top:1px solid #c8ccd1;padding-left:10px;line-height:1.2em;border-radius:0 0 2px 2px}#uls-settings-block > button{background:left top transparent no-repeat;background-size:20px auto;color:#54595d;display:inline-block;margin:8px 15px;border:0;padding:0 0 0 26px;font-size:medium;cursor:pointer}#uls-settings-block > button:hover{color:#222}#uls-settings-block > button.display-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/display.png?d25f1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E %3Cpath fill=%22%23222%22 d=%22M.002 2.275V15.22h8.405c.535 1.624-.975 1.786-1.902 2.505 0 0 2.293-.024 3.439-.024 1.144 0 3.432.024 3.432.024-.905-.688-2.355-.868-1.902-2.505h8.527V2.275h-20zm6.81 1.84h.797l3.313 8.466H9.879L8.836 9.943H5.462l-1.043 2.638h-.982zm.368 1.104c-.084.369-.211.785-.368 1.227L5.83 9.023h2.699l-.982-2.577c-.128-.33-.234-.747-.368-1.227zm7.117.982c.753 0 1.295.157 1.656.491.365.334.552.858.552 1.595v4.294h-.675l-.184-.859h-.062c-.315.396-.605.655-.92.798-.311.138-.758.184-1.227.184-.626 0-1.115-.168-1.472-.491-.353-.323-.491-.754-.491-1.35 0-1.275 1.028-1.963 3.068-2.025h1.043v-.429c0-.495-.091-.87-.307-1.104-.211-.238-.574-.307-1.043-.307-.526 0-1.115.107-1.779.429l-.307-.675a4.748 4.748 0 0 1 1.043-.429 4.334 4.334 0 0 1 1.104-.123zm.307 3.313c-.761.027-1.318.157-1.656.368-.334.207-.491.54-.491.982 0 .346.1.617.307.798.211.181.544.245.92.245.595 0 1.012-.164 1.35-.491.342-.326.552-.762.552-1.35v-.552z%22/%3E %3C/svg%3E")}#uls-settings-block > button.input-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/input.png?aea9e);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E %3Cpath fill=%22%23222%22 d=%22M9 1.281c-.124.259-.185.599-.5.688-.55.081-1.133.018-1.688 0-.866-.032-1.733-.148-2.594 0-.588.157-.953.727-1.188 1.25-.178.416-.271.836-.344 1.281H-.002V16h20V4.5H3.654c.109-.52.203-1.057.563-1.469.222-.231.587-.17.875-.188 1.212.003 2.415.179 3.625.063.463-.058.812-.455.969-.875l.188-.438-.875-.313zM1.875 7.125h1.563c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188H1.875c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H4.719c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H7.563a.201.201 0 0 1-.188-.188V7.313c0-.094.093-.188.188-.188zm2.813 0h1.563c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188h-1.563c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H13.22c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.531c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188h-1.531a.201.201 0 0 1-.188-.188V7.313c0-.094.093-.188.188-.188zm-12.844 3h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156H3.22c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zm2.906 0h1.563c.094 0 .188.093.188.188v1.563c0 .094-.093.156-.188.156H6.126c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zm2.938 0h1.531c.094 0 .188.093.188.188v1.563c0 .094-.093.156-.188.156H9.064c-.094 0-.188-.062-.188-.156v-1.563c0-.094.093-.188.188-.188zm2.906 0h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156H11.97c-.094 0-.188-.062-.188-.156v-1.563c0-.094.093-.188.188-.188zm2.906 0h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156h-1.563c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zM4.001 13.688h12c.088 0 .156.068.156.156v.844a.154.154 0 0 1-.156.156h-12a.154.154 0 0 1-.156-.156v-.844c0-.088.068-.156.156-.156z%22/%3E %3C/svg%3E")}</style><style>
+.ve-activated .ve-init-mw-desktopArticleTarget-editableContent #toc,.ve-activated #siteNotice,.ve-activated .mw-indicators,.ve-activated #t-print,.ve-activated #t-permalink,.ve-activated #p-coll-print_export,.ve-activated #t-cite,.ve-deactivating .ve-ui-surface,.ve-active .ve-init-mw-desktopArticleTarget-editableContent,.ve-active .ve-init-mw-tempWikitextEditorWidget{display:none} .ve-activating .ve-ui-surface{height:0;padding:0 !important; overflow:hidden} .ve-loading #content > :not(.ve-init-mw-desktopArticleTarget-loading-overlay), .ve-activated .ve-init-mw-desktopArticleTarget-uneditableContent{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;opacity:0.5}.ve-activated #catlinks{cursor:pointer}.ve-activated #catlinks a{opacity:1} .ve-activated #content{position:relative} .ve-init-mw-desktopArticleTarget-loading-overlay{position:absolute;top:1.25em;left:0;right:0;z-index:1;margin-top:-0.5em}.ve-init-mw-desktopArticleTarget-progress{height:1em;overflow:hidden;margin:0 25%}.ve-init-mw-desktopArticleTarget-progress-bar{height:1em;width:0}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{transition:height 250ms ease;height:0; } .oo-ui-element-hidden{display:none !important; } .mw-editsection{white-space:nowrap; unicode-bidi:-moz-isolate;unicode-bidi:-webkit-isolate;unicode-bidi:isolate}.mw-editsection-divider{color:#54595d} .ve-init-mw-desktopArticleTarget-progress{height:0.75em;border:1px solid #36c;background:#fff;border-radius:2px;box-shadow:0 0.1em 0 0 rgba(0,0,0,0.15)}.ve-init-mw-desktopArticleTarget-progress-bar{height:0.75em;background:#36c}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{border-bottom:1px solid #c8ccd1;box-shadow:0 1px 1px 0 rgba(0,0,0,0.1)}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open{height:40px} .ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{font-size:0.875em; margin:-1.14em -1.14em 1.14em -1.14em; }@media screen and (min-width:982px){.ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{ margin:-1.43em -1.71em 1.43em -1.71em}}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/load.css">
+<meta name="generator" content="MediaWiki 1.33.0-wmf.6">
+<meta name="referrer" content="origin">
+<meta name="referrer" content="origin-when-crossorigin">
+<meta name="referrer" content="origin-when-cross-origin">
+<link rel="alternate" type="application/x-wiki" title="Edit" href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit">
+<link rel="edit" title="Edit" href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit">
+<link rel="shortcut icon" href="https://en.wikibooks.org/static/favicon/wikibooks.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://en.wikibooks.org/w/opensearch_desc.php" title="Wikibooks (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://en.wikibooks.org/w/api.php?action=rsd">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/">
+<link rel="alternate" type="application/atom+xml" title="Wikibooks Atom feed" href="https://en.wikibooks.org/w/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="canonical" href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL">
+<link rel="dns-prefetch" href="https://login.wikimedia.org/">
+<link rel="dns-prefetch" href="https://meta.wikimedia.org/">
+<!--[if lt IE 9]><script src="/w/load.php?debug=false&amp;lang=en&amp;modules=html5shiv&amp;only=scripts&amp;skin=vector&amp;sync=1"></script><![endif]-->
+<script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_007.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_008.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_014.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_004.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_013.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_010.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_012.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_011.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_003.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_006.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_002.php"></script><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_009.php"></script><link rel="stylesheet" href="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index.css"><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_005.php"></script></head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject mw-editable page-Java_Persistence_JPQL rootpage-Java_Persistence skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+			<div id="siteNotice" class="mw-body-content"><div id="centralNotice"></div><!-- CentralNotice --></div><div class="mw-indicators mw-body-content">
+</div>
+<h1 id="firstHeading" class="firstHeading" lang="en">Java Persistence/JPQL</h1>			<div id="bodyContent" class="mw-body-content">
+				<div id="siteSub" class="noprint">From Wikibooks, open books for an open world</div>				<div id="contentSub"><span class="subpages">&lt; <a href="https://en.wikibooks.org/wiki/Java_Persistence" title="Java Persistence">Java Persistence</a></span></div>
+				<div id="jump-to-nav"></div>				<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+				<a class="mw-jump-link" href="#p-search">Jump to search</a>
+				<div id="mw-content-text" dir="ltr" class="mw-content-ltr" lang="en"><div class="mw-parser-output"><div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" dir="ltr" lang="en"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#JPQL"><span class="tocnumber">1</span> <span class="toctext">JPQL</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Select_Queries"><span class="tocnumber">1.1</span> <span class="toctext">Select Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-3"><a href="#Select_query_examples"><span class="tocnumber">1.1.1</span> <span class="toctext"><i>Select query examples</i></span></a></li>
+<li class="toclevel-3 tocsection-4"><a href="#SELECT_Clause"><span class="tocnumber">1.1.2</span> <span class="toctext">SELECT Clause</span></a>
+<ul>
+<li class="toclevel-4 tocsection-5"><a href="#Aggregation_functions"><span class="tocnumber">1.1.2.1</span> <span class="toctext">Aggregation functions</span></a></li>
+<li class="toclevel-4 tocsection-6"><a href="#Constructors"><span class="tocnumber">1.1.2.2</span> <span class="toctext">Constructors</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-7"><a href="#FROM_Clause"><span class="tocnumber">1.1.3</span> <span class="toctext">FROM Clause</span></a>
+<ul>
+<li class="toclevel-4 tocsection-8"><a href="#JOIN"><span class="tocnumber">1.1.3.1</span> <span class="toctext">JOIN</span></a></li>
+<li class="toclevel-4 tocsection-9"><a href="#JOIN_FETCH"><span class="tocnumber">1.1.3.2</span> <span class="toctext">JOIN FETCH</span></a></li>
+<li class="toclevel-4 tocsection-10"><a href="#LEFT_JOIN"><span class="tocnumber">1.1.3.3</span> <span class="toctext">LEFT JOIN</span></a></li>
+<li class="toclevel-4 tocsection-11"><a href="#ON_(JPA_2.1)"><span class="tocnumber">1.1.3.4</span> <span class="toctext">ON (JPA 2.1)</span></a></li>
+<li class="toclevel-4 tocsection-12"><a href="#Sub-selects_in_FROM_clause"><span class="tocnumber">1.1.3.5</span> <span class="toctext">Sub-selects in FROM clause</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-13"><a href="#ORDER_BY_clause"><span class="tocnumber">1.1.4</span> <span class="toctext">ORDER BY clause</span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="#GROUP_BY_Clause"><span class="tocnumber">1.1.5</span> <span class="toctext">GROUP BY Clause</span></a></li>
+<li class="toclevel-3 tocsection-15"><a href="#HAVING_Clause"><span class="tocnumber">1.1.6</span> <span class="toctext">HAVING Clause</span></a></li>
+<li class="toclevel-3 tocsection-16"><a href="#UNION"><span class="tocnumber">1.1.7</span> <span class="toctext">UNION</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-17"><a href="#WHERE_Clause"><span class="tocnumber">1.2</span> <span class="toctext">WHERE Clause</span></a>
+<ul>
+<li class="toclevel-3 tocsection-18"><a href="#Comparison_operations"><span class="tocnumber">1.2.1</span> <span class="toctext">Comparison operations</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-19"><a href="#Update_Queries"><span class="tocnumber">1.3</span> <span class="toctext">Update Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-20"><a href="#Update_query_example"><span class="tocnumber">1.3.1</span> <span class="toctext">Update query example</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-21"><a href="#Delete_Queries"><span class="tocnumber">1.4</span> <span class="toctext">Delete Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-22"><a href="#Delete_query_example"><span class="tocnumber">1.4.1</span> <span class="toctext">Delete query example</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-23"><a href="#Parameters"><span class="tocnumber">1.5</span> <span class="toctext">Parameters</span></a>
+<ul>
+<li class="toclevel-3 tocsection-24"><a href="#Named_parameter_query_example"><span class="tocnumber">1.5.1</span> <span class="toctext"><i>Named parameter query example</i></span></a></li>
+<li class="toclevel-3 tocsection-25"><a href="#Positional_parameter_query_example"><span class="tocnumber">1.5.2</span> <span class="toctext"><i>Positional parameter query example</i></span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-26"><a href="#Literals"><span class="tocnumber">1.6</span> <span class="toctext">Literals</span></a></li>
+<li class="toclevel-2 tocsection-27"><a href="#Functions"><span class="tocnumber">1.7</span> <span class="toctext">Functions</span></a>
+<ul>
+<li class="toclevel-3 tocsection-28"><a href="#JPQL_supported_functions"><span class="tocnumber">1.7.1</span> <span class="toctext">JPQL supported functions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-29"><a href="#Special_Operators"><span class="tocnumber">1.8</span> <span class="toctext">Special Operators</span></a>
+<ul>
+<li class="toclevel-3 tocsection-30"><a href="#JPQL_special_operators"><span class="tocnumber">1.8.1</span> <span class="toctext">JPQL special operators</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h1><span class="mw-headline" id="JPQL">JPQL</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=1" title="Edit section: JPQL">edit</a><span class="mw-editsection-bracket">]</span></span></h1>
+<p>The Java Persistence Query Language (JPQL) is the query language 
+defined by JPA.  JPQL is similar to SQL, but operates on objects, 
+attributes and relationships instead of tables and columns.  JPQL can be
+ used for reading (<tt>SELECT</tt>), as well as bulk updates (<tt>UPDATE</tt>) and deletes (<tt>DELETE</tt>).  JPQL can be used in a <tt>NamedQuery</tt> (through annotations or XML) or in dynamic queries using the <tt>EntityManager</tt> <tt>createQuery()</tt> API.
+</p><p>For the JPQL BNF see <a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL_BNF" title="Java Persistence/JPQL BNF">BNF</a>.
+</p>
+<h2><span class="mw-headline" id="Select_Queries">Select Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=2" title="Edit section: Select Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Select queries can be used to read objects from the database.  Select
+ queries can return a single object or data element, a list of objects 
+or data elements, or an object array of multiple objects and data.
+</p>
+<h5><span class="mw-headline" id="Select_query_examples"><i>Select query examples</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=3" title="Edit section: Select query examples">edit</a><span class="mw-editsection-bracket">]</span></span></h5>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="c1">// Query for a List of objects.</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e FROM Employee e WHERE e.salary &gt; 100000"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+
+<span class="c1">// Query for a single object.</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e FROM Employee e WHERE e.id = :id"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"id"</span><span class="o">,</span> <span class="n">id</span><span class="o">);</span>
+<span class="n">Employee</span> <span class="n">result2</span> <span class="o">=</span> <span class="o">(</span><span class="n">Employee</span><span class="o">)</span><span class="n">query</span><span class="o">.</span><span class="na">getSingleResult</span><span class="o">();</span>
+
+<span class="c1">// Query for a single data element.</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select MAX(e.salary) FROM Employee e"</span><span class="o">);</span>
+<span class="n">BigDecimal</span> <span class="n">result3</span> <span class="o">=</span> <span class="o">(</span><span class="n">BigDecimal</span><span class="o">)</span><span class="n">query</span><span class="o">.</span><span class="na">getSingleResult</span><span class="o">();</span>
+
+<span class="c1">// Query for a List of data elements.</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e.firstName FROM Employee e"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">result4</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+
+<span class="c1">// Query for a List of element arrays.</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e.firstName, e.lastName FROM Employee e"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">[]&gt;</span> <span class="n">result5</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></div>
+<h3><span class="mw-headline" id="SELECT_Clause">SELECT Clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=4" title="Edit section: SELECT Clause">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The SELECT clause can contain object expressions, attribute 
+expressions, functions, sub-selects, constructors and aggregation 
+functions.
+</p>
+<h4><span class="mw-headline" id="Aggregation_functions">Aggregation functions</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=5" title="Edit section: Aggregation functions">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Aggregation functions can include summary information on a set of 
+objects.  These include MIN, MAX, AVG, SUM, COUNT.  These functions can 
+be used to return a single result, or can be used with a GROUP BY to 
+return multiple results.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span>
+</pre></div>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="k">MAX</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span>
+</pre></div>
+<h4><span class="mw-headline" id="Constructors">Constructors</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=6" title="Edit section: Constructors">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The NEW operator can be used with the fully qualified class name to 
+return data objects from a JPQL query.  These will not be managed 
+objects, and the class must define a constructor that matches the 
+arguments of the constructor and their types.  Constructor queries can 
+be used to select partial data or reporting data on objects, and get 
+back a class instance instead of an object array.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="k">NEW</span> <span class="n">com</span><span class="p">.</span><span class="n">acme</span><span class="p">.</span><span class="n">reports</span><span class="p">.</span><span class="n">EmpReport</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span>
+</pre></div>
+<h3><span class="mw-headline" id="FROM_Clause">FROM Clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=7" title="Edit section: FROM Clause">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The FROM clause defines what is being queried.  A typical FROM clause
+ will contain the entity name being queried and assign it an alias.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span>
+</pre></div>
+<p>JPQL allows for multiple root level objects to be queried.  Caution 
+should be used when doing this, as it can result in Cartesian products 
+of the two table.  The WHERE clause should ensure the two objects are 
+joined in some way.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span><span class="p">,</span> <span class="n">a</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span><span class="p">,</span> <span class="n">MailingAddress</span> <span class="n">a</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">address</span>
+</pre></div>
+<p>The entity name used in JPQL comes from the name attribute of the 
+@Entity annotation or XML.  It defaults to the simple entity class name.
+  Some JPA providers also allow for the full class name.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - allow for the fully qualified class name of the entity to be used.</dd></dl>
+<h4><span class="mw-headline" id="JOIN">JOIN</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=8" title="Edit section: JOIN">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>A JOIN clause can also be used in the FROM clause.  The JOIN clause 
+allows any of the object's relationships to be joined into the query so 
+they can be used in the WHERE clause.  JOIN does not mean the 
+relationships will be fetched, unless the FETCH option is included.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="n">a</span> <span class="k">WHERE</span> <span class="n">a</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="p">:</span><span class="n">city</span>
+</pre></div>
+<p>JOIN can be used with OneToOne, ManyToOne, OneToMany, ManyToMany and 
+ElementCollection mappings.  When used with a collection relationship 
+you can join the same relationship multiple times to query multiple 
+independent values.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p2</span> <span class="k">WHERE</span> <span class="n">p</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">:</span><span class="n">p1</span> <span class="k">and</span> <span class="n">p2</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">:</span><span class="n">p2</span>
+</pre></div>
+<h4><span class="mw-headline" id="JOIN_FETCH">JOIN FETCH</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=9" title="Edit section: JOIN FETCH">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The FETCH option can be used on a JOIN to fetch the related objects 
+in a single query.  This avoids additional queries for each of the 
+object's relationships, and ensures that the relationships have been 
+fetched if they were LAZY.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="k">FETCH</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span>
+</pre></div>
+<p>JOIN FETCH does not allow an alias in the JPA spec, but some JPA providers may allow it.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - allow an alias.</dd></dl>
+<h4><span class="mw-headline" id="LEFT_JOIN">LEFT JOIN</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=10" title="Edit section: LEFT JOIN">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>By default all joins in JPQL are INNER joins.  This means that 
+results that do not have the relationship will be filtered from the 
+query results.  To avoid this, a join can be defined as an OUTER join 
+using the LEFT options.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="n">a</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">a</span><span class="p">.</span><span class="n">city</span>
+</pre></div>
+<h4><span id="ON_.28JPA_2.1.29"></span><span class="mw-headline" id="ON_(JPA_2.1)">ON (JPA 2.1)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=11" title="Edit section: ON (JPA 2.1)">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The join condition used for a join comes from the mapping's join 
+columns.  This means that the JPQL user is normally free from having to 
+know how every relationship is joined.  In some cases it is desirable to
+ append additional conditions to the join condition, normally in the 
+case of outer joins.  This can be done through the ON clause.  The ON 
+clause is defined in the JPA 2.1 specifiation, and may be supported by 
+some JPA providers.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/Hibernate" title="Java Persistence/Hibernate">Hibernate</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - support the ON clause.</dd></dl>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="n">a</span> <span class="k">ON</span> <span class="n">a</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="p">:</span><span class="n">city</span>
+</pre></div>
+<h4><span class="mw-headline" id="Sub-selects_in_FROM_clause">Sub-selects in FROM clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=12" title="Edit section: Sub-selects in FROM clause">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>JPA does not support sub-selects in the FROM clause.  Some JPA providers may support this.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - support sub-selects in the FROM clause.</dd></dl>
+<pre>query.append(" select pg.regPatron, pso.nombreComercial as nombre from DitPatronGeneral pg ");
+       query.append(" join pg.ditPatronSujetoObligado pso");
+       query.append(" join pso.ditPersonaMoral pm ");
+       query.append(" where pg.regPatron in :1   ");
+       query.append(" union ");
+       query.append(
+               " select concat(:dp.nomNombre , :dp.nomPrimerApellido , :dp.nomSegundoApellido) as nombre from DitPatronGeneral pg");
+       query.append(" join pg.ditPatronSujetoObligado pso ");
+       query.append(" join pso.ditPersonaFisica pf ");
+       query.append(" join pf.ditPersona dp ");
+       query.append(" where pg.regPatron in :2 ");
+</pre>
+<pre>       List&lt;String&gt; map = new ArrayList&lt;String&gt;();
+       
+       Query queryRegistroPatronal = em.createQuery(query.toString());
+       queryRegistroPatronal.setParameter("1", regPatronalLista);
+       queryRegistroPatronal.setParameter("2", regPatronalLista);
+</pre>
+<h3><span class="mw-headline" id="ORDER_BY_clause">ORDER BY clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=13" title="Edit section: ORDER BY clause">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>ORDER BY allows the ordering of the results to be specified.  
+Multiple values can be ordered, either ascending (ASC) or descending 
+(DESC).
+The JPA 1.0 and 2.0 BNFs restrict the usage of functions and sub-selects
+ in the ORDER BY, but the JPA 2.1 draft removes most of these.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - allows functions, sub-selects, NULLS FIRST/LAST, object expressions, and other operations in the ORDER BY clause.</dd></dl>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">e</span><span class="p">.</span><span class="n">lastName</span> <span class="k">ASC</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">firstName</span><span class="p">,</span> <span class="k">ASC</span>
+</pre></div>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">UPPER</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+<h3><span class="mw-headline" id="GROUP_BY_Clause">GROUP BY Clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=14" title="Edit section: GROUP BY Clause">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>GROUP BY allows for summary information to be computed on a set of 
+objects.  GROUP BY is normally used in conjunction with aggregation 
+functions.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="k">AVG</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">),</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span>
+</pre></div>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="k">AVG</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">),</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">AVG</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span>
+</pre></div>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span><span class="p">,</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">e</span>
+</pre></div>
+<h3><span class="mw-headline" id="HAVING_Clause">HAVING Clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=15" title="Edit section: HAVING Clause">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The HAVING clause allows for the results of a GROUP BY to be filtered.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="k">AVG</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">),</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="k">HAVING</span> <span class="k">AVG</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100000</span>
+</pre></div>
+<h3><span class="mw-headline" id="UNION">UNION</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=16" title="Edit section: UNION">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>JPA does not support the SQL UNION, INTERSECT and EXCEPT operations.  Some JPA providers may support these.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - support UNION, INTERSECT, and EXCEPT.</dd></dl>
+<h2><span class="mw-headline" id="WHERE_Clause">WHERE Clause</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=17" title="Edit section: WHERE Clause">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The WHERE clause is normally the main part of the query as it defines
+ the conditions that filter what is returned.  The WHERE clause can use 
+any comparison operation, logical operation, functions, attributes, 
+objects, and sub-selects.  The comparison operations include =, &lt;, 
+&gt;, &lt;=, &gt;=, &lt;&gt;, LIKE, BETWEEN, IS NULL, and IN.  NOT can 
+also be used with any comparison operation (NOT LIKE, NOT BETWEEN, IS 
+NOT NULL, NOT IN).  The logical operations include AND, OR, and NOT.
+</p>
+<h3><span class="mw-headline" id="Comparison_operations">Comparison operations</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=18" title="Edit section: Comparison operations">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<table cellspacing="0" cellpadding="0" border="1">
+
+<tbody><tr style="background:#ffdead">
+<th>Operation</th>
+<th>Description</th>
+<th>Example
+</th></tr>
+<tr>
+<td>=
+</td>
+<td>equal
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="s1">'Bob'</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>&lt;
+</td>
+<td>less than
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">&lt;</span> <span class="mi">100000</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>&gt;
+</td>
+<td>greater than
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">&gt;</span> <span class="p">:</span><span class="n">sal</span>
+</pre></div>
+</td></tr>
+
+<tr>
+<td>&lt;=
+</td>
+<td>less than or equal
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">&lt;=</span> <span class="mi">100000</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>&gt;=
+</td>
+<td>greater than or equal
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">&gt;=</span> <span class="p">:</span><span class="n">sal</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>LIKE
+</td>
+<td>evaluates if the two string match, '%' and '_' are valid wildcards, and ESCAPE character is optional
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">LIKE</span> <span class="s1">'A%'</span> <span class="k">OR</span> <span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">NOT</span> <span class="k">LIKE</span> <span class="s1">'%._%'</span> <span class="k">ESCAPE</span> <span class="s1">'.'</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>BETWEEN
+</td>
+<td>evaluates if the value is between the two values
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">BETWEEN</span> <span class="s1">'A'</span> <span class="k">AND</span> <span class="s1">'C'</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>IS NULL
+</td>
+<td>compares the value to null, databases may not allow or have unexpected results when using = with null
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">endDate</span> <span class="k">IS</span> <span class="k">NULL</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>IN
+</td>
+<td>evaluates if the value is contained in the list
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'Bob'</span><span class="p">,</span> <span class="s1">'Fred'</span><span class="p">,</span> <span class="s1">'Joe'</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+</tbody></table>
+<p>The IN operation allows for a list of values or parameters, a single list parameter, or a sub-select.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">IN</span> <span class="p">(:</span><span class="n">name1</span><span class="p">,</span> <span class="p">:</span><span class="n">name2</span><span class="p">,</span> <span class="p">:</span><span class="n">name3</span><span class="p">)</span>
+<span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">IN</span> <span class="p">(:</span><span class="n">name1</span><span class="p">)</span>
+<span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">IN</span> <span class="p">:</span><span class="k">names</span>
+<span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="k">IN</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">e2</span><span class="p">.</span><span class="n">firstName</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e2</span> <span class="k">WHERE</span> <span class="n">e2</span><span class="p">.</span><span class="n">lastName</span> <span class="o">=</span> <span class="s1">'Smith'</span><span class="p">)</span>
+</pre></div>
+<p>A sub-select can be used with any operation provided it returns a 
+single value, or if the ALL or ANY options are used.  ALL indicates the 
+operation must be true for all elements returned by the sub-select, ANY 
+indicates the operation must be true for any of the elements returned by
+ the sub-select.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">e2</span><span class="p">.</span><span class="n">firstName</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e2</span> <span class="k">WHERE</span> <span class="n">e2</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="p">:</span><span class="n">id</span><span class="p">)</span>
+<span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">e2</span><span class="p">.</span><span class="n">salary</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e2</span> <span class="k">WHERE</span> <span class="n">e2</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="p">:</span><span class="n">id</span><span class="p">)</span>
+<span class="n">e</span><span class="p">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="k">ANY</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">e2</span><span class="p">.</span><span class="n">firstName</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e2</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span> <span class="o">&lt;&gt;</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">&lt;=</span> <span class="k">ALL</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">e2</span><span class="p">.</span><span class="n">salary</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e2</span><span class="p">)</span>
+</pre></div>
+<h2><span class="mw-headline" id="Update_Queries">Update Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=19" title="Edit section: Update Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>You can perform bulk update of entities with the <tt>UPDATE</tt> 
+statement. This statement operates on a single entity type and sets one 
+or more single-valued properties of the entity subject to the condition 
+in the <tt>WHERE</tt> clause. Update queries provide an equivalent to the <tt>SQL UPDATE</tt> statement, but with JPQL conditional expressions.
+</p><p>Update queries do not allow joins, but do support sub-selects.  
+OneToOne and ManyToOne relationships can be traversed in the WHERE 
+clause.  Collection relationships can still be queried through using an 
+EXISTS in the WHERE clause with a sub-select. Update queries can only 
+update attributes of the object or its embeddables, its relationships 
+cannot be updated.  Complex update queries are dependent on the 
+database's update support, and may make use of temp tables on some 
+databases.
+</p><p>Update queries should only be used for bulk updates, regular 
+updates to objects should be made by using the object's set methods 
+within a transaction and committing the changes.
+</p><p>Update queries return the number of modified rows on the database (row count).
+</p><p>This example demonstrates how to use an update query to give employees a raise. The <tt>WHERE</tt> clause contains the conditional expression.
+</p>
+<h4><span class="mw-headline" id="Update_query_example">Update query example</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=20" title="Edit section: Update query example">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"UPDATE Employee e SET e.salary = 60000 WHERE e.salary = 50000"</span><span class="o">);</span>
+<span class="kt">int</span> <span class="n">rowCount</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
+</pre></div>
+<p>The persistence context is not updated to reflect results of update 
+operations. If you use a transaction-scoped persistence context, you 
+should either execute the bulk operation in a transaction all by itself,
+ or be the first operation in the transaction. That is because any 
+entity actively managed by the persistence context will remain unaware 
+of the actual changes occurring at the database level.
+</p><p>The objects in the shared cache that match the update query will 
+be invalidated to ensure subsequent persistence contexts see the updated
+ data.
+</p>
+<h2><span class="mw-headline" id="Delete_Queries">Delete Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=21" title="Edit section: Delete Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>You can perform bulk removal of entities with the <tt>DELETE</tt> statement. Delete queries provide an equivalent to the <tt>SQL DELETE</tt> statement, but with JPQL conditional expressions.
+</p><p>Delete queries do not allow joins, but do support sub-selects.  
+OneToOne and ManyToOne relationships can be traversed in the WHERE 
+clause.  Collection relationships can still be queried through using an 
+EXISTS in the WHERE clause with a sub-select.  Complex delete queries 
+are dependent on the database's delete support, and may make use of temp
+ tables on some databases.
+</p><p>Delete queries should only be used for bulk deletes, regular deletes to objects should be performed through calling the <tt>EntityManager</tt> <tt>remove()</tt> API.
+</p><p>Delete queries return the number of deleted rows on the database (row count).
+</p><p>This example demonstrates how to use a delete query to remove all employees who are not assigned to a department. The <tt>WHERE</tt> clause contains the conditional expression.
+</p>
+<h4><span class="mw-headline" id="Delete_query_example">Delete query example</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=22" title="Edit section: Delete query example">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"DELETE FROM Employee e WHERE e.department IS NULL"</span><span class="o">);</span>
+<span class="kt">int</span> <span class="n">rowCount</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
+</pre></div>
+<p>Delete queries are polymorphic: any entity subclass instances that 
+meet the criteria of the delete query will be deleted. However, delete 
+queries do not honor cascade rules: no entities other than the type 
+referenced in the query and its subclasses will be removed, even if the 
+entity has relationships to other entities with cascade removes enabled.
+ Delete queries will delete the rows from join and collection tables.
+</p><p>The persistence context may not be updated to reflect results of 
+delete operations. If you use a transaction-scoped persistence context, 
+you should either execute the bulk operation in a transaction all by 
+itself, or be the first operation in the transaction. That is because 
+any entity actively managed by the persistence context will remain 
+unaware of the actual changes occurring at the database level.
+</p>
+<h2><span class="mw-headline" id="Parameters">Parameters</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=23" title="Edit section: Parameters">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>JPA defines named parameters, and positional parameters. Named parameters can be specified in JPQL using the syntax <tt>:&lt;name&gt;</tt>.
+Positional parameters can be specified in JPQL using the syntax <tt>?</tt> or <tt>?&lt;position&gt;</tt>.  Positional parameters start at position <tt>1</tt> not <tt>0</tt>.
+</p>
+<h5><span class="mw-headline" id="Named_parameter_query_example"><i>Named parameter query example</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=24" title="Edit section: Named parameter query example">edit</a><span class="mw-editsection-bracket">]</span></span></h5>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"SELECT e FROM Employee e WHERE e.firstName = :first and e.lastName = :last"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"first"</span><span class="o">,</span> <span class="s">"Bob"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"last"</span><span class="o">,</span> <span class="s">"Smith"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></div>
+<h5><span class="mw-headline" id="Positional_parameter_query_example"><i>Positional parameter query example</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=25" title="Edit section: Positional parameter query example">edit</a><span class="mw-editsection-bracket">]</span></span></h5>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"SELECT e FROM Employee e WHERE e.firstName = ? and e.lastName = ?"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Bob"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"Smith"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></div>
+<h2><span class="mw-headline" id="Literals">Literals</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=26" title="Edit section: Literals">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Literal values can be in-lined in JPQL for standard Java types.  In 
+general it is normally better to use parameters instead of in-lining 
+values. In-lined arguments will prevent the JPQL from benefiting from 
+the EclipseLink's JPQL parser cache, and can potentially make the 
+application vulnerable to JPQL injections attacks.
+</p><p>Each Java types defines its own in-lining syntax:
+</p>
+<ul><li><code>String - '&lt;string&gt;'</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'Bob'</span>
+</pre></div>
+<ul><li>To define a <b>'</b> (quote) character in a string, the quote is double quoted, i.e. <code>'Baie-D''Urfé'</code>.</li></ul></li>
+<li><code>Integer - +|-&lt;digits&gt;</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1234</span>
+</pre></div></li>
+<li><code>Long - +|-&lt;digits&gt;L</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1234</span><span class="n">L</span>
+</pre></div></li>
+<li><code>Float - +|-&lt;digits&gt;.&lt;decimale&gt;&lt;exponent&gt;F</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">s</span> <span class="k">FROM</span> <span class="n">Stat</span> <span class="n">s</span> <span class="k">WHERE</span> <span class="n">s</span><span class="p">.</span><span class="n">ratio</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">.</span><span class="mi">14</span><span class="n">F</span>
+</pre></div></li>
+<li><code>Double - +|-&lt;digits&gt;.&lt;decimale&gt;&lt;exponent&gt;D</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">s</span> <span class="k">FROM</span> <span class="n">Stat</span> <span class="n">s</span> <span class="k">WHERE</span> <span class="n">s</span><span class="p">.</span><span class="n">ratio</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">.</span><span class="mi">14</span><span class="n">e32D</span>
+</pre></div></li>
+<li><code>Boolean - TRUE | FALSE</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">active</span> <span class="o">=</span> <span class="k">TRUE</span>
+</pre></div></li>
+<li><code>Date - {d'yyyy-mm-dd'}</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">startDate</span> <span class="o">=</span> <span class="err">{</span><span class="n">d</span><span class="s1">'2012-01-03'</span><span class="err">}</span>
+</pre></div></li>
+<li><code>Time - {t'hh:mm:ss'}</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">startTime</span> <span class="o">=</span> <span class="err">{</span><span class="n">t</span><span class="s1">'09:00:00'</span><span class="err">}</span>
+</pre></div></li>
+<li><code>Timestamp - {ts'yyyy-mm-dd hh:mm:ss.nnnnnnnnn'}</code> - <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="k">version</span> <span class="o">=</span> <span class="err">{</span><span class="n">ts</span><span class="s1">'2012-01-03 09:00:00.000000001'</span><span class="err">}</span>
+</pre></div></li>
+<li><code>Enum - package.class.enum</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">gender</span> <span class="o">=</span> <span class="n">org</span><span class="p">.</span><span class="n">acme</span><span class="p">.</span><span class="n">Gender</span><span class="p">.</span><span class="n">MALE</span>
+</pre></div></li>
+<li><code>null - NULL</code> <div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">UPDATE</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">SET</span> <span class="n">e</span><span class="p">.</span><span class="n">manager</span> <span class="o">=</span> <span class="k">NULL</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">manager</span> <span class="o">=</span> <span class="p">:</span><span class="n">manager</span>
+</pre></div></li></ul>
+<h2><span class="mw-headline" id="Functions">Functions</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=27" title="Edit section: Functions">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>JPQL supports several database functions.  These functions are 
+database independent in name and syntax, but require database support.  
+If the database supports an equivalent function or different syntax the 
+standard JPQL function is supported, if the database does not provide 
+any way to perform the function, then it is not supported.  For 
+mathematical functions (+, -, /, *) BEDMAS rules apply.  Some JPA 
+provider may support additional functions.
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - also support CAST, EXTRACT, and REGEXP.</dd></dl>
+<h3><span class="mw-headline" id="JPQL_supported_functions">JPQL supported functions</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=28" title="Edit section: JPQL supported functions">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<table cellspacing="0" cellpadding="0" border="1">
+
+<tbody><tr style="background:#ffdead">
+<th>Function</th>
+<th>Description</th>
+<th>Example
+</th></tr>
+<tr>
+<td>-
+</td>
+<td>subtraction
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">-</span> <span class="mi">1000</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>+
+</td>
+<td>addition
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">+</span> <span class="mi">1000</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>*
+</td>
+<td>multiplication
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>/
+</td>
+<td>division
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>ABS
+</td>
+<td>absolute value
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">ABS</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">-</span> <span class="n">e</span><span class="p">.</span><span class="n">manager</span><span class="p">.</span><span class="n">salary</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>CASE
+</td>
+<td>defines a case statement
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">CASE</span> <span class="n">e</span><span class="p">.</span><span class="n">status</span> <span class="k">WHEN</span> <span class="mi">0</span> <span class="k">THEN</span> <span class="s1">'active'</span> <span class="k">WHEN</span> <span class="mi">1</span> <span class="k">THEN</span> <span class="s1">'consultant'</span> <span class="k">ELSE</span> <span class="s1">'unknown'</span> <span class="k">END</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>COALESCE
+</td>
+<td>evaluates to the first non null argument value
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">COALESCE</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>CONCAT
+</td>
+<td>concatenates two or more string values
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">CONCAT</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">firstName</span><span class="p">,</span> <span class="s1">' '</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>CURRENT_DATE
+</td>
+<td>the current date on the database
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">CURRENT_DATE</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>CURRENT_TIME
+</td>
+<td>the current time on the database
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">CURRENT_TIME</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>CURRENT_TIMESTAMP
+</td>
+<td>the current date-time on the database
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">CURRENT_TIMESTAMP</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>LENGTH
+</td>
+<td>the character/byte length of the character or binary value
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">LENGTH</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>LOCATE
+</td>
+<td>the index of the string within the string, optionally starting at a start index
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">LOCATE</span><span class="p">(</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>LOWER
+</td>
+<td>convert the string value to lower case
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">LOWER</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>MOD
+</td>
+<td>computes the remainder of dividing the first integer by the second
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">MOD</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">hoursWorked</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>NULLIF
+</td>
+<td>returns null if the first argument to equal to the second argument, otherwise returns the first argument
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">NULLIF</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">salary</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>SQRT
+</td>
+<td>computes the square root of the number
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">SQRT</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="k">result</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>SUBSTRING
+</td>
+<td>the substring from the string, starting at the index, optionally with the substring size
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>TRIM
+</td>
+<td>trims leading, trailing, or both spaces or optional trim character from the string
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">TRIM</span><span class="p">(</span><span class="k">TRAILING</span> <span class="k">FROM</span> <span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">),</span> <span class="k">TRIM</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">),</span> <span class="k">TRIM</span><span class="p">(</span><span class="k">LEADING</span> <span class="s1">'-'</span> <span class="k">FROM</span> <span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>UPPER
+</td>
+<td>convert the string value to upper case
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">UPPER</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">lastName</span><span class="p">)</span>
+</pre></div>
+</td></tr></tbody></table>
+<h2><span class="mw-headline" id="Special_Operators">Special Operators</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=29" title="Edit section: Special Operators">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>JPQL defines several special operators that are not database 
+functions, but have special meaning in JPQL.  These include INDEX, KEY, 
+SIZE, IS EMPTY, TYPE, FUNCTION and TREAT.  
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: <a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> - also support FUNCTION, TREAT, FUNC, OPERATOR, SQL, COLUMN, and TABLE.</dd></dl>
+<h3><span class="mw-headline" id="JPQL_special_operators">JPQL special operators</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit&amp;section=30" title="Edit section: JPQL special operators">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<table cellspacing="0" cellpadding="0" border="1">
+
+<tbody><tr style="background:#ffdead">
+<th>Function</th>
+<th>Description</th>
+<th>Example
+</th></tr>
+<tr>
+<td>INDEX
+</td>
+<td>the index of the ordered List element, only supported with @OrderColumn
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">toDo</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">toDoList</span> <span class="n">toDo</span> <span class="k">WHERE</span> <span class="k">INDEX</span><span class="p">(</span><span class="n">toDo</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>KEY
+</td>
+<td>the key of the Map element
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">p</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">priorities</span> <span class="n">p</span> <span class="k">WHERE</span> <span class="k">KEY</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="s1">'high'</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>SIZE
+</td>
+<td>the size of the collection relationships, this evaluates to a sub-select
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="k">SIZE</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">managedEmployees</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>IS EMPTY, IS NOT EMPTY
+</td>
+<td>evaluates to true if the collection relationship is empty, this evaluates to a sub-select
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">managedEmployees</span> <span class="k">IS</span> <span class="n">EMPTY</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>MEMBER OF, NOT MEMBER OF
+</td>
+<td>evaluates to true if the collection relationship contains the value, this evaluates to a sub-select
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="s1">'write code'</span> <span class="n">MEMBER</span> <span class="k">OF</span> <span class="n">e</span><span class="p">.</span><span class="n">responsibilities</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>TYPE
+</td>
+<td>the inheritance discriminator value
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">p</span> <span class="k">FROM</span> <span class="n">Project</span> <span class="n">p</span> <span class="k">WHERE</span> <span class="k">TYPE</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="n">LargeProject</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>TREAT
+</td>
+<td>treat (cast) the object as its subclass value (JPA 2.1 draft)
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="k">JOIN</span> <span class="k">TREAT</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="k">as</span> <span class="n">LargeProject</span><span class="p">)</span> <span class="n">p</span> <span class="k">WHERE</span> <span class="n">p</span><span class="p">.</span><span class="n">budget</span> <span class="o">&gt;</span> <span class="mi">1000000</span>
+</pre></div>
+</td></tr>
+<tr>
+<td>FUNCTION
+</td>
+<td>call a database function (JPA 2.1 draft)
+</td>
+<td><div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">p</span> <span class="k">FROM</span> <span class="n">Phone</span> <span class="n">p</span> <span class="k">WHERE</span> <span class="k">FUNCTION</span><span class="p">(</span><span class="s1">'TO_NUMBER'</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">areaCode</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">613</span>
+</pre></div>
+</td></tr></tbody></table>
+
+<!-- 
+NewPP limit report
+Parsed by mw1264
+Cached time: 20181124013738
+Cache expiry: 1900800
+Dynamic content: false
+CPU time usage: 0.256 seconds
+Real time usage: 15.244 seconds
+Preprocessor visited node count: 712/1000000
+Preprocessor generated node count: 0/1500000
+Post‐expand include size: 815/2097152 bytes
+Template argument size: 1241/2097152 bytes
+Highest expansion depth: 13/40
+Expensive parser function count: 0/500
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 39928/5000000 bytes
+Number of Wikibase entities loaded: 0/400
+Lua time usage: 0.035/10.000 seconds
+Lua memory usage: 1.28 MB/50 MB
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   75.216      1 -total
+ 49.99%   37.598      1 Template:BookCat
+ 32.65%   24.561      1 Template:BOOKSORTKEY
+ 29.70%   22.336      2 Template:BOOKPAGENAME
+ 29.51%   22.198      4 Template:Evalx
+ 25.58%   19.244      2 Template:BOOKPAGENAME/core
+ 23.24%   17.478      2 Template:BOOKCATEGORY
+ 17.02%   12.805      1 Template:BOOKNAME
+ 13.49%   10.145      1 Template:BOOKNAME/core
+  3.27%    2.458      1 Template:NAIVEBOOKNAME
+-->
+
+<!-- Saved in parser cache with key enwikibooks:pcache:idhash:282393-0!canonical and timestamp 20181124013723 and revision id 3328918
+ -->
+</div><noscript><img src="//en.wikibooks.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;oldid=3328918">https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;oldid=3328918</a>"					</div>
+				<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="https://en.wikibooks.org/wiki/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="https://en.wikibooks.org/wiki/Category:Book:Java_Persistence" title="Category:Book:Java Persistence">Book:Java Persistence</a></li><li><a href="https://en.wikibooks.org/wiki/Category:Book:Java_Persistence/Runtime" title="Category:Book:Java Persistence/Runtime">Book:Java Persistence/Runtime</a></li></ul></div></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-anonuserpage">Not logged in</li><li id="pt-anontalk"><a href="https://en.wikibooks.org/wiki/Special:MyTalk" title="Discussion about edits from this IP address [Alt+Shift+n]" accesskey="n">Discussion for this IP address</a></li><li id="pt-anoncontribs"><a href="https://en.wikibooks.org/wiki/Special:MyContributions" title="A list of edits made from this IP address [Alt+Shift+y]" accesskey="y">Contributions</a></li><li id="pt-createaccount"><a href="https://en.wikibooks.org/w/index.php?title=Special:CreateAccount&amp;returnto=Java+Persistence%2FJPQL" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="https://en.wikibooks.org/w/index.php?title=Special:UserLogin&amp;returnto=Java+Persistence%2FJPQL" title="You are encouraged to log in; however, it is not mandatory [Alt+Shift+o]" accesskey="o">Log in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+							<li id="ca-nstab-main" class="selected"><span><a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL" title="View the content page [Alt+Shift+c]" accesskey="c">Book</a></span></li><li id="ca-talk"><span><a href="https://en.wikibooks.org/wiki/Talk:Java_Persistence/JPQL" rel="discussion" title="Discussion about the content page [Alt+Shift+t]" accesskey="t">Discussion</a></span></li>						</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<input type="checkbox" class="vectorMenuCheckbox" aria-labelledby="p-variants-label">
+						<h3 id="p-variants-label">
+							<span>Variants</span>
+						</h3>
+						<ul class="menu">
+													</ul>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+							<li id="ca-view" class="collapsible selected"><span><a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL">Read</a></span></li><li id="ca-edit" class="collapsible"><span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=edit" title="Edit this page [Alt+Shift+e]" accesskey="e">Edit</a></span></li><li id="ca-history" class="collapsible"><span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=history" title="Past revisions of this page [Alt+Shift+h]" accesskey="h">View history</a></span></li>						</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label" style="">
+						<input type="checkbox" class="vectorMenuCheckbox" aria-labelledby="p-cactions-label">
+						<h3 id="p-cactions-label"><span>More</span></h3>
+						<ul class="menu">
+													</ul>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+						<form action="/w/index.php" id="searchform">
+							<div id="simpleSearch">
+								<input type="search" name="search" placeholder="Search Wikibooks" title="Search Wikibooks [Alt+Shift+f]" accesskey="f" id="searchInput" tabindex="1" autocomplete="off"><input type="hidden" value="Special:Search" name="title"><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton">							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="https://en.wikibooks.org/wiki/Main_Page" title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id="p-Navigation" aria-labelledby="p-Navigation-label">
+			<h3 id="p-Navigation-label">Navigation</h3>
+			<div class="body">
+								<ul>
+					<li id="n-mainpage"><a href="https://en.wikibooks.org/wiki/Main_Page" title="Visit the main page [Alt+Shift+z]" accesskey="z">Main Page</a></li><li id="n-help"><a href="https://en.wikibooks.org/wiki/Help:Contents" title="Find help on how to use and edit Wikibooks">Help</a></li><li id="n-Browse"><a href="https://en.wikibooks.org/wiki/Wikibooks:Card_Catalog_Office" title="Check out what Wikibooks has to offer">Browse</a></li><li id="n-Cookbook"><a href="https://en.wikibooks.org/wiki/Cookbook:Table_of_Contents" title="Learn recipes from around the world">Cookbook</a></li><li id="n-Wikijunior"><a href="https://en.wikibooks.org/wiki/Wikijunior" title="Books for children">Wikijunior</a></li><li id="n-Featured-books"><a href="https://en.wikibooks.org/wiki/Wikibooks:Featured_books" title="The best of Wikibooks">Featured books</a></li><li id="n-recentchanges"><a href="https://en.wikibooks.org/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [Alt+Shift+r]" accesskey="r">Recent changes</a></li><li id="n-sitesupport"><a href="https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_en.wikibooks.org&amp;uselang=en" title="Support Wikibooks">Donations</a></li><li id="n-randomrootpage"><a href="https://en.wikibooks.org/wiki/Special:RandomInCategory/Book:Wikibooks_Stacks/Books">Random book</a></li><li id="n-Using-Wikibooks"><a href="https://en.wikibooks.org/wiki/Using_Wikibooks">Using Wikibooks</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-Community" aria-labelledby="p-Community-label">
+			<h3 id="p-Community-label">Community</h3>
+			<div class="body">
+								<ul>
+					<li id="n-Reading-room"><a href="https://en.wikibooks.org/wiki/Wikibooks:Reading_room" title="Discuss Wikibooks-related questions and concerns with others">Reading room</a></li><li id="n-portal"><a href="https://en.wikibooks.org/wiki/Wikibooks:Community_Portal" title="Find your way around the Wikibooks community">Community portal</a></li><li id="n-currentevents"><a href="https://en.wikibooks.org/wiki/Wikibooks:Reading_room/Bulletin_Board" title="Important community news">Bulletin Board</a></li><li id="n-maintenance"><a href="https://en.wikibooks.org/wiki/Wikibooks:Maintenance" title="Frequent tasks that you can help with">Help out!</a></li><li id="n-Policies-and-guidelines"><a href="https://en.wikibooks.org/wiki/Wikibooks:Policies_and_guidelines" title="Pages detailing important rules and procedures">Policies and guidelines</a></li><li id="n-contact"><a href="https://en.wikibooks.org/wiki/Wikibooks:Contact_us" title="Alternative methods of communication">Contact us</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-tb" aria-labelledby="p-tb-label">
+			<h3 id="p-tb-label">Tools</h3>
+			<div class="body">
+								<ul>
+					<li id="t-whatlinkshere"><a href="https://en.wikibooks.org/wiki/Special:WhatLinksHere/Java_Persistence/JPQL" title="A list of all wiki pages that link here [Alt+Shift+j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="https://en.wikibooks.org/wiki/Special:RecentChangesLinked/Java_Persistence/JPQL" rel="nofollow" title="Recent changes in pages linked from this page [Alt+Shift+k]" accesskey="k">Related changes</a></li><li id="t-upload"><a href="https://commons.wikimedia.org/wiki/Special:UploadWizard?uselang=en" title="Upload files [Alt+Shift+u]" accesskey="u">Upload file</a></li><li id="t-specialpages"><a href="https://en.wikibooks.org/wiki/Special:SpecialPages" title="A list of all special pages [Alt+Shift+q]" accesskey="q">Special pages</a></li><li id="t-permalink"><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;oldid=3328918" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;action=info" title="More information about this page">Page information</a></li><li id="t-cite"><a href="https://en.wikibooks.org/w/index.php?title=Special:CiteThisPage&amp;page=Java_Persistence%2FJPQL&amp;id=3328918" title="Information on how to cite this page">Cite this page</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-lang" aria-labelledby="p-lang-label"><button class="uls-settings-trigger" title="Language settings"></button>
+			<h3 id="p-lang-label">Languages</h3>
+			<div class="body">
+								<ul>
+									</ul>
+				<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-add wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:NewItem?site=enwikibooks&amp;page=Java+Persistence%2FJPQL" title="Add interlanguage links" class="wbc-editpage">Add links</a></span></div>			</div>
+		</div>
+			<div class="portal" role="navigation" id="p-Sister_projects" aria-labelledby="p-Sister_projects-label">
+			<h3 id="p-Sister_projects-label">Sister projects</h3>
+			<div class="body">
+								<ul>
+					<li id="n-Wikipedia"><a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></li><li id="n-Wikiversity"><a href="https://en.wikiversity.org/wiki/Wikiversity:Main_Page">Wikiversity</a></li><li id="n-Wiktionary"><a href="https://en.wiktionary.org/wiki/Wiktionary:Main_Page">Wiktionary</a></li><li id="n-Wikiquote"><a href="https://en.wikiquote.org/wiki/Main_Page">Wikiquote</a></li><li id="n-Wikisource"><a href="https://en.wikisource.org/wiki/Main_Page">Wikisource</a></li><li id="n-Wikinews"><a href="https://en.wikinews.org/wiki/Main_Page">Wikinews</a></li><li id="n-Wikivoyage"><a href="https://en.wikivoyage.org/wiki/Main_Page">Wikivoyage</a></li><li id="n-Commons"><a href="https://commons.wikimedia.org/wiki/Main_Page">Commons</a></li><li id="n-Wikidata"><a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-coll-print_export" aria-labelledby="p-coll-print_export-label">
+			<h3 id="p-coll-print_export-label">Print/export</h3>
+			<div class="body">
+								<ul>
+					<li id="coll-create_a_book"><a href="https://en.wikibooks.org/w/index.php?title=Special:Book&amp;bookcmd=book_creator&amp;referer=Java+Persistence%2FJPQL">Create a collection</a></li><li id="coll-download-as-rdf2latex"><a href="https://en.wikibooks.org/w/index.php?title=Special:ElectronPdf&amp;page=Java+Persistence%2FJPQL&amp;action=show-download-screen">Download as PDF</a></li><li id="t-print"><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;printable=yes" title="Printable version of this page [Alt+Shift+p]" accesskey="p">Printable version</a></li>				</ul>
+							</div>
+		</div>
+				</div>
+		</div>
+				<div id="footer" role="contentinfo">
+						<ul id="footer-info">
+								<li id="footer-info-lastmod"> This page was last edited on 16 November 2017, at 20:41.</li>
+								<li id="footer-info-copyright">Text is available under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License.</a>; additional terms may apply.  By using this site, you agree to the <a href="https://wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> and <a href="https://wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy.</a></li>
+							</ul>
+						<ul id="footer-places">
+								<li id="footer-places-privacy"><a href="https://foundation.wikimedia.org/wiki/Privacy_policy" class="extiw" title="wmf:Privacy policy">Privacy policy</a></li>
+								<li id="footer-places-about"><a href="https://en.wikibooks.org/wiki/Wikibooks:Welcome" title="Wikibooks:Welcome">About Wikibooks</a></li>
+								<li id="footer-places-disclaimer"><a href="https://en.wikibooks.org/wiki/Wikibooks:General_disclaimer" title="Wikibooks:General disclaimer">Disclaimers</a></li>
+								<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
+								<li id="footer-places-cookiestatement"><a href="https://foundation.wikimedia.org/wiki/Cookie_statement">Cookie statement</a></li>
+								<li id="footer-places-mobileview"><a href="https://en.m.wikibooks.org/w/index.php?title=Java_Persistence/JPQL&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+							</ul>
+										<ul id="footer-icons" class="noprint">
+										<li id="footer-copyrightico">
+						<a href="https://wikimediafoundation.org/"><img src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/wikimedia-button.png" srcset="/static/images/wikimedia-button-1.5x.png 1.5x, /static/images/wikimedia-button-2x.png 2x" alt="Wikimedia Foundation" width="88" height="31"></a>					</li>
+										<li id="footer-poweredbyico">
+						<a href="https://www.mediawiki.org/"><img src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/poweredby_mediawiki_132x47.png 1.5x, /static/images/poweredby_mediawiki_176x62.png 2x" width="88" height="31"></a>					</li>
+									</ul>
+						<div style="clear: both;"></div>
+		</div>
+		
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.256","walltime":"15.244","ppvisitednodes":{"value":712,"limit":1000000},"ppgeneratednodes":{"value":0,"limit":1500000},"postexpandincludesize":{"value":815,"limit":2097152},"templateargumentsize":{"value":1241,"limit":2097152},"expansiondepth":{"value":13,"limit":40},"expensivefunctioncount":{"value":0,"limit":500},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":39928,"limit":5000000},"entityaccesscount":{"value":0,"limit":400},"timingprofile":["100.00%   75.216      1 -total"," 49.99%   37.598      1 Template:BookCat"," 32.65%   24.561      1 Template:BOOKSORTKEY"," 29.70%   22.336      2 Template:BOOKPAGENAME"," 29.51%   22.198      4 Template:Evalx"," 25.58%   19.244      2 Template:BOOKPAGENAME/core"," 23.24%   17.478      2 Template:BOOKCATEGORY"," 17.02%   12.805      1 Template:BOOKNAME"," 13.49%   10.145      1 Template:BOOKNAME/core","  3.27%    2.458      1 Template:NAIVEBOOKNAME"]},"scribunto":{"limitreport-timeusage":{"value":"0.035","limit":"10.000"},"limitreport-memusage":{"value":1337970,"limit":52428800}},"cachereport":{"origin":"mw1264","timestamp":"20181124013738","ttl":1900800,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":119,"wgHostname":"mw1326"});});</script>
+	
+
+<div style="display: none; font-size: 13px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div></body><script src="Java%20Persistence_JPQL%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/inject.js"></script></html>

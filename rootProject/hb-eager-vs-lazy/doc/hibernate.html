@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>hibernate</title>
+    <style>.emoji {
+  max-width: 1em !important;
+}
+del {
+  text-decoration: none;
+  position: relative;
+}
+del::after {
+  border-bottom: 1px solid black;
+  content: '';
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
+}
+ul.contains-task-list li.task-list-item {
+  position: relative;
+  list-style-type: none;
+}
+ul.contains-task-list li.task-list-item input.task-list-item-checkbox {
+  position: absolute;
+  transform: translateX(-100%);
+  width: 30px;
+}
+span.critic.comment {
+  position: relative;
+}
+span.critic.comment::before {
+  content: '\1f4ac';
+  position: initial;
+}
+span.critic.comment > span {
+  display: none;
+}
+span.critic.comment:hover > span {
+  display: initial;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border: 1px solid;
+  border-radius: 5px;
+  max-height: 4em;
+  overflow: auto;
+}
+span.critic.comment:focus > span {
+  display: initial;
+  text-decoration: underline;
+  position: initial;
+  top: auto;
+  left: auto;
+  border: initial;
+  border-radius: initial;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: transparent;
+}
+
+body {
+  padding: 2em;
+  font-size: 1.2em;
+  color: #383a42;
+  background-color: #fafafa;
+  overflow: auto;
+}
+body > :first-child,
+body > div.update-preview > :first-child {
+  margin-top: 0;
+}
+body > p,
+body > div.update-preview > p {
+  margin-top: 0;
+  margin-bottom: 1.5em;
+}
+body > ul,
+body > div.update-preview > ul,
+body > ol,
+body > div.update-preview > ol {
+  margin-bottom: 1.5em;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: #000000;
+}
+h1 {
+  font-size: 2.4em;
+  font-weight: 300;
+}
+h2 {
+  font-size: 1.8em;
+  font-weight: 400;
+}
+h3 {
+  font-size: 1.5em;
+  font-weight: 500;
+}
+h4 {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+h5 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+h6 {
+  font-size: 1em;
+  font-weight: 600;
+}
+strong {
+  color: #000000;
+}
+del {
+  color: #5e616e;
+}
+a,
+a code {
+  color: #526fff;
+}
+img {
+  max-width: 100%;
+}
+blockquote {
+  margin: 1.5em 0;
+  font-size: inherit;
+  color: #5e616e;
+  border-color: #d1d1d2;
+  border-width: 4px;
+}
+hr {
+  margin: 3em 0;
+  border-top: 2px dashed #d1d1d2;
+  background: none;
+}
+table {
+  margin: 1.5em 0;
+}
+th {
+  color: #000000;
+}
+th,
+td {
+  padding: 0.66em 1em;
+  border: 1px solid #d1d1d2;
+}
+code {
+  color: #000000;
+  background-color: #eaeaeb;
+}
+pre.editor-colors {
+  margin: 1.5em 0;
+  padding: 1em;
+  font-size: 0.92em;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+}
+kbd {
+  color: #000000;
+  border: 1px solid #d1d1d2;
+  border-bottom: 2px solid #c1c1c2;
+  background-color: #eaeaeb;
+}
+
+.bracket-matcher .region {
+  border-bottom: 1px dotted lime;
+  position: absolute;
+}
+.line-number.bracket-matcher.bracket-matcher {
+  color: #383a42;
+  background-color: #e5e5e6;
+}
+
+.spell-check-misspelling .region {
+  border-bottom: 2px dotted rgba(255, 51, 51, 0.75);
+}
+.spell-check-corrections {
+  width: 25em !important;
+}
+
+pre.editor-colors {
+  background-color: #fafafa;
+  color: #383a42;
+}
+pre.editor-colors .line.cursor-line {
+  background-color: rgba(56, 58, 66, 0.05);
+}
+pre.editor-colors .invisible {
+  color: #383a42;
+}
+pre.editor-colors .cursor {
+  border-left: 2px solid #526fff;
+}
+pre.editor-colors .selection .region {
+  background-color: #e5e5e6;
+}
+pre.editor-colors .bracket-matcher .region {
+  border-bottom: 1px solid #526fff;
+  box-sizing: border-box;
+}
+pre.editor-colors .invisible-character {
+  color: rgba(56, 58, 66, 0.2);
+}
+pre.editor-colors .indent-guide {
+  color: rgba(56, 58, 66, 0.2);
+}
+pre.editor-colors .wrap-guide {
+  background-color: rgba(56, 58, 66, 0.2);
+}
+pre.editor-colors .find-result .region.region.region,
+pre.editor-colors .current-result .region.region.region {
+  border-radius: 2px;
+  background-color: rgba(82, 111, 255, 0.2);
+  transition: border-color 0.4s;
+}
+pre.editor-colors .find-result .region.region.region {
+  border: 2px solid transparent;
+}
+pre.editor-colors .current-result .region.region.region {
+  border: 2px solid #526fff;
+  transition-duration: .1s;
+}
+pre.editor-colors .gutter .line-number {
+  color: #9d9d9f;
+  -webkit-font-smoothing: antialiased;
+}
+pre.editor-colors .gutter .line-number.cursor-line {
+  color: #383a42;
+  background-color: #e5e5e6;
+}
+pre.editor-colors .gutter .line-number.cursor-line-no-selection {
+  background-color: transparent;
+}
+pre.editor-colors .gutter .line-number .icon-right {
+  color: #383a42;
+}
+pre.editor-colors .gutter:not(.git-diff-icon) .line-number.git-line-removed.git-line-removed::before {
+  bottom: -3px;
+}
+pre.editor-colors .gutter:not(.git-diff-icon) .line-number.git-line-removed::after {
+  content: "";
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 25px;
+  border-bottom: 1px dotted rgba(255, 20, 20, 0.5);
+  pointer-events: none;
+}
+pre.editor-colors .gutter .line-number.folded,
+pre.editor-colors .gutter .line-number:after,
+pre.editor-colors .fold-marker:after {
+  color: #383a42;
+}
+.syntax--comment {
+  color: #a0a1a7;
+  font-style: italic;
+}
+.syntax--comment .syntax--markup.syntax--link {
+  color: #a0a1a7;
+}
+.syntax--entity.syntax--name.syntax--type {
+  color: #c18401;
+}
+.syntax--entity.syntax--other.syntax--inherited-class {
+  color: #50a14f;
+}
+.syntax--keyword {
+  color: #a626a4;
+}
+.syntax--keyword.syntax--control {
+  color: #a626a4;
+}
+.syntax--keyword.syntax--operator {
+  color: #383a42;
+}
+.syntax--keyword.syntax--other.syntax--special-method {
+  color: #4078f2;
+}
+.syntax--keyword.syntax--other.syntax--unit {
+  color: #986801;
+}
+.syntax--storage {
+  color: #a626a4;
+}
+.syntax--storage.syntax--type.syntax--annotation,
+.syntax--storage.syntax--type.syntax--primitive {
+  color: #a626a4;
+}
+.syntax--storage.syntax--modifier.syntax--package,
+.syntax--storage.syntax--modifier.syntax--import {
+  color: #383a42;
+}
+.syntax--constant {
+  color: #986801;
+}
+.syntax--constant.syntax--variable {
+  color: #986801;
+}
+.syntax--constant.syntax--character.syntax--escape {
+  color: #0184bc;
+}
+.syntax--constant.syntax--numeric {
+  color: #986801;
+}
+.syntax--constant.syntax--other.syntax--color {
+  color: #0184bc;
+}
+.syntax--constant.syntax--other.syntax--symbol {
+  color: #0184bc;
+}
+.syntax--variable {
+  color: #e45649;
+}
+.syntax--variable.syntax--interpolation {
+  color: #ca1243;
+}
+.syntax--variable.syntax--parameter {
+  color: #383a42;
+}
+.syntax--string {
+  color: #50a14f;
+}
+.syntax--string > .syntax--source,
+.syntax--string .syntax--embedded {
+  color: #383a42;
+}
+.syntax--string.syntax--regexp {
+  color: #0184bc;
+}
+.syntax--string.syntax--regexp .syntax--source.syntax--ruby.syntax--embedded {
+  color: #c18401;
+}
+.syntax--string.syntax--other.syntax--link {
+  color: #e45649;
+}
+.syntax--punctuation.syntax--definition.syntax--comment {
+  color: #a0a1a7;
+}
+.syntax--punctuation.syntax--definition.syntax--method-parameters,
+.syntax--punctuation.syntax--definition.syntax--function-parameters,
+.syntax--punctuation.syntax--definition.syntax--parameters,
+.syntax--punctuation.syntax--definition.syntax--separator,
+.syntax--punctuation.syntax--definition.syntax--seperator,
+.syntax--punctuation.syntax--definition.syntax--array {
+  color: #383a42;
+}
+.syntax--punctuation.syntax--definition.syntax--heading,
+.syntax--punctuation.syntax--definition.syntax--identity {
+  color: #4078f2;
+}
+.syntax--punctuation.syntax--definition.syntax--bold {
+  color: #c18401;
+  font-weight: bold;
+}
+.syntax--punctuation.syntax--definition.syntax--italic {
+  color: #a626a4;
+  font-style: italic;
+}
+.syntax--punctuation.syntax--section.syntax--embedded {
+  color: #ca1243;
+}
+.syntax--punctuation.syntax--section.syntax--method,
+.syntax--punctuation.syntax--section.syntax--class,
+.syntax--punctuation.syntax--section.syntax--inner-class {
+  color: #383a42;
+}
+.syntax--support.syntax--class {
+  color: #c18401;
+}
+.syntax--support.syntax--type {
+  color: #0184bc;
+}
+.syntax--support.syntax--function {
+  color: #0184bc;
+}
+.syntax--support.syntax--function.syntax--any-method {
+  color: #4078f2;
+}
+.syntax--entity.syntax--name.syntax--function {
+  color: #4078f2;
+}
+.syntax--entity.syntax--name.syntax--class,
+.syntax--entity.syntax--name.syntax--type.syntax--class {
+  color: #c18401;
+}
+.syntax--entity.syntax--name.syntax--section {
+  color: #4078f2;
+}
+.syntax--entity.syntax--name.syntax--tag {
+  color: #e45649;
+}
+.syntax--entity.syntax--other.syntax--attribute-name {
+  color: #986801;
+}
+.syntax--entity.syntax--other.syntax--attribute-name.syntax--id {
+  color: #4078f2;
+}
+.syntax--meta.syntax--class {
+  color: #c18401;
+}
+.syntax--meta.syntax--class.syntax--body {
+  color: #383a42;
+}
+.syntax--meta.syntax--method-call,
+.syntax--meta.syntax--method {
+  color: #383a42;
+}
+.syntax--meta.syntax--definition.syntax--variable {
+  color: #e45649;
+}
+.syntax--meta.syntax--link {
+  color: #986801;
+}
+.syntax--meta.syntax--require {
+  color: #4078f2;
+}
+.syntax--meta.syntax--selector {
+  color: #a626a4;
+}
+.syntax--meta.syntax--separator {
+  color: #383a42;
+}
+.syntax--meta.syntax--tag {
+  color: #383a42;
+}
+.syntax--underline {
+  text-decoration: underline;
+}
+.syntax--none {
+  color: #383a42;
+}
+.syntax--invalid.syntax--deprecated {
+  color: #000000 !important;
+  background-color: #f2a60d !important;
+}
+.syntax--invalid.syntax--illegal {
+  color: white !important;
+  background-color: #ff1414 !important;
+}
+.syntax--markup.syntax--bold {
+  color: #986801;
+  font-weight: bold;
+}
+.syntax--markup.syntax--changed {
+  color: #a626a4;
+}
+.syntax--markup.syntax--deleted {
+  color: #e45649;
+}
+.syntax--markup.syntax--italic {
+  color: #a626a4;
+  font-style: italic;
+}
+.syntax--markup.syntax--heading {
+  color: #e45649;
+}
+.syntax--markup.syntax--heading .syntax--punctuation.syntax--definition.syntax--heading {
+  color: #4078f2;
+}
+.syntax--markup.syntax--link {
+  color: #0184bc;
+}
+.syntax--markup.syntax--inserted {
+  color: #50a14f;
+}
+.syntax--markup.syntax--quote {
+  color: #986801;
+}
+.syntax--markup.syntax--raw {
+  color: #50a14f;
+}
+.syntax--source.syntax--c .syntax--keyword.syntax--operator {
+  color: #a626a4;
+}
+.syntax--source.syntax--cpp .syntax--keyword.syntax--operator {
+  color: #a626a4;
+}
+.syntax--source.syntax--cs .syntax--keyword.syntax--operator {
+  color: #a626a4;
+}
+.syntax--source.syntax--css .syntax--property-name,
+.syntax--source.syntax--css .syntax--property-value {
+  color: #696c77;
+}
+.syntax--source.syntax--css .syntax--property-name.syntax--support,
+.syntax--source.syntax--css .syntax--property-value.syntax--support {
+  color: #383a42;
+}
+.syntax--source.syntax--elixir .syntax--source.syntax--embedded.syntax--source {
+  color: #383a42;
+}
+.syntax--source.syntax--elixir .syntax--constant.syntax--language,
+.syntax--source.syntax--elixir .syntax--constant.syntax--numeric,
+.syntax--source.syntax--elixir .syntax--constant.syntax--definition {
+  color: #4078f2;
+}
+.syntax--source.syntax--elixir .syntax--variable.syntax--definition,
+.syntax--source.syntax--elixir .syntax--variable.syntax--anonymous {
+  color: #a626a4;
+}
+.syntax--source.syntax--elixir .syntax--parameter.syntax--variable.syntax--function {
+  color: #986801;
+  font-style: italic;
+}
+.syntax--source.syntax--elixir .syntax--quoted {
+  color: #50a14f;
+}
+.syntax--source.syntax--elixir .syntax--keyword.syntax--special-method,
+.syntax--source.syntax--elixir .syntax--embedded.syntax--section,
+.syntax--source.syntax--elixir .syntax--embedded.syntax--source.syntax--empty {
+  color: #e45649;
+}
+.syntax--source.syntax--elixir .syntax--readwrite.syntax--module .syntax--punctuation {
+  color: #e45649;
+}
+.syntax--source.syntax--elixir .syntax--regexp.syntax--section,
+.syntax--source.syntax--elixir .syntax--regexp.syntax--string {
+  color: #ca1243;
+}
+.syntax--source.syntax--elixir .syntax--separator,
+.syntax--source.syntax--elixir .syntax--keyword.syntax--operator {
+  color: #986801;
+}
+.syntax--source.syntax--elixir .syntax--variable.syntax--constant {
+  color: #c18401;
+}
+.syntax--source.syntax--elixir .syntax--array,
+.syntax--source.syntax--elixir .syntax--scope,
+.syntax--source.syntax--elixir .syntax--section {
+  color: #696c77;
+}
+.syntax--source.syntax--gfm .syntax--markup {
+  -webkit-font-smoothing: auto;
+}
+.syntax--source.syntax--gfm .syntax--link .syntax--entity {
+  color: #4078f2;
+}
+.syntax--source.syntax--go .syntax--storage.syntax--type.syntax--string {
+  color: #a626a4;
+}
+.syntax--source.syntax--ini .syntax--keyword.syntax--other.syntax--definition.syntax--ini {
+  color: #e45649;
+}
+.syntax--source.syntax--java .syntax--storage.syntax--modifier.syntax--import {
+  color: #c18401;
+}
+.syntax--source.syntax--java .syntax--storage.syntax--type {
+  color: #c18401;
+}
+.syntax--source.syntax--java .syntax--keyword.syntax--operator.syntax--instanceof {
+  color: #a626a4;
+}
+.syntax--source.syntax--java-properties .syntax--meta.syntax--key-pair {
+  color: #e45649;
+}
+.syntax--source.syntax--java-properties .syntax--meta.syntax--key-pair > .syntax--punctuation {
+  color: #383a42;
+}
+.syntax--source.syntax--js .syntax--keyword.syntax--operator {
+  color: #0184bc;
+}
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--delete,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--in,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--of,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--instanceof,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--new,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--typeof,
+.syntax--source.syntax--js .syntax--keyword.syntax--operator.syntax--void {
+  color: #a626a4;
+}
+.syntax--source.syntax--ts .syntax--keyword.syntax--operator {
+  color: #0184bc;
+}
+.syntax--source.syntax--flow .syntax--keyword.syntax--operator {
+  color: #0184bc;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--string.syntax--quoted.syntax--json {
+  color: #e45649;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--string.syntax--quoted.syntax--json > .syntax--punctuation.syntax--string {
+  color: #e45649;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--array.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json > .syntax--punctuation,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--array.syntax--json > .syntax--value.syntax--json > .syntax--string.syntax--quoted.syntax--json > .syntax--punctuation {
+  color: #50a14f;
+}
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--dictionary.syntax--json > .syntax--constant.syntax--language.syntax--json,
+.syntax--source.syntax--json .syntax--meta.syntax--structure.syntax--array.syntax--json > .syntax--constant.syntax--language.syntax--json {
+  color: #0184bc;
+}
+.syntax--ng.syntax--interpolation {
+  color: #e45649;
+}
+.syntax--ng.syntax--interpolation.syntax--begin,
+.syntax--ng.syntax--interpolation.syntax--end {
+  color: #4078f2;
+}
+.syntax--ng.syntax--interpolation .syntax--function {
+  color: #e45649;
+}
+.syntax--ng.syntax--interpolation .syntax--function.syntax--begin,
+.syntax--ng.syntax--interpolation .syntax--function.syntax--end {
+  color: #4078f2;
+}
+.syntax--ng.syntax--interpolation .syntax--bool {
+  color: #986801;
+}
+.syntax--ng.syntax--interpolation .syntax--bracket {
+  color: #383a42;
+}
+.syntax--ng.syntax--pipe,
+.syntax--ng.syntax--operator {
+  color: #383a42;
+}
+.syntax--ng.syntax--tag {
+  color: #0184bc;
+}
+.syntax--ng.syntax--attribute-with-value .syntax--attribute-name {
+  color: #c18401;
+}
+.syntax--ng.syntax--attribute-with-value .syntax--string {
+  color: #a626a4;
+}
+.syntax--ng.syntax--attribute-with-value .syntax--string.syntax--begin,
+.syntax--ng.syntax--attribute-with-value .syntax--string.syntax--end {
+  color: #383a42;
+}
+.syntax--source.syntax--ruby .syntax--constant.syntax--other.syntax--symbol > .syntax--punctuation {
+  color: inherit;
+}
+.syntax--source.syntax--php .syntax--class.syntax--bracket {
+  color: #383a42;
+}
+.syntax--source.syntax--python .syntax--keyword.syntax--operator.syntax--logical.syntax--python {
+  color: #a626a4;
+}
+.syntax--source.syntax--python .syntax--variable.syntax--parameter {
+  color: #986801;
+}
+
+/*
+ * Your Stylesheet
+ *
+ * This stylesheet is loaded when Atom starts up and is reloaded automatically
+ * when it is changed and saved.
+ *
+ * Add your own CSS or Less to fully customize Atom.
+ * If you are unfamiliar with Less, you can read more about it here:
+ * http://lesscss.org
+ */
+/*
+ * Examples
+ * (To see them, uncomment and save)
+ */
+div.update-preview {
+  font-size: 16px;
+  font-family: sans-serif;
+}
+body {
+  font-family: sans-serif;
+  font-size: 16px;
+}
+</style>
+
+  </head>
+  <body>
+    <h3>Hibernate Architecture</h3>
+<p><img src="architecture.jpg" alt="architecture"></p>
+<ul>
+<li><b>SessionFactory</b> - Это фабрика для сессий и клиент ConnectionProvider. Содрежит опциональный L2 кеш сущностей. Конфигурируется xml-файлом:</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">SessionFactory</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">factory</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--keyword syntax--control syntax--new syntax--java">new</span> <span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">Configuration</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="leading-whitespace">                </span>.<span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">configure</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>hibernate.cfg.xml<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="leading-whitespace">                </span>.<span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">addAnnotatedClass</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--variable syntax--other syntax--object syntax--java">Student</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--variable syntax--other syntax--property syntax--java">class</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="leading-whitespace">                </span>.<span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">buildSessionFactory</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ul>
+<li><b>session</b> object provides an interface between the application and data stored in the database. It is a short-lived object and wraps the JDBC connection. It is factory of Transaction, Query and Criteria. It holds a first-level cache (mandatory) of data. The org.hibernate.Session interface provides methods to insert, update and delete the object. It also provides factory methods for Transaction, Query and Criteria.</li>
+<li><b>Transaction</b>
+The transaction object specifies the atomic unit of work. It is optional. The org.hibernate.Transaction interface provides methods for transaction management.</li>
+<li><b>ConnectionProvider</b>
+It is a factory of JDBC connections. It abstracts the application from DriverManager or DataSource. It is optional.</li>
+<li><b>TransactionFactory</b> It is a factory of Transaction. It is optional.</li>
+<li>Конфигурационный файл hibernate указывает параметры соединения с БД.</li>
+</ul>
+<p><img src="hibernateObjects.png" alt="hibernateObjects"></p>
+<h3>Session</h3>
+<ul>
+<li><b>Persistence context</b> - это кеш, хранящий все управляемые объекты. Привязан к сессии. При чтении объектов в начале опрашивается кеш и только потом БД, это гарантирует repeatable read. При коммите транзакции в БД обновляются только измененные объекты (automatic dirty checking).</li>
+<li><b>Session</b> == EntityManager.
+<ol>
+<li>Сессия представляет собой транзакцию в бд.</li>
+<li>Сессия = connection+persistence context.</li>
+<li>SessionFactory.getCurrentSession() - возвращает (создает, если не создана) сессию, привязанную к определенному контексту (например потоку), закрывать ее не нужно. Контекст указывается в конфигур. файле hibernate - current_session_context_class</li>
+<li>SessionFactory.openSession() - всегда открывает новую сессию, которую необходимо закрывать.</li>
+</ol>
+</li>
+<li>Пример работы с сессией:</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Session</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">session</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">factory</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">openSession</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Transaction</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">tx</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--constant syntax--language syntax--java">null</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--try syntax--java"><span class="syntax--keyword syntax--control syntax--try syntax--java">try</span> <span class="syntax--punctuation syntax--section syntax--try syntax--begin syntax--bracket syntax--curly syntax--java">{</span><span class="syntax--meta syntax--try syntax--body syntax--java"></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--try syntax--java"><span class="syntax--meta syntax--try syntax--body syntax--java"><span class="leading-whitespace">   </span>tx <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">beginTransaction</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--try syntax--java"><span class="syntax--meta syntax--try syntax--body syntax--java"><span class="syntax--punctuation syntax--whitespace syntax--comment syntax--leading syntax--java"><span class="leading-whitespace">   </span></span><span class="syntax--comment syntax--line syntax--double-slash syntax--java"><span class="syntax--punctuation syntax--definition syntax--comment syntax--java">//</span> do some work</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--try syntax--java"><span class="syntax--meta syntax--try syntax--body syntax--java"><span class="leading-whitespace">   </span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--try syntax--java"><span class="syntax--meta syntax--try syntax--body syntax--java"><span class="leading-whitespace">   </span><span class="syntax--variable syntax--other syntax--object syntax--java">tx</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">commit</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--try syntax--java"><span class="syntax--punctuation syntax--section syntax--try syntax--end syntax--bracket syntax--curly syntax--java">}</span></span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--catch syntax--java"><span class="syntax--keyword syntax--control syntax--catch syntax--java">catch</span> <span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--meta syntax--catch syntax--parameters syntax--java"><span class="syntax--storage syntax--type syntax--java">Exception</span> <span class="syntax--variable syntax--parameter syntax--java">e</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span> <span class="syntax--punctuation syntax--section syntax--catch syntax--begin syntax--bracket syntax--curly syntax--java">{</span><span class="syntax--meta syntax--catch syntax--body syntax--java"></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--catch syntax--java"><span class="syntax--meta syntax--catch syntax--body syntax--java"><span class="leading-whitespace">   </span><span class="syntax--keyword syntax--control syntax--java">if</span> <span class="syntax--punctuation syntax--bracket syntax--round syntax--java">(</span>tx<span class="syntax--keyword syntax--operator syntax--comparison syntax--java">!=</span><span class="syntax--constant syntax--language syntax--java">null</span><span class="syntax--punctuation syntax--bracket syntax--round syntax--java">)</span> <span class="syntax--variable syntax--other syntax--object syntax--java">tx</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">rollback</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--catch syntax--java"><span class="syntax--meta syntax--catch syntax--body syntax--java"><span class="leading-whitespace">   </span><span class="syntax--variable syntax--other syntax--object syntax--java">e</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">printStackTrace</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--catch syntax--java"><span class="syntax--punctuation syntax--section syntax--catch syntax--end syntax--bracket syntax--curly syntax--java">}</span></span> <span class="syntax--meta syntax--finally syntax--java"><span class="syntax--keyword syntax--control syntax--finally syntax--java">finally</span> <span class="syntax--punctuation syntax--section syntax--finally syntax--begin syntax--bracket syntax--curly syntax--java">{</span><span class="syntax--meta syntax--finally syntax--body syntax--java"></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--finally syntax--java"><span class="syntax--meta syntax--finally syntax--body syntax--java"><span class="leading-whitespace">   </span><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">close</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--finally syntax--java"><span class="syntax--punctuation syntax--section syntax--finally syntax--end syntax--bracket syntax--curly syntax--java">}</span></span></span></span></pre>
+<ul>
+<li>
+<p>Сущность может пребывать в состояниях:</p>
+<ol>
+<li><b>transient object</b> Объект не присоединенен и никогда не был присоединен к сессии. Это вновь создаваемые объекты.</li>
+<li><b>persistent object</b> Объект присоединенный к конкретной сессии. При работе с объектом данного типа в рамках транзакции все изменения объекта записываются в базу по окончании транзакции. В этом статусе объект имеет(или будет иметь по окончанию транзакции) первичный ключ.</li>
+<li><b>removed</b> Объект, удаление которого запланировано на окончание транзакции. До окончания транзакции объет присоединен к сессии.</li>
+<li><b>detached object</b> Объект отсоединённый от сессии.</li>
+</ol>
+<p><img src="entityStates.png" alt="entityStates">
+<img src="objectStates.jpg" alt="objectStates">
+<img src="entityLifecycle.png" alt="entityLifecycle">
+<img src="entityOperations.png" alt="entityOperations"></p>
+</li>
+<li>
+<p><b>persist</b></p>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Person</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">person</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--keyword syntax--control syntax--new syntax--java">new</span> <span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">Person</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>John<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">persist</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ol>
+<li>Поcле вызова persist объект person изменяет состояние: transient-&gt;persistent.</li>
+<li>Объект еще не сохранен в БД.Все изменения, вносимые в объект будут сохранены при коммите транзакции или session.flush(),session.close()</li>
+<li>Операция persist применяется ко всем связанным объектам, если указано cascade=PERSIST|ALL</li>
+<li>Повторный вызов persist ничего не делает с передаваемой сущностью, но влияет на связанные сущности по пункту 3.</li>
+<li>persist(detached entity)-&gt;exception</li>
+</ol>
+</li>
+<li>
+<p><b>save</b>(hibernate specific)</p>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Person</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">person</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--keyword syntax--control syntax--new syntax--java">new</span> <span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">Person</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>John<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Long</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">id</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--punctuation syntax--bracket syntax--round syntax--java">(</span>Long<span class="syntax--punctuation syntax--bracket syntax--round syntax--java">)</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">save</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ol>
+<li>Гибернат-специфичный метод, сразу сохраняет сущность и возвращает первичный ключ.</li>
+<li>save(detached entity)-&gt;создаст новую сущность в бд.</li>
+</ol>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Person</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">person</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--keyword syntax--control syntax--new syntax--java">new</span> <span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">Person</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>John<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Long</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">id1</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--punctuation syntax--bracket syntax--round syntax--java">(</span>Long<span class="syntax--punctuation syntax--bracket syntax--round syntax--java">)</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">save</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--comment syntax--line syntax--double-slash syntax--java"><span class="syntax--punctuation syntax--definition syntax--comment syntax--java">//</span>отсоединить объект от сессии</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">evict</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Long</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">id2</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--punctuation syntax--bracket syntax--round syntax--java">(</span>Long<span class="syntax--punctuation syntax--bracket syntax--round syntax--java">)</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">save</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+</li>
+<li>
+<p><b>merge</b> обновляет или создает persistent entity на основе detached или transient объекта:</p>
+<ol>
+<li>Получает объект по id из кеша или из базы. Или создает новый.</li>
+<li>Копирует остальные поля из передаваемого объекта во вновь созданный.</li>
+<li>возвращает persistent объект.</li>
+<li>Операция повторяется для всех связанных сущностей с cascade=MERGE|ALL.</li>
+<li>Если сущность в состоянии persistent, то метод ничего с ней не делает, связанные сущности обрабатываются аналогично 4.</li>
+</ol>
+</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Person</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">person</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--keyword syntax--control syntax--new syntax--java">new</span> <span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">Person</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>John<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">save</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">evict</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>Mary<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Person</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">mergedPerson</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--punctuation syntax--bracket syntax--round syntax--java">(</span>Person<span class="syntax--punctuation syntax--bracket syntax--round syntax--java">)</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">merge</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ul>
+<li><b>update</b>(hibernate specific)
+<ol>
+<li>Переводит объект из detached в persistent</li>
+<li>Выбрасывает исключение при передаче transient сущности.</li>
+<li>Обновляет информацию в базе.</li>
+</ol>
+</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Person</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">person</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--keyword syntax--control syntax--new syntax--java">new</span> <span class="syntax--meta syntax--function-call syntax--java"><span class="syntax--entity syntax--name syntax--function syntax--java">Person</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>John<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">save</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">evict</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span></span> 
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">person</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setName</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>Mary<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">update</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>person<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ul>
+<li>
+<p><b>saveOrUpdate</b>(hibernate specific)</p>
+<ol>
+<li>transient:сохраняет и переводит в состояние persistent</li>
+<li>detached:обновляет и переводит в состояние persistent</li>
+</ol>
+</li>
+<li>
+<p><b>&lt;T&gt; T get(Class&lt;T&gt; entityType,Serializable id)</b>(hibernate) Получить объект по его id, возвращает null, если объект не найден.</p>
+</li>
+<li>
+<p><b>&lt;T&gt; T find(Class&lt;T&gt; entityClass,
+Object primaryKey)</b> аналогично get.</p>
+</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Student</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">foundStudent</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">get</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--variable syntax--other syntax--object syntax--java">Student</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--variable syntax--other syntax--property syntax--java">class</span><span class="syntax--punctuation syntax--separator syntax--delimiter syntax--java">,</span><span class="syntax--constant syntax--numeric syntax--decimal syntax--java">1L</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ul>
+<li><b>Query createQuery(String queryString)</b> Создать запрос, используя HQL/JPQL.</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--comment syntax--line syntax--double-slash syntax--java"><span class="syntax--punctuation syntax--definition syntax--comment syntax--java">//</span>select</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Query</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">query</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">createQuery</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>FROM Student s WHERE s.lastName = :lastName<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">query</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">setParameter</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>lastName<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--separator syntax--delimiter syntax--java">,</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>Doe<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">List</span><span class="syntax--punctuation syntax--bracket syntax--angle syntax--java">&lt;</span><span class="syntax--storage syntax--type syntax--generic syntax--java">Student</span><span class="syntax--punctuation syntax--bracket syntax--angle syntax--java">&gt;</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">studentList</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">query</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">getResultList</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--comment syntax--line syntax--double-slash syntax--java"><span class="syntax--punctuation syntax--definition syntax--comment syntax--java">//</span>update</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">createQuery</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>UPDATE Student SET email = 'foo@gmail.com'<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">executeUpdate</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--comment syntax--line syntax--double-slash syntax--java"><span class="syntax--punctuation syntax--definition syntax--comment syntax--java">//</span>delete</span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">createQuery</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>DELETE FROM Student s WHERE s.id = 5<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">executeUpdate</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<ul>
+<li><b>void delete(Object o)</b>(hibernate) - удалить объект из БД.
+<ol>
+<li>Сущность либо persistent</li>
+<li>Либо transient, но с первичным ключем</li>
+<li>Операция каскадируется на связанные сущности если указано cascade=“delete”</li>
+<li>Удаление происходит при коммите транзакции.</li>
+</ol>
+</li>
+<li><b>void remove(Object o)</b>(jpa) - удалить объект из бд. Сущность не должна быть detached.</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Student</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">student4</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">get</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--variable syntax--other syntax--object syntax--java">Student</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--variable syntax--other syntax--property syntax--java">class</span><span class="syntax--punctuation syntax--separator syntax--delimiter syntax--java">,</span> <span class="syntax--constant syntax--numeric syntax--decimal syntax--java">4</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--variable syntax--other syntax--object syntax--java">session</span><span class="syntax--meta syntax--method-call syntax--java"><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--entity syntax--name syntax--function syntax--java">delete</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--begin syntax--bracket syntax--round syntax--java">(</span>student4<span class="syntax--punctuation syntax--definition syntax--parameters syntax--end syntax--bracket syntax--round syntax--java">)</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<h3>ORM Mapping</h3>
+<ul>
+<li>id generators. Для создания кастомного генератора нужно унаследоваться от <b>SequenceGenerator</b> и переопределить метод <b>public Serializable generate(…)</b></li>
+</ul>
+<p><img src="generationTypes.jpg" alt="generationTypes"></p>
+<ul>
+<li>Entity example:</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Entity</span></span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Table</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">name</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>student<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>NoArgsConstructor</span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Getter</span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Setter</span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>ToString</span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--storage syntax--modifier syntax--java">public</span> <span class="syntax--meta syntax--class syntax--identifier syntax--java"><span class="syntax--storage syntax--modifier syntax--java">class</span> <span class="syntax--entity syntax--name syntax--type syntax--class syntax--java">Student</span></span> <span class="syntax--punctuation syntax--section syntax--class syntax--begin syntax--bracket syntax--curly syntax--java">{</span><span class="syntax--meta syntax--class syntax--body syntax--java"></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Id</span></span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Column</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">name</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>id<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>GeneratedValue</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">strategy</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--variable syntax--other syntax--object syntax--java">GenerationType</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--variable syntax--other syntax--property syntax--java">IDENTITY</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--storage syntax--modifier syntax--java">private</span> <span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--primitive syntax--java">int</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">id</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Column</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">name</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>first_name<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--storage syntax--modifier syntax--java">private</span> <span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">String</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">firstName</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Column</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">name</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>last_name<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--storage syntax--modifier syntax--java">private</span> <span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">String</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">lastName</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Column</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">name</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>email<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--meta syntax--class syntax--body syntax--java"><span class="leading-whitespace">    </span><span class="syntax--storage syntax--modifier syntax--java">private</span> <span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">String</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">email</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--class syntax--java"><span class="syntax--punctuation syntax--section syntax--class syntax--end syntax--bracket syntax--curly syntax--java">}</span></span></span></span></pre>
+<ul>
+<li><b>@Temporal</b>
+<ol>
+<li>Можно использовать для типов util.Date,Calendar</li>
+<li>TemporalType.DATE - сохранит только дату, TIME только время и TIMESTAMP дату и время.</li>
+<li>Столбец в бд может иметь тип date,time,timestamp.</li>
+</ol>
+</li>
+</ul>
+<pre class="editor-colors lang-java"><span><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Column</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--constant syntax--other syntax--key syntax--java">name</span> <span class="syntax--keyword syntax--operator syntax--assignment syntax--java">=</span> <span class="syntax--string syntax--quoted syntax--double syntax--java"><span class="syntax--punctuation syntax--definition syntax--string syntax--begin syntax--java">"</span>date_of_birth<span class="syntax--punctuation syntax--definition syntax--string syntax--end syntax--java">"</span></span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span>
+<span class=""><span class="syntax--source syntax--java"><span class="syntax--meta syntax--declaration syntax--annotation syntax--java"><span class="syntax--storage syntax--type syntax--annotation syntax--java"><span class="syntax--punctuation syntax--definition syntax--annotation syntax--java">@</span>Temporal</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--begin syntax--bracket syntax--round syntax--java">(</span><span class="syntax--variable syntax--other syntax--object syntax--java">TemporalType</span><span class="syntax--punctuation syntax--separator syntax--period syntax--java">.</span><span class="syntax--variable syntax--other syntax--property syntax--java">TIMESTAMP</span><span class="syntax--punctuation syntax--definition syntax--annotation-arguments syntax--end syntax--bracket syntax--round syntax--java">)</span></span></span></span>
+<span><span class="syntax--source syntax--java"><span class="syntax--storage syntax--modifier syntax--java">private</span> <span class="syntax--meta syntax--definition syntax--variable syntax--java"><span class="syntax--storage syntax--type syntax--java">Date</span> <span class="syntax--variable syntax--other syntax--definition syntax--java">dateOfBirth</span></span><span class="syntax--punctuation syntax--terminator syntax--java">;</span></span></span></pre>
+<h3>Table Relations</h3>
+<ul>
+<li><b>Cascading</b> это применение той же операции к связанным сущностям.</li>
+<li><b>Fetch Types</b>
+<ol>
+<li>Eager - при получении сущности, получить и зависимые сущности.</li>
+<li>Lazy - при получении сущности зависимые сущности получаем по запросу.</li>
+</ol>
+</li>
+<li><b> Relationship directions</b></li>
+</ul>
+<p><img src="uni-directional.png" alt="uni-directional">
+<img src="bi-directional.png" alt="bi-directional"></p>
+<ul>
+<li><b>Mapping Types</b></li>
+</ul>
+<p><img src="one2one.png" alt="one2one">
+<img src="one2many.png" alt="one2many">
+<img src="many2many.png" alt="many2many"></p>
+
+  </body>
+</html>

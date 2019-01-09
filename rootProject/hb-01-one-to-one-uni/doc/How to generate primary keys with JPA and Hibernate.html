@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="stylesheet" id="tve-leads-font-ecb81ee48a399e1c04f25423eb661708-css" type="text/css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/css_003.css"><link rel="stylesheet" id="tve-leads-font-b45dc0952dc6dc22530dec3481bbcba3-css" type="text/css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/css_002.css"><link rel="stylesheet" id="tve-leads-66_set-css" type="text/css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/66_set.css"><link rel="stylesheet" id="tve_leads_forms-css" type="text/css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/frontend.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link type="text/css" media="all" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/autoptimize_799b2946cd82c515d7e0baf0e8f3ddbc.css" rel="stylesheet"><link type="text/css" media="screen" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/autoptimize_2f412b8e69b2fe45bfc888390c5806aa.css" rel="stylesheet"><title>How to generate primary keys with JPA and Hibernate</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v9.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="How to use database sequences, tables and auto-incremented columns to generate primary key values with JPA and Hibernate.">
+<link rel="canonical" href="https://thoughts-on-java.org/jpa-generate-primary-keys/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to generate primary keys with JPA and Hibernate">
+<meta property="og:description" content="How to use database sequences, tables and auto-incremented columns to generate primary key values with JPA and Hibernate.">
+<meta property="og:url" content="https://thoughts-on-java.org/jpa-generate-primary-keys/">
+<meta property="og:site_name" content="Thoughts on Java">
+<meta property="article:publisher" content="https://www.facebook.com/thoughtsonjava">
+<meta property="article:section" content="Hibernate">
+<meta property="article:published_time" content="2016-06-22T09:52:23+00:00">
+<meta property="article:modified_time" content="2018-07-19T05:11:03+00:00">
+<meta property="og:updated_time" content="2018-07-19T05:11:03+00:00">
+<meta property="og:image" content="https://thoughts-on-java.org/wp-content/uploads/2016/06/JPA-Howtogenerateprimarykeys.jpg">
+<meta property="og:image:secure_url" content="https://thoughts-on-java.org/wp-content/uploads/2016/06/JPA-Howtogenerateprimarykeys.jpg">
+<meta property="og:image:width" content="810">
+<meta property="og:image:height" content="450">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="How to use database sequences, tables and auto-incremented columns to generate primary key values with JPA and Hibernate.">
+<meta name="twitter:title" content="How to generate primary keys with JPA and Hibernate">
+<meta name="twitter:site" content="@thjanssen123">
+<meta name="twitter:image" content="https://thoughts-on-java.org/wp-content/uploads/2016/06/JPA-Howtogenerateprimarykeys.jpg">
+<meta name="twitter:creator" content="@thjanssen123">
+<script type="text/javascript" async="" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/js.js"></script><script async="" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/analytics.js"></script><script async="" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/fbevents.js"></script><script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Person","url":"https:\/\/thoughts-on-java.org\/","sameAs":["https:\/\/www.facebook.com\/thoughtsonjava","https:\/\/www.linkedin.com\/in\/thorbenjanssen\/","https:\/\/www.youtube.com\/channel\/UCYeDPubBiFCZXIOgGYoyADw","https:\/\/twitter.com\/thjanssen123"],"@id":"#person","name":"Thorben Janssen"}</script>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Thoughts on Java » Feed" href="https://thoughts-on-java.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="Thoughts on Java » Comments Feed" href="https://thoughts-on-java.org/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Thoughts on Java » How to generate primary keys with JPA and Hibernate Comments Feed" href="https://thoughts-on-java.org/jpa-generate-primary-keys/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/thoughts-on-java.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.8"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" id="dashicons-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/dashicons.css" type="text/css" media="all">
+
+
+
+
+
+
+
+
+
+
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://thoughts-on-java.org/wp-content/themes/genesis/lib/js/html5shiv.min.js?ver=3.7.3'></script>
+<![endif]-->
+
+
+<link rel="https://api.w.org/" href="https://thoughts-on-java.org/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://thoughts-on-java.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://thoughts-on-java.org/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 4.9.8">
+<link rel="shortlink" href="https://thoughts-on-java.org/?p=3536">
+<link rel="alternate" type="application/json+oembed" href="https://thoughts-on-java.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://thoughts-on-java.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;format=xml">
+		
+	<link rel="icon" href="https://thoughts-on-java.org/wp-content/themes/eleven40-pro/images/favicon.ico">
+<link rel="pingback" href="https://thoughts-on-java.org/xmlrpc.php">
+<meta name="msvalidate.01" content="21E66B77B8A3F8BACEA3DD2A11B8D638">
+
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '448289558697414'); // Insert your pixel ID here.
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=448289558697414&ev=PageView&noscript=1"
+/></noscript>
+<!-- DO NOT MODIFY -->
+<!-- End Facebook Pixel Code -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44631674-1', 'auto');
+  ga('require', 'GTM-P86VVCX');
+  ga('send', 'pageview');
+
+</script>
+
+<!-- cookiebot cookie consent-->
+<script id="Cookiebot" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/uc.js" data-cbid="37a8ce55-c682-4b15-b0bc-f5f3594a3644" type="text/javascript" async=""></script>
+
+<!-- Yieldlove -->
+<script async="async" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gpt.js" data-cookieconsent="marketing"></script>
+<script>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+</script>		
+	<style type="text/css" id="CookieConsentStateDisplayStyles">.cookieconsent-optin,.cookieconsent-optin-preferences,.cookieconsent-optin-statistics,.cookieconsent-optin-marketing{display:block;display:initial;}.cookieconsent-optout-preferences,.cookieconsent-optout-statistics,.cookieconsent-optout-marketing,.cookieconsent-optout{display:none;}</style><style type="text/css">.lyte-wrapper-audio div, .lyte-wrapper div {margin:0px; overflow:hidden;} .lyte,.lyMe{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background-color:#777;} .fourthree .lyMe, .fourthree .lyte {padding-bottom:75%;} .lidget{margin-bottom:5px;} .lidget .lyte, .widget .lyMe {padding-bottom:0!important;height:100%!important;} .lyte-wrapper-audio .lyte{height:38px!important;overflow:hidden;padding:0!important} .lyMe iframe, .lyte iframe,.lyte .pL{position:absolute !important;top:0;left:0;width:100%;height:100%!important;background:no-repeat scroll center #000;background-size:cover;cursor:pointer} .tC{left:0;position:absolute;top:0;width:100%} .tC{background-image:linear-gradient(to bottom,rgba(0,0,0,0.6),rgba(0,0,0,0))} .tT{color:#FFF;font-family:Roboto,sans-serif;font-size:16px;height:auto;text-align:left;padding:5px 10px 50px 10px} .play{background:no-repeat scroll 0 0 transparent;width:88px;height:63px;position:absolute;left:43%;left:calc(50% - 44px);left:-webkit-calc(50% - 44px);top:38%;top:calc(50% - 31px);top:-webkit-calc(50% - 31px);} .widget .play {top:30%;top:calc(45% - 31px);top:-webkit-calc(45% - 31px);transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);} .lyte:hover .play{background-position:0 -65px;} .lyte-audio .pL{max-height:38px!important} .lyte-audio iframe{height:438px!important} .ctrl{background:repeat scroll 0 -220px rgba(0,0,0,0.3);width:100%;height:40px;bottom:0px;left:0;position:absolute;} .lyte-wrapper .ctrl{display:none}.Lctrl{background:no-repeat scroll 0 -137px transparent;width:158px;height:40px;bottom:0;left:0;position:absolute} .Rctrl{background:no-repeat scroll -42px -179px transparent;width:117px;height:40px;bottom:0;right:0;position:absolute;padding-right:10px;}.lyte-audio .play{display:none}.lyte-audio .ctrl{background-color:rgba(0,0,0,1)}.hidden{display:none}</style><link rel="preload" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/integrator_002.js" as="script"><script type="text/javascript" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/integrator_002.js"></script><link rel="preload" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/integrator.js" as="script"><script type="text/javascript" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/integrator.js"></script><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/pubads_impl_276.js" async=""></script><style type="text/css">.lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url(https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyte/lytesprite.png); }</style><style type="text/css">#lyte_qn9SbW44rQ8 { background-image: url(https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2Fqn9SbW44rQ8%2Fmaxresdefault.jpg); }</style><style type="text/css">.lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url(https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyte/lytesprite.png); }</style><style type="text/css">#lyte_pgknN921XL8 { background-image: url(https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2FpgknN921XL8%2Fmaxresdefault.jpg); }</style><style type="text/css">.lyte .ctrl, .lyte .Rctrl, .lyte .Lctrl, .lyte .play { background-image: url(https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyte/lytesprite.png); }</style><style type="text/css">#lyte_a0ScR_JAKfI { background-image: url(https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2Fa0ScR_JAKfI%2Fmaxresdefault.jpg); }</style></head>
+<body class="post-template-default single single-post postid-3536 single-format-standard header-full-width content-sidebar eleven40-pro-blue" itemscope="" itemtype="https://schema.org/WebPage" style="margin-bottom: 121px;"><div class="site-container"><ul class="genesis-skip-link"><li><a href="#genesis-nav-primary" class="screen-reader-shortcut"> Skip to primary navigation</a></li><li><a href="#genesis-content" class="screen-reader-shortcut"> Skip to content</a></li><li><a href="#genesis-sidebar-primary" class="screen-reader-shortcut"> Skip to primary sidebar</a></li></ul><header class="site-header" itemscope="" itemtype="https://schema.org/WPHeader"><div class="wrap"><div class="title-area"><p class="site-title" itemprop="headline"><a href="https://thoughts-on-java.org/">Thoughts on Java</a></p></div><nav class="nav-primary" aria-label="Main" itemscope="" itemtype="https://schema.org/SiteNavigationElement" id="genesis-nav-primary"><div class="wrap"><div class="responsive-menu-icon"></div><ul id="menu-primary-menu" class="menu genesis-nav-menu menu-primary js-superfish responsive-menu sf-js-enabled sf-arrows" style="touch-action: pan-y;"><li id="menu-item-14884" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-has-children menu-item-14884"><a href="https://thoughts-on-java.org/blog/" itemprop="url" class="sf-with-ul"><span itemprop="name">Blog ▼</span></a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-14885" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14885"><a href="https://thoughts-on-java.org/tutorials/" itemprop="url"><span itemprop="name">Hibernate &amp; JPA Tutorials</span></a></li>
+	<li id="menu-item-18833" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18833"><a href="https://thoughts-on-java.org/tips/" itemprop="url"><span itemprop="name">Hibernate Tips</span></a></li>
+</ul>
+</li>
+<li id="menu-item-14887" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14887"><a href="https://www.youtube.com/channel/UCYeDPubBiFCZXIOgGYoyADw" itemprop="url"><span itemprop="name">Videos</span></a></li>
+<li id="menu-item-17256" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17256"><a href="http://www.hibernate-tips.com/" itemprop="url"><span itemprop="name">Book</span></a></li>
+<li id="menu-item-14888" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14888"><a href="https://thoughts-on-java.org/academy" itemprop="url"><span itemprop="name">Training</span></a></li>
+<li id="menu-item-16816" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16816"><a href="https://thoughts-on-java.org/work-with-me/" itemprop="url"><span itemprop="name">Work with me</span></a></li>
+<li id="menu-item-19976" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19976"><a href="https://thoughts-on-java.org/become-a-thoughts-on-java-supporter/" itemprop="url"><span itemprop="name">ToJ Supporter</span></a></li>
+<li id="menu-item-14889" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-14889"><a href="https://thoughts-on-java.org/about/" itemprop="url" class="sf-with-ul"><span itemprop="name">About ▼</span></a>
+<ul class="sub-menu" style="display: none;">
+	<li id="menu-item-14891" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-14891"><a href="https://thoughts-on-java.org/category/about-thoughts-on-java/" itemprop="url"><span itemprop="name">About Thoughts on Java</span></a></li>
+	<li id="menu-item-19749" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19749"><a href="https://thoughts-on-java.org/become-a-thoughts-on-java-supporter/" itemprop="url"><span itemprop="name">Support Thoughts on Java</span></a></li>
+	<li id="menu-item-14890" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14890"><a href="https://thoughts-on-java.org/resources/" itemprop="url"><span itemprop="name">Resources</span></a></li>
+</ul>
+</li>
+<li id="menu-item-14892" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14892"><a href="https://thoughts-on-java.org/library/" itemprop="url"><span itemprop="name">Member Library</span></a></li>
+</ul></div></nav></div></header><div class="site-inner"><div class="wrap"><div class="content-sidebar-wrap"><main class="content" id="genesis-content"><div class="breadcrumb" itemscope="" itemtype="https://schema.org/BreadcrumbList">You are here: <span class="breadcrumb-link-wrap" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://thoughts-on-java.org/" itemprop="item"><span itemprop="name">Home</span></a></span> <span aria-label="breadcrumb separator">/</span> <span class="breadcrumb-link-wrap" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://thoughts-on-java.org/category/hibernate/" itemprop="item"><span itemprop="name">Hibernate</span></a></span> <span aria-label="breadcrumb separator">/</span> How to generate primary keys with JPA and Hibernate</div><div class="supporterHeader">Special thanks to all <a href="http://thoughts-on-java.org/become-a-thoughts-on-java-supporter/?utm_source=blog&amp;utm_medium=header&amp;utm_campaign=supporter">Thoughts on Java Supporters</a> for supporting this article!</div> <article class="post-3536 post type-post status-publish format-standard has-post-thumbnail category-hibernate category-jpa entry" itemscope="" itemtype="https://schema.org/CreativeWork"><header class="entry-header"><h1 class="entry-title" itemprop="headline">How to generate primary keys with JPA and Hibernate</h1>
+<p class="entry-meta">By <span class="entry-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person"><a href="https://thoughts-on-java.org/author/rainmakerthoughts-on-java-org/" class="entry-author-link" itemprop="url" rel="author"><span class="entry-author-name" itemprop="name">Thorben Janssen</span></a></span> <span class="entry-comments-link"><a href="https://thoughts-on-java.org/jpa-generate-primary-keys/#comments">4 Comments</a></span> </p></header><div class="entry-content" itemprop="text"><div class="shariff shariff-align-flex-start shariff-widget-align-flex-start" style="display:none"><ul class="shariff-buttons theme-color orientation-horizontal buttonsize-small"><li class="shariff-button twitter shariff-nocustomcolor" style="background-color:#32bbf5"><a href="https://twitter.com/share?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;text=How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate&amp;via=thjanssen123" title="Share on Twitter" aria-label="Share on Twitter" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#55acee; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 32"><path fill="#55acee" d="M29.7 6.8q-1.2 1.8-3 3.1 0 0.3 0 0.8 0 2.5-0.7 4.9t-2.2 4.7-3.5 4-4.9 2.8-6.1 1q-5.1 0-9.3-2.7 0.6 0.1 1.5 0.1 4.3 0 7.6-2.6-2-0.1-3.5-1.2t-2.2-3q0.6 0.1 1.1 0.1 0.8 0 1.6-0.2-2.1-0.4-3.5-2.1t-1.4-3.9v-0.1q1.3 0.7 2.8 0.8-1.2-0.8-2-2.2t-0.7-2.9q0-1.7 0.8-3.1 2.3 2.8 5.5 4.5t7 1.9q-0.2-0.7-0.2-1.4 0-2.5 1.8-4.3t4.3-1.8q2.7 0 4.5 1.9 2.1-0.4 3.9-1.5-0.7 2.2-2.7 3.4 1.8-0.2 3.5-0.9z"></path></svg></span><span class="shariff-text">tweet</span>&nbsp;</a></li><li class="shariff-button facebook shariff-nocustomcolor" style="background-color:#4273c8"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on Facebook" aria-label="Share on Facebook" role="button" rel="nofollow" class="shariff-link" style="; background-color:#3b5998; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 32"><path fill="#3b5998" d="M17.1 0.2v4.7h-2.8q-1.5 0-2.1 0.6t-0.5 1.9v3.4h5.2l-0.7 5.3h-4.5v13.6h-5.5v-13.6h-4.5v-5.3h4.5v-3.9q0-3.3 1.9-5.2t5-1.8q2.6 0 4.1 0.2z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button googleplus shariff-nocustomcolor" style="background-color:#f75b44"><a href="https://plus.google.com/share?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on Google+" aria-label="Share on Google+" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#d34836; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#d34836" d="M31.6 14.7h-3.3v-3.3h-2.6v3.3h-3.3v2.6h3.3v3.3h2.6v-3.3h3.3zM10.8 14v4.1h5.7c-0.4 2.4-2.6 4.2-5.7 4.2-3.4 0-6.2-2.9-6.2-6.3s2.8-6.3 6.2-6.3c1.5 0 2.9 0.5 4 1.6v0l2.9-2.9c-1.8-1.7-4.2-2.7-7-2.7-5.8 0-10.4 4.7-10.4 10.4s4.7 10.4 10.4 10.4c6 0 10-4.2 10-10.2 0-0.8-0.1-1.5-0.2-2.2 0 0-9.8 0-9.8 0z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button linkedin shariff-nocustomcolor" style="background-color:#1488bf"><a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;title=How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate" title="Share on LinkedIn" aria-label="Share on LinkedIn" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#0077b5; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 32"><path fill="#0077b5" d="M6.2 11.2v17.7h-5.9v-17.7h5.9zM6.6 5.7q0 1.3-0.9 2.2t-2.4 0.9h0q-1.5 0-2.4-0.9t-0.9-2.2 0.9-2.2 2.4-0.9 2.4 0.9 0.9 2.2zM27.4 18.7v10.1h-5.9v-9.5q0-1.9-0.7-2.9t-2.3-1.1q-1.1 0-1.9 0.6t-1.2 1.5q-0.2 0.5-0.2 1.4v9.9h-5.9q0-7.1 0-11.6t0-5.3l0-0.9h5.9v2.6h0q0.4-0.6 0.7-1t1-0.9 1.6-0.8 2-0.3q3 0 4.9 2t1.9 6z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button reddit shariff-nocustomcolor" style="background-color:#ff5700"><a href="https://www.reddit.com/submit?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on Reddit" aria-label="Share on Reddit" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#ff4500; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#ff4500" d="M440.3 203.5c-15 0-28.2 6.2-37.9 15.9-35.7-24.7-83.8-40.6-137.1-42.3L293 52.3l88.2 19.8c0 21.6 17.6 39.2 39.2 39.2 22 0 39.7-18.1 39.7-39.7s-17.6-39.7-39.7-39.7c-15.4 0-28.7 9.3-35.3 22l-97.4-21.6c-4.9-1.3-9.7 2.2-11 7.1L246.3 177c-52.9 2.2-100.5 18.1-136.3 42.8-9.7-10.1-23.4-16.3-38.4-16.3-55.6 0-73.8 74.6-22.9 100.1-1.8 7.9-2.6 16.3-2.6 24.7 0 83.8 94.4 151.7 210.3 151.7 116.4 0 210.8-67.9 210.8-151.7 0-8.4-.9-17.2-3.1-25.1 49.9-25.6 31.5-99.7-23.8-99.7zM129.4 308.9c0-22 17.6-39.7 39.7-39.7 21.6 0 39.2 17.6 39.2 39.7 0 21.6-17.6 39.2-39.2 39.2-22 .1-39.7-17.6-39.7-39.2zm214.3 93.5c-36.4 36.4-139.1 36.4-175.5 0-4-3.5-4-9.7 0-13.7 3.5-3.5 9.7-3.5 13.2 0 27.8 28.5 120 29 149 0 3.5-3.5 9.7-3.5 13.2 0 4.1 4 4.1 10.2.1 13.7zm-.8-54.2c-21.6 0-39.2-17.6-39.2-39.2 0-22 17.6-39.7 39.2-39.7 22 0 39.7 17.6 39.7 39.7-.1 21.5-17.7 39.2-39.7 39.2z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button xing shariff-nocustomcolor" style="background-color:#29888a"><a href="https://www.xing.com/social_plugins/share?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on XING" aria-label="Share on XING" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#126567; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 32"><path fill="#126567" d="M10.7 11.9q-0.2 0.3-4.6 8.2-0.5 0.8-1.2 0.8h-4.3q-0.4 0-0.5-0.3t0-0.6l4.5-8q0 0 0 0l-2.9-5q-0.2-0.4 0-0.7 0.2-0.3 0.5-0.3h4.3q0.7 0 1.2 0.8zM25.1 0.4q0.2 0.3 0 0.7l-9.4 16.7 6 11q0.2 0.4 0 0.6-0.2 0.3-0.6 0.3h-4.3q-0.7 0-1.2-0.8l-6-11.1q0.3-0.6 9.5-16.8 0.4-0.8 1.2-0.8h4.3q0.4 0 0.5 0.3z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button mailto shariff-nocustomcolor" style="background-color:#a8a8a8"><a href="mailto:?body=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;subject=How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate" title="Send by email" aria-label="Send by email" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#999; color:#fff"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#999" d="M32 12.7v14.2q0 1.2-0.8 2t-2 0.9h-26.3q-1.2 0-2-0.9t-0.8-2v-14.2q0.8 0.9 1.8 1.6 6.5 4.4 8.9 6.1 1 0.8 1.6 1.2t1.7 0.9 2 0.4h0.1q0.9 0 2-0.4t1.7-0.9 1.6-1.2q3-2.2 8.9-6.1 1-0.7 1.8-1.6zM32 7.4q0 1.4-0.9 2.7t-2.2 2.2q-6.7 4.7-8.4 5.8-0.2 0.1-0.7 0.5t-1 0.7-0.9 0.6-1.1 0.5-0.9 0.2h-0.1q-0.4 0-0.9-0.2t-1.1-0.5-0.9-0.6-1-0.7-0.7-0.5q-1.6-1.1-4.7-3.2t-3.6-2.6q-1.1-0.7-2.1-2t-1-2.5q0-1.4 0.7-2.3t2.1-0.9h26.3q1.2 0 2 0.8t0.9 2z"></path></svg></span><span class="shariff-text">e-mail</span>&nbsp;</a></li></ul></div><p><a href="https://thoughts-on-java.org/wp-content/uploads/2016/06/JPA-Howtogenerateprimarykeys.jpg"><img class="aligncenter wp-image-3574 size-full lazy-loaded" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/JPA-Howtogenerateprimarykeys.jpg" data-lazy-type="image" data-src="//thoughts-on-java.org/wp-content/uploads/2016/06/JPA-Howtogenerateprimarykeys.jpg" alt="" width="810" height="450"><noscript><img class="aligncenter wp-image-3574 size-full" src="//thoughts-on-java.org/wp-content/uploads/2016/06/JPA-Howtogenerateprimarykeys.jpg" alt="" width="810" height="450" /></noscript></a></p>
+<p>&nbsp;</p>
+<p>How do you get the primary key values in your application? Do you use natural keys or do you generate technical IDs?</p>
+<h3 style="text-align: center;">Don’t want to read? You can watch it here!</h3>
+<div style="text-align: center">
+<div class="lyte-wrapper" style="width:640px;max-width: 100%;margin:5px auto;">
+<div class="lyte hidef lP" id="WYL_qn9SbW44rQ8" itemprop="video" itemscope="" itemtype="https://schema.org/VideoObject"><meta itemprop="thumbnailUrl" content="https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2Fqn9SbW44rQ8%2Fmaxresdefault.jpg"><meta itemprop="embedURL" content="https://www.youtube.com/embed/qn9SbW44rQ8"><meta itemprop="uploadDate" content=""><p></p>
+<div id="lyte_qn9SbW44rQ8" data-src="https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2Fqn9SbW44rQ8%2Fmaxresdefault.jpg" class="pL">
+<div class="tC">
+<div class="tT" itemprop="name"></div>
+</div>
+<div class="play"></div>
+<div class="ctrl">
+<div class="Lctrl"></div>
+<div class="Rctrl"></div>
+</div>
+</div>
+<p><noscript><a href="https://youtu.be/qn9SbW44rQ8"><img class="lazy lazy-hidden" src="//thoughts-on-java.org/wp-content/plugins/a3-lazy-load/assets/images/lazy_placeholder.gif" data-lazy-type="image" data-src="https://i.ytimg.com/vi/qn9SbW44rQ8/0.jpg" alt="" width="640" height="340" /><noscript><img src="https://i.ytimg.com/vi/qn9SbW44rQ8/0.jpg" alt="" width="640" height="340" /></noscript><br>Watch this video on YouTube<meta itemprop="description" content=""></p></div>
+</div>
+<div class="lL" style="max-width:100%;width:640px;margin:5px auto;"><span class="lyte_disclaimer"><a href="http://bit.ly/2cUsid8">Follow me on YouTube</a> to not miss any new videos.</span></div>
+</div>
+<p><span id="more-3536"></span></p>
+<p>I prefer to generate simple, numerical, technical IDs like you can 
+see in the following code snippet instead of using natural keys which 
+often require the combination of multiple attributes.</p>
+<p><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_005.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-primarykey-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-primarykey-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-primarykey-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-primarykey-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-primarykey-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-primarykey-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-primarykey-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/PrimaryKey.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-primarykey-java">PrimaryKey.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+Technical IDs are easier to manage and all involved systems, mainly the 
+database and Hibernate, can index them very efficiently. This allows you
+ to focus on the business logic of your application and avoids 
+performance issues. &nbsp;<br>
+<!--more--><p></p>
+<p>&nbsp;</p>
+<h2>4 options to generate primary keys</h2>
+<p>The JPA specification supports 4 different primary key generation 
+strategies which generate the primary key values programmatically or use
+ database features, like auto-incremented columns or sequences. The only
+ thing you have to do is to add the <em>@GeneratedValue</em> annotation to your primary key attribute and choose a&nbsp;generation strategy.<script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_007.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-generatedvalue-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-generatedvalue-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-generatedvalue-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-generatedvalue-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-generatedvalue-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span></td>
+      </tr>
+      <tr>
+        <td id="file-generatedvalue-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-generatedvalue-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generatedvalue-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-generatedvalue-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/GeneratedValue.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-generatedvalue-java">GeneratedValue.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<p></p>
+<p><!--977149b6406f10d261aa6a5f8a8339f2--><br>
+<!--div class="content-box-yellow" style="text-align: center;"><br />
+<h3>Get this post as a free cheat sheet!</h3><br />
+I prepared a free cheat sheet with the most important information and code snippets of this post. As always, you can download it for free from the Thoughts on Java Library.<br />
+<div style="text-align: center; margin-top: 10px;"><a class="button" href="https://thoughts-on-java.org/free-member-library-signup/?utm_source=upgrade&amp;utm_campaign=lib&amp;utm_medium=blog" target="_blank" rel="noopener">Join Now!</a></div><br />
+</div--><br>
+<div class="tve-leads-shortcode tve-tl-anim tl-anim-instant tve-leads-track-shortcode_17881 tve-leads-triggered"><div class="tl-style" id="tve_tcb2_set-007-v1" data-state="33" data-form-state=""><style type="text/css" class="tve_custom_style">@import url("//fonts.googleapis.com/css?family=Lato:300,700,400&subset=latin");@media (min-width: 300px){[data-css="tve-u-365a80572150698"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-275a8057215021d"] { font-size: 20px !important; }#tve_editor [data-css="tve-u-215a8057214ff42"] { font-size: 20px !important; }#tve_editor [data-css="tve-u-185a8057214f8e5"] { font-size: 20px !important; }[data-css="tve-u-165a8057214f717"] { margin-top: 1px !important; }[data-css="tve-u-355a80572150612"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-355a80572150612"] input { font-family: Arial; font-weight: 300; }#tve_editor [data-css="tve-u-355a80572150612"] input, #tve_editor [data-css="tve-u-355a80572150612"] input::placeholder { color: rgb(97, 121, 131) !important; }[data-css="tve-u-325a80572150493"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-325a80572150493"] input { font-family: Arial; font-weight: 300; }#tve_editor [data-css="tve-u-325a80572150493"] input, #tve_editor [data-css="tve-u-325a80572150493"] input::placeholder { color: rgb(97, 121, 131) !important; }[data-css="tve-u-345a8057215058e"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-345a8057215058e"] input { font-family: Arial; font-weight: 300; }#tve_editor [data-css="tve-u-345a8057215058e"] input, #tve_editor [data-css="tve-u-345a8057215058e"] input::placeholder { color: rgb(97, 121, 131) !important; }[data-css="tve-u-265a805721501a5"] { color: rgb(246, 153, 20); }[data-css="tve-u-255a8057215012d"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-255a8057215012d"] { font-weight: 300; font-family: Lora !important; font-size: 20px !important; }#tve_editor [data-css="tve-u-165a8057214f717"] p, #tve_editor [data-css="tve-u-165a8057214f717"] li, #tve_editor [data-css="tve-u-165a8057214f717"] blockquote, #tve_editor [data-css="tve-u-165a8057214f717"] address, #tve_editor [data-css="tve-u-165a8057214f717"] h1, #tve_editor [data-css="tve-u-165a8057214f717"] h2, #tve_editor [data-css="tve-u-165a8057214f717"] h3, #tve_editor [data-css="tve-u-165a8057214f717"] h4, #tve_editor [data-css="tve-u-165a8057214f717"] h5, #tve_editor [data-css="tve-u-165a8057214f717"] h6 { color: rgb(255, 255, 255); }[data-css="tve-u-245a805721500b4"] { color: rgb(246, 153, 20); }[data-css="tve-u-205a8057214fec4"] { color: rgb(246, 153, 20); }[data-css="tve-u-175a8057214f7af"] { color: rgb(246, 153, 20); }#tve_editor [data-css="tve-u-145a8057214f1a6"] { color: rgb(255, 255, 255) !important; font-size: 20px !important; }[data-css="tve-u-115a8057214eea6"] { color: rgb(246, 153, 20) !important; }[data-css="tve-u-135a8057214efbe"] { margin-top: 20px !important; margin-bottom: 20px !important; padding-bottom: 2px !important; padding-top: 2px !important; }#tve_editor [data-css="tve-u-365a80572150698"]:hover button { background-color: rgb(247, 173, 66) !important; background-image: none !important; }[data-css="tve-u-135a8057214efbe"] .tve_sep { border-width: 1px; border-color: rgb(255, 255, 255); }[data-css="tve-u-85a8057214ed28"] { padding: 30px 30px 30px 20px !important; }[data-css="tve-u-305a80572150395"] { padding-top: 30px !important; padding-bottom: 30px !important; padding-right: 20px !important; }#tve_editor [data-css="tve-u-365a80572150698"] button { font-size: 20px; font-family: Lato; border-radius: 0px; overflow: hidden; border-bottom: 1px solid rgb(105, 143, 51); text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 2px; font-weight: bold; background-color: rgb(246, 153, 20) !important; background-image: none !important; }[data-css="tve-u-315a80572150413"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-315a80572150413"] { font-family: Lato; font-weight: 300; color: rgb(30, 64, 78) !important; font-size: 29px !important; }[data-css="tve-u-95a8057214edac"] strong { font-weight: 700; }[data-css="tve-u-95a8057214edac"] { line-height: 1em !important; }#tve_editor [data-css="tve-u-95a8057214edac"] { font-family: Lato; font-weight: 300; color: rgb(255, 255, 255) !important; font-size: 29px !important; }[data-css="tve-u-45a8057214eaec"] { background-color: rgb(30, 64, 78) !important; background-image: none !important; }[data-css="tve-u-05a8057214e8aa"] { padding: 0px !important; background-color: rgb(228, 235, 239) !important; }[data-css="tve-u-25a8057214e9ce"] { padding: 0px !important; }[data-css="tve-u-15a8057214e93e"] { margin: 0px !important; }[data-css="tve-u-55a8057214eb7c"] { margin: 0px !important; }[data-css="tve-u-65a8057214ec0c"] { padding: 0px !important; }[data-css="tve-u-295a8057215031a"] { max-width: 35%; }[data-css="tve-u-35a8057214ea58"] { max-width: 65%; }}@media (max-width: 767px){[data-css="tve-u-305a80572150395"] { padding-left: 20px !important; }}</style><style type="text/css" class="tve_user_custom_style">.tve-leads-conversion-object .thrv_heading h1,.tve-leads-conversion-object .thrv_heading h2,.tve-leads-conversion-object .thrv_heading h3{margin:0;padding:0}.tve-leads-conversion-object .thrv_text_element p,.tve-leads-conversion-object .thrv_text_element h1,.tve-leads-conversion-object .thrv_text_element h2,.tve-leads-conversion-object .thrv_text_element h3{margin:0}#mepr_no_val {    display:none;}</style><div class="tve-leads-conversion-object" data-tl-type="shortcode_17881"><div class="tve_flt"><div id="tve_editor" class="tve_shortcode_editor"><div class="thrv-leads-form-box tve_no_drag tve_no_icons thrv_wrapper tve_editor_main_content thrv-leads-in-content tve_empty_dropzone" style="" data-css="tve-u-05a8057214e8aa"><div class="thrv_wrapper thrv-columns" style="" data-css="tve-u-15a8057214e93e"><div class="tcb-flex-row tcb-resized tcb--cols--2" data-css="tve-u-25a8057214e9ce"><div class="tcb-flex-col" data-css="tve-u-35a8057214ea58" style=""><div class="tcb-col tve_empty_dropzone" style="" data-css="tve-u-45a8057214eaec"><div class="thrv_wrapper thrv-columns" style="" data-css="tve-u-55a8057214eb7c"><div class="tcb-flex-row tcb--cols--1" data-css="tve-u-65a8057214ec0c"><div class="tcb-flex-col" data-css="tve-u-75a8057214ec9e" style=""><div class="tcb-col tve_empty_dropzone" style="" data-css="tve-u-85a8057214ed28"><div class="thrv_wrapper thrv_text_element tve_empty_dropzone" style=""><p data-css="tve-u-95a8057214edac" data-default="Enter your text here..."><span class="ttfm2" data-css="tve-u-105a8057214ee2a">Join the&nbsp;</span><span data-css="tve-u-115a8057214eea6" style="color: rgb(246, 153, 20);"><span class="ttfm2" data-css="tve-u-125a8057214ef36">Thoughts on Java Library</span></span></p></div><div class="thrv_wrapper thrv-divider" data-style="tve_sep-1" data-thickness="1" data-color="#ffffff" style="" data-css="tve-u-135a8057214efbe"><hr class="tve_sep tve_sep-1"></div><div class="thrv_wrapper thrv_text_element tve_empty_dropzone on_hover" style=""><p class="ttfm2" data-css="tve-u-145a8057214f1a6" data-default="Enter your text here..."><span class="ttfm2" data-css="tve-u-155a8057214f237">Get free access to:</span></p></div><div class="thrv_wrapper thrv-styled_list" data-icon-code="icon-check" data-color="rgb(246, 153, 20)" data-css="tve-u-165a8057214f717"><ul class="tcb-styled-list"><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-175a8057214f7af"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete" data-css="tve-u-185a8057214f8e5"><span class="ttfm2" data-css="tve-u-195a8057214f978">2 Ebooks about JPA and Hibernate</span></span></li><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-205a8057214fec4"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete" data-css="tve-u-215a8057214ff42"><span class="ttfm2" data-css="tve-u-225a8057214ffbd"><span class="ttfm2" data-css="tve-u-235a8057215003c">More than 50 Cheat Sheets</span></span></span></li><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-245a805721500b4"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete ttfm2" data-css="tve-u-255a8057215012d">More than 60 printable Hibernate Tips</span></li><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-265a805721501a5"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete" data-css="tve-u-275a8057215021d"><span class="ttfm2" data-css="tve-u-285a8057215029e">A 3-Part Video Course about Finding and Fixing N+1 Select Issues</span></span></li></ul></div></div></div></div></div></div></div><div class="tcb-flex-col" data-css="tve-u-295a8057215031a" style=""><div class="tcb-col tve_empty_dropzone" style="" data-css="tve-u-305a80572150395"><div class="thrv_wrapper thrv_text_element tve_empty_dropzone" style=""><p class="ttfm2" data-css="tve-u-315a80572150413" data-default="Enter your text here..."><strong>Signup For Free:</strong></p></div><div class="thrv_wrapper thrv_lead_generation" data-connection="custom-html" style=""><input type="hidden" class="tve-lg-err-msg" value="{&quot;email&quot;:&quot;Email address invalid&quot;,&quot;phone&quot;:&quot;Phone number invalid&quot;,&quot;password&quot;:&quot;Password invalid&quot;,&quot;passwordmismatch&quot;:&quot;Password mismatch error&quot;,&quot;required&quot;:&quot;Required field missing&quot;}"><div class="thrv_lead_generation_container tve_clearfix"><form method="post" action="http://thoughts-on-java.org/register/library/#mepr_errors"><input type="hidden" class="tve-f-a-hidden" value="http://thoughts-on-java.org/register/library/#mepr_errors"><input id="mepr_process_signup_form" type="hidden" name="mepr_process_signup_form" value="Y"><input id="mepr_product_id" type="hidden" name="mepr_product_id" value="15656"><input id="user_first_name" type="hidden" name="user_first_name" value=""><input id="user_last_name" type="hidden" name="user_last_name" value=""><input id="mepr-geo-country" type="hidden" name="mepr-geo-country" value=""><div class="tve_lead_generated_inputs_container tve_empty_dropzone"><div class="tve_lg_input_container tve_lg_input ttfm2" data-css="tve-u-325a80572150493"><input name="user_email" id="user_email" type="email" placeholder="Email" required="required" data-css="tve-u-335a80572150510" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;" data-required="1" data-placeholder="Email"></div><div class="tve_lg_input_container tve_lg_input ttfm2" data-css="tve-u-345a8057215058e"><input name="mepr_user_password" id="mepr_user_password" type="password" placeholder="Password" value="" required="required" data-css="tve-u-335a80572150510" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;" data-placeholder="Password" data-required="1"></div><div class="tve_lg_input_container tve_lg_input ttfm2" data-css="tve-u-355a80572150612"><input name="mepr_user_password_confirm" id="mepr_user_password_confirm" type="password" placeholder="Password Confirmation" value="" required="required" data-css="tve-u-335a80572150510" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;" data-placeholder="Password Confirmation" data-required="1"></div><div class="tve_lg_input_container tve_lg_input"><input name="mepr_no_val" id="mepr_no_val" type="text" placeholder="mepr_no_val" data-css="tve-u-335a80572150510"></div><div class="tve_lg_input_container tve_submit_container tve_lg_submit ttfm2" data-css="tve-u-365a80572150698" data-tcb_hover_state_parent=""><button type="submit" class="tve-froala">Join Now!</button></div></div><div style="display: none;"></div></form></div><div class="thrv_lead_generation_code" style="display: none;"></div></div></div></div></div></div></div></div></div></div></div></div></p><div style="text-align: center; margin-top: 10px;">Already a member? <a href="https://thoughts-on-java.org/login/?redirect_to=http%3A%2F%2Fwww.thoughts-on-java.org%2Fcheat-sheets%2F%23977149b6406f10d261aa6a5f8a8339f2" target="_blank" rel="noopener">Login here.</a></div><br>
+<br>
+&nbsp;<p></p>
+<h3>GenerationType.AUTO</h3>
+<p>The <em>GenerationType.AUTO</em> is the default generation type and lets the persistence provider choose the generation strategy.</p>
+<p><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_002.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-generationtypeauto-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-generationtypeauto-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-generationtypeauto-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-generationtypeauto-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-generationtypeauto-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span>(<span class="pl-c1">strategy</span> <span class="pl-k">=</span> <span class="pl-smi">GenerationType</span><span class="pl-c1"><span class="pl-k">.</span>AUTO</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypeauto-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-generationtypeauto-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypeauto-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-generationtypeauto-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/GenerationTypeAuto.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-generationtypeauto-java">GenerationTypeAuto.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<p></p>
+<p>If you use Hibernate as your persistence provider, it selects a 
+generation strategy based on the database specific dialect. For most 
+popular databases, it selects <em>GenerationType.SEQUENCE</em> which I will explain later. &nbsp; </p>
+<p>&nbsp;</p>
+<div class="content-box-gray" style="float: right; width: 260px; text-align: center; margin-left: 10px;">Watch it on YouTube<p></p>
+<div class="lyte-wrapper" style="width:640px;max-width: 100%;margin:5px auto;">
+<div class="lyte hidef qsa_\&amp;showinfo\=0 lP" id="WYL_pgknN921XL8" itemprop="video" itemscope="" itemtype="https://schema.org/VideoObject"><meta itemprop="thumbnailUrl" content="https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2FpgknN921XL8%2Fmaxresdefault.jpg"><meta itemprop="embedURL" content="https://www.youtube.com/embed/pgknN921XL8"><meta itemprop="uploadDate" content=""><p></p>
+<div id="lyte_pgknN921XL8" data-src="https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2FpgknN921XL8%2Fmaxresdefault.jpg" class="pL">
+<div class="tC hidden">
+<div class="tT" itemprop="name"></div>
+</div>
+<div class="play"></div>
+<div class="ctrl">
+<div class="Lctrl"></div>
+<div class="Rctrl"></div>
+</div>
+</div>
+<p><noscript><a href="https://youtu.be/pgknN921XL8"><img class="lazy lazy-hidden" src="//thoughts-on-java.org/wp-content/plugins/a3-lazy-load/assets/images/lazy_placeholder.gif" data-lazy-type="image" data-src="https://i.ytimg.com/vi/pgknN921XL8/0.jpg" alt="" width="640" height="340" /><noscript><img src="https://i.ytimg.com/vi/pgknN921XL8/0.jpg" alt="" width="640" height="340" /></noscript><br>Watch this video on YouTube<meta itemprop="description" content=""></p></div>
+</div>
+<div class="lL" style="max-width:100%;width:640px;margin:5px auto;"><span class="lyte_disclaimer"><a href="http://bit.ly/2cUsid8">Follow me on YouTube</a> to not miss any new videos.</span></div>
+</div>
+<h3>GenerationType.IDENTITY</h3>
+<p>The <em>GenerationType.IDENTITY</em> is the easiest to use but not 
+the best one from a performance point of view. It relies on an 
+auto-incremented database column and lets the database&nbsp;generate a 
+new value with each insert operation. From a database point of view, 
+this is very efficient because the auto-increment columns are highly 
+optimized, and it doesn’t require any additional statements.</p>
+<p style="clear: both">
+<script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_006.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-generationtypeidentity-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-generationtypeidentity-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-generationtypeidentity-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-generationtypeidentity-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-generationtypeidentity-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span>(<span class="pl-c1">strategy</span> <span class="pl-k">=</span> <span class="pl-smi">GenerationType</span><span class="pl-c1"><span class="pl-k">.</span>IDENTITY</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypeidentity-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-generationtypeidentity-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypeidentity-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-generationtypeidentity-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/GenerationTypeIdentity.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-generationtypeidentity-java">GenerationTypeIdentity.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+
+<p></p>
+<p>This approach has a significant drawback if you use Hibernate. 
+Hibernate requires a primary key value for each managed entity and 
+therefore has to perform the insert statement immediately. This prevents
+ it from using <a href="https://thoughts-on-java.org/course-hibernate-performance-tuning/">different optimization techniques</a>&nbsp;like JDBC batching.</p>
+<p>&nbsp;</p>
+<div class="content-box-gray" style="float: right; width: 260px; text-align: center; margin-left: 10px;">Watch it on YouTube<p></p>
+<div class="lyte-wrapper" style="width:640px;max-width: 100%;margin:5px auto;">
+<div class="lyte hidef qsa_\&amp;showinfo\=0 lP" id="WYL_a0ScR_JAKfI" itemprop="video" itemscope="" itemtype="https://schema.org/VideoObject"><meta itemprop="thumbnailUrl" content="https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2Fa0ScR_JAKfI%2Fmaxresdefault.jpg"><meta itemprop="embedURL" content="https://www.youtube.com/embed/a0ScR_JAKfI"><meta itemprop="uploadDate" content=""><p></p>
+<div id="lyte_a0ScR_JAKfI" data-src="https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyteThumbs.php?origThumbUrl=%2F%2Fi.ytimg.com%2Fvi%2Fa0ScR_JAKfI%2Fmaxresdefault.jpg" class="pL">
+<div class="tC hidden">
+<div class="tT" itemprop="name"></div>
+</div>
+<div class="play"></div>
+<div class="ctrl">
+<div class="Lctrl"></div>
+<div class="Rctrl"></div>
+</div>
+</div>
+<p><noscript><a href="https://youtu.be/a0ScR_JAKfI"><img class="lazy lazy-hidden" src="//thoughts-on-java.org/wp-content/plugins/a3-lazy-load/assets/images/lazy_placeholder.gif" data-lazy-type="image" data-src="https://i.ytimg.com/vi/a0ScR_JAKfI/0.jpg" alt="" width="640" height="340" /><noscript><img src="https://i.ytimg.com/vi/a0ScR_JAKfI/0.jpg" alt="" width="640" height="340" /></noscript><br>Watch this video on YouTube<meta itemprop="description" content=""></p></div>
+</div>
+<div class="lL" style="max-width:100%;width:640px;margin:5px auto;"><span class="lyte_disclaimer"><a href="http://bit.ly/2cUsid8">Follow me on YouTube</a> to not miss any new videos.</span></div>
+</div>
+<h3>GenerationType.SEQUENCE</h3>
+<p>The <em>GenerationType.SEQUENCE</em> is my preferred way to generate primary key values and uses a database sequence to generate unique values. </p>
+<p>It requires additional select statements to get the next value from a
+ database sequence. But this has no performance impact for most 
+applications. And if your application has to persist a huge number of 
+new entities, you can use some <a href="https://thoughts-on-java.org/course-hibernate-performance-tuning/">Hibernate specific optimizations</a> to reduce the number of statements.</p>
+<p><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_003.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-generationtypesequence-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-generationtypesequence-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-generationtypesequence-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-generationtypesequence-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-generationtypesequence-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span>(<span class="pl-c1">strategy</span> <span class="pl-k">=</span> <span class="pl-smi">GenerationType</span><span class="pl-c1"><span class="pl-k">.</span>SEQUENCE</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypesequence-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-generationtypesequence-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypesequence-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-generationtypesequence-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/GenerationTypeSequence.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-generationtypesequence-java">GenerationTypeSequence.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<p></p>
+<p>If you don’t provide any additional information, Hibernate 
+will&nbsp;request the next value from its default sequence.&nbsp;You can
+ change that by referencing the name of a <em>@SequenceGenerator</em> in the <em>generator</em> attribute of the <em>@GeneratedValue</em> annotation. The <em>@SequenceGenerator</em>
+ annotation lets you define the name of the generator, the name, and 
+schema of the database sequence and the allocation size of the sequence.</p>
+<p><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_004.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-sequencegenerator-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-sequencegenerator-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-sequencegenerator-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-sequencegenerator-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-sequencegenerator-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span>(<span class="pl-c1">strategy</span> <span class="pl-k">=</span> <span class="pl-smi">GenerationType</span><span class="pl-c1"><span class="pl-k">.</span>SEQUENCE</span>, <span class="pl-c1">generator</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>book_generator<span class="pl-pds">"</span></span>)</td>
+      </tr>
+      <tr>
+        <td id="file-sequencegenerator-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-sequencegenerator-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@SequenceGenerator</span>(<span class="pl-c1">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>book_generator<span class="pl-pds">"</span></span>, <span class="pl-c1">sequenceName</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>book_seq<span class="pl-pds">"</span></span>, <span class="pl-c1">allocationSize</span><span class="pl-k">=</span><span class="pl-c1">50</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-sequencegenerator-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-sequencegenerator-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-sequencegenerator-java-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-sequencegenerator-java-LC5" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/SequenceGenerator.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-sequencegenerator-java">SequenceGenerator.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<p></p>
+<p>&nbsp;</p>
+<h3>GenerationType.TABLE</h3>
+<p>The <em>GenerationType.TABLE</em> gets only rarely used nowadays. It 
+simulates a sequence by storing and updating its current value in a 
+database table which requires the use of pessimistic locks which put all
+ transactions into a sequential order. This slows down your application,
+ and you should, therefore, prefer the <em>GenerationType.SEQUENCE</em>, if your database supports sequences, which most popular databases do.</p>
+<p><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-generationtypetable-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-generationtypetable-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-generationtypetable-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-generationtypetable-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-generationtypetable-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span>(<span class="pl-c1">strategy</span> <span class="pl-k">=</span> <span class="pl-smi">GenerationType</span><span class="pl-c1"><span class="pl-k">.</span>TABLE</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypetable-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-generationtypetable-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-generationtypetable-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-generationtypetable-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/GenerationTypeTable.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-generationtypetable-java">GenerationTypeTable.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<p></p>
+<p>You can use the <em>@TableGenerator</em> annotation in a similar way as the already explained <em>@SequenceGenerator</em> annotation to specify the database table which Hibernate shall use to simulate the sequence.</p>
+<p><script src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/75d9c920ce3c6c67b136043ca0860101_008.js"></script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/gist-embed-c25e2efde9da332f6cd59ef5c647a379.css"></p><div id="gist37037294" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-tablegenerator-java" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-java ">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-tablegenerator-java-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-tablegenerator-java-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Id</span></td>
+      </tr>
+      <tr>
+        <td id="file-tablegenerator-java-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-tablegenerator-java-LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@GeneratedValue</span>(<span class="pl-c1">strategy</span> <span class="pl-k">=</span> <span class="pl-smi">GenerationType</span><span class="pl-c1"><span class="pl-k">.</span>TABLE</span>, <span class="pl-c1">generator</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>book_generator<span class="pl-pds">"</span></span>)</td>
+      </tr>
+      <tr>
+        <td id="file-tablegenerator-java-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-tablegenerator-java-LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@TableGenerator</span>(<span class="pl-c1">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>book_generator<span class="pl-pds">"</span></span>, <span class="pl-c1">table</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>id_generator<span class="pl-pds">"</span></span>, <span class="pl-c1">schema</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>bookstore<span class="pl-pds">"</span></span>)</td>
+      </tr>
+      <tr>
+        <td id="file-tablegenerator-java-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-tablegenerator-java-LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-k">@Column</span>(<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-c1">updatable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>, <span class="pl-c1">nullable</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>)</td>
+      </tr>
+      <tr>
+        <td id="file-tablegenerator-java-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-tablegenerator-java-LC5" class="blob-code blob-code-inner js-file-line"><span class="pl-k">private</span> <span class="pl-smi">Long</span> id;</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101/raw/ccfb68155cb886942682446bf82d388c4a22623a/TableGenerator.java" style="float:right">view raw</a>
+        <a href="https://gist.github.com/thjanssen/75d9c920ce3c6c67b136043ca0860101#file-tablegenerator-java">TableGenerator.java</a>
+        hosted with <img draggable="false" class="emoji" alt="❤" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/2764.svg"> by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<br>
+<!--977149b6406f10d261aa6a5f8a8339f2--><br>
+<!--div class="content-box-yellow" style="text-align: center;"><br />
+<h3>Get this post as a free cheat sheet!</h3><br />
+I prepared a free cheat sheet with the most important information and code snippets of this post. As always, you can download it for free from the Thoughts on Java Library.<br />
+<div style="text-align: center; margin-top: 10px;"><a class="button" href="https://thoughts-on-java.org/free-member-library-signup/?utm_source=upgrade&amp;utm_campaign=lib&amp;utm_medium=blog" target="_blank" rel="noopener">Join Now!</a></div><br />
+</div--><br>
+<div class="tve-leads-shortcode tve-tl-anim tl-anim-instant tve-leads-track-shortcode_17881 tve-leads-triggered"><div class="tl-style" id="tve_tcb2_set-007-v1" data-state="33" data-form-state=""><style type="text/css" class="tve_custom_style">@import url("//fonts.googleapis.com/css?family=Lato:300,700,400&subset=latin");@media (min-width: 300px){[data-css="tve-u-365a80572150698"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-275a8057215021d"] { font-size: 20px !important; }#tve_editor [data-css="tve-u-215a8057214ff42"] { font-size: 20px !important; }#tve_editor [data-css="tve-u-185a8057214f8e5"] { font-size: 20px !important; }[data-css="tve-u-165a8057214f717"] { margin-top: 1px !important; }[data-css="tve-u-355a80572150612"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-355a80572150612"] input { font-family: Arial; font-weight: 300; }#tve_editor [data-css="tve-u-355a80572150612"] input, #tve_editor [data-css="tve-u-355a80572150612"] input::placeholder { color: rgb(97, 121, 131) !important; }[data-css="tve-u-325a80572150493"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-325a80572150493"] input { font-family: Arial; font-weight: 300; }#tve_editor [data-css="tve-u-325a80572150493"] input, #tve_editor [data-css="tve-u-325a80572150493"] input::placeholder { color: rgb(97, 121, 131) !important; }[data-css="tve-u-345a8057215058e"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-345a8057215058e"] input { font-family: Arial; font-weight: 300; }#tve_editor [data-css="tve-u-345a8057215058e"] input, #tve_editor [data-css="tve-u-345a8057215058e"] input::placeholder { color: rgb(97, 121, 131) !important; }[data-css="tve-u-265a805721501a5"] { color: rgb(246, 153, 20); }[data-css="tve-u-255a8057215012d"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-255a8057215012d"] { font-weight: 300; font-family: Lora !important; font-size: 20px !important; }#tve_editor [data-css="tve-u-165a8057214f717"] p, #tve_editor [data-css="tve-u-165a8057214f717"] li, #tve_editor [data-css="tve-u-165a8057214f717"] blockquote, #tve_editor [data-css="tve-u-165a8057214f717"] address, #tve_editor [data-css="tve-u-165a8057214f717"] h1, #tve_editor [data-css="tve-u-165a8057214f717"] h2, #tve_editor [data-css="tve-u-165a8057214f717"] h3, #tve_editor [data-css="tve-u-165a8057214f717"] h4, #tve_editor [data-css="tve-u-165a8057214f717"] h5, #tve_editor [data-css="tve-u-165a8057214f717"] h6 { color: rgb(255, 255, 255); }[data-css="tve-u-245a805721500b4"] { color: rgb(246, 153, 20); }[data-css="tve-u-205a8057214fec4"] { color: rgb(246, 153, 20); }[data-css="tve-u-175a8057214f7af"] { color: rgb(246, 153, 20); }#tve_editor [data-css="tve-u-145a8057214f1a6"] { color: rgb(255, 255, 255) !important; font-size: 20px !important; }[data-css="tve-u-115a8057214eea6"] { color: rgb(246, 153, 20) !important; }[data-css="tve-u-135a8057214efbe"] { margin-top: 20px !important; margin-bottom: 20px !important; padding-bottom: 2px !important; padding-top: 2px !important; }#tve_editor [data-css="tve-u-365a80572150698"]:hover button { background-color: rgb(247, 173, 66) !important; background-image: none !important; }[data-css="tve-u-135a8057214efbe"] .tve_sep { border-width: 1px; border-color: rgb(255, 255, 255); }[data-css="tve-u-85a8057214ed28"] { padding: 30px 30px 30px 20px !important; }[data-css="tve-u-305a80572150395"] { padding-top: 30px !important; padding-bottom: 30px !important; padding-right: 20px !important; }#tve_editor [data-css="tve-u-365a80572150698"] button { font-size: 20px; font-family: Lato; border-radius: 0px; overflow: hidden; border-bottom: 1px solid rgb(105, 143, 51); text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 2px; font-weight: bold; background-color: rgb(246, 153, 20) !important; background-image: none !important; }[data-css="tve-u-315a80572150413"] strong { font-weight: 700; }#tve_editor [data-css="tve-u-315a80572150413"] { font-family: Lato; font-weight: 300; color: rgb(30, 64, 78) !important; font-size: 29px !important; }[data-css="tve-u-95a8057214edac"] strong { font-weight: 700; }[data-css="tve-u-95a8057214edac"] { line-height: 1em !important; }#tve_editor [data-css="tve-u-95a8057214edac"] { font-family: Lato; font-weight: 300; color: rgb(255, 255, 255) !important; font-size: 29px !important; }[data-css="tve-u-45a8057214eaec"] { background-color: rgb(30, 64, 78) !important; background-image: none !important; }[data-css="tve-u-05a8057214e8aa"] { padding: 0px !important; background-color: rgb(228, 235, 239) !important; }[data-css="tve-u-25a8057214e9ce"] { padding: 0px !important; }[data-css="tve-u-15a8057214e93e"] { margin: 0px !important; }[data-css="tve-u-55a8057214eb7c"] { margin: 0px !important; }[data-css="tve-u-65a8057214ec0c"] { padding: 0px !important; }[data-css="tve-u-295a8057215031a"] { max-width: 35%; }[data-css="tve-u-35a8057214ea58"] { max-width: 65%; }}@media (max-width: 767px){[data-css="tve-u-305a80572150395"] { padding-left: 20px !important; }}</style><style type="text/css" class="tve_user_custom_style">.tve-leads-conversion-object .thrv_heading h1,.tve-leads-conversion-object .thrv_heading h2,.tve-leads-conversion-object .thrv_heading h3{margin:0;padding:0}.tve-leads-conversion-object .thrv_text_element p,.tve-leads-conversion-object .thrv_text_element h1,.tve-leads-conversion-object .thrv_text_element h2,.tve-leads-conversion-object .thrv_text_element h3{margin:0}#mepr_no_val {    display:none;}</style><div class="tve-leads-conversion-object" data-tl-type="shortcode_17881"><div class="tve_flt"><div id="tve_editor" class="tve_shortcode_editor"><div class="thrv-leads-form-box tve_no_drag tve_no_icons thrv_wrapper tve_editor_main_content thrv-leads-in-content tve_empty_dropzone" style="" data-css="tve-u-05a8057214e8aa"><div class="thrv_wrapper thrv-columns" style="" data-css="tve-u-15a8057214e93e"><div class="tcb-flex-row tcb-resized tcb--cols--2" data-css="tve-u-25a8057214e9ce"><div class="tcb-flex-col" data-css="tve-u-35a8057214ea58" style=""><div class="tcb-col tve_empty_dropzone" style="" data-css="tve-u-45a8057214eaec"><div class="thrv_wrapper thrv-columns" style="" data-css="tve-u-55a8057214eb7c"><div class="tcb-flex-row tcb--cols--1" data-css="tve-u-65a8057214ec0c"><div class="tcb-flex-col" data-css="tve-u-75a8057214ec9e" style=""><div class="tcb-col tve_empty_dropzone" style="" data-css="tve-u-85a8057214ed28"><div class="thrv_wrapper thrv_text_element tve_empty_dropzone" style=""><p data-css="tve-u-95a8057214edac" data-default="Enter your text here..."><span class="ttfm2" data-css="tve-u-105a8057214ee2a">Join the&nbsp;</span><span data-css="tve-u-115a8057214eea6" style="color: rgb(246, 153, 20);"><span class="ttfm2" data-css="tve-u-125a8057214ef36">Thoughts on Java Library</span></span></p></div><div class="thrv_wrapper thrv-divider" data-style="tve_sep-1" data-thickness="1" data-color="#ffffff" style="" data-css="tve-u-135a8057214efbe"><hr class="tve_sep tve_sep-1"></div><div class="thrv_wrapper thrv_text_element tve_empty_dropzone on_hover" style=""><p class="ttfm2" data-css="tve-u-145a8057214f1a6" data-default="Enter your text here..."><span class="ttfm2" data-css="tve-u-155a8057214f237">Get free access to:</span></p></div><div class="thrv_wrapper thrv-styled_list" data-icon-code="icon-check" data-color="rgb(246, 153, 20)" data-css="tve-u-165a8057214f717"><ul class="tcb-styled-list"><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-175a8057214f7af"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete" data-css="tve-u-185a8057214f8e5"><span class="ttfm2" data-css="tve-u-195a8057214f978">2 Ebooks about JPA and Hibernate</span></span></li><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-205a8057214fec4"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete" data-css="tve-u-215a8057214ff42"><span class="ttfm2" data-css="tve-u-225a8057214ffbd"><span class="ttfm2" data-css="tve-u-235a8057215003c">More than 50 Cheat Sheets</span></span></span></li><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-245a805721500b4"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete ttfm2" data-css="tve-u-255a8057215012d">More than 60 printable Hibernate Tips</span></li><li class="thrv-styled-list-item"><div class="tcb-styled-list-icon"><div class="thrv_wrapper thrv_icon tve_no_drag tcb-no-delete tcb-no-clone tcb-icon-inherit-style" data-css="tve-u-265a805721501a5"><svg class="tcb-icon" viewBox="0 0 32 32" data-name="checkcheck"><title>check</title><path d="M29.333 10.267c0 0.4-0.133 0.8-0.533 1.2l-14.8 14.8c-0.267 0.267-0.667 0.4-1.067 0.4s-0.933-0.133-1.2-0.533l-2.4-2.267-6.267-6.267c-0.267-0.267-0.4-0.667-0.4-1.2s0.133-0.8 0.533-1.2l2.4-2.4c0.267-0.133 0.667-0.4 1.067-0.4s0.8 0.133 1.2 0.533l5.067 5.067 11.2-11.333c0.267-0.267 0.667-0.533 1.2-0.533 0.4 0 0.8 0.133 1.2 0.533l2.4 2.4c0.267 0.267 0.4 0.667 0.4 1.2z"></path></svg></div></div><span class="thrv-advanced-inline-text tve_editable tcb-styled-list-icon-text tcb-no-delete" data-css="tve-u-275a8057215021d"><span class="ttfm2" data-css="tve-u-285a8057215029e">A 3-Part Video Course about Finding and Fixing N+1 Select Issues</span></span></li></ul></div></div></div></div></div></div></div><div class="tcb-flex-col" data-css="tve-u-295a8057215031a" style=""><div class="tcb-col tve_empty_dropzone" style="" data-css="tve-u-305a80572150395"><div class="thrv_wrapper thrv_text_element tve_empty_dropzone" style=""><p class="ttfm2" data-css="tve-u-315a80572150413" data-default="Enter your text here..."><strong>Signup For Free:</strong></p></div><div class="thrv_wrapper thrv_lead_generation" data-connection="custom-html" style=""><input type="hidden" class="tve-lg-err-msg" value="{&quot;email&quot;:&quot;Email address invalid&quot;,&quot;phone&quot;:&quot;Phone number invalid&quot;,&quot;password&quot;:&quot;Password invalid&quot;,&quot;passwordmismatch&quot;:&quot;Password mismatch error&quot;,&quot;required&quot;:&quot;Required field missing&quot;}"><div class="thrv_lead_generation_container tve_clearfix"><form method="post" action="http://thoughts-on-java.org/register/library/#mepr_errors"><input type="hidden" class="tve-f-a-hidden" value="http://thoughts-on-java.org/register/library/#mepr_errors"><input id="mepr_process_signup_form" type="hidden" name="mepr_process_signup_form" value="Y"><input id="mepr_product_id" type="hidden" name="mepr_product_id" value="15656"><input id="user_first_name" type="hidden" name="user_first_name" value=""><input id="user_last_name" type="hidden" name="user_last_name" value=""><input id="mepr-geo-country" type="hidden" name="mepr-geo-country" value=""><div class="tve_lead_generated_inputs_container tve_empty_dropzone"><div class="tve_lg_input_container tve_lg_input ttfm2" data-css="tve-u-325a80572150493"><input name="user_email" id="user_email" type="email" placeholder="Email" required="required" data-css="tve-u-335a80572150510" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;" data-required="1" data-placeholder="Email"></div><div class="tve_lg_input_container tve_lg_input ttfm2" data-css="tve-u-345a8057215058e"><input name="mepr_user_password" id="mepr_user_password" type="password" placeholder="Password" value="" required="required" data-css="tve-u-335a80572150510" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;" data-placeholder="Password" data-required="1"></div><div class="tve_lg_input_container tve_lg_input ttfm2" data-css="tve-u-355a80572150612"><input name="mepr_user_password_confirm" id="mepr_user_password_confirm" type="password" placeholder="Password Confirmation" value="" required="required" data-css="tve-u-335a80572150510" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;" data-placeholder="Password Confirmation" data-required="1"></div><div class="tve_lg_input_container tve_lg_input"><input name="mepr_no_val" id="mepr_no_val" type="text" placeholder="mepr_no_val" data-css="tve-u-335a80572150510"></div><div class="tve_lg_input_container tve_submit_container tve_lg_submit ttfm2" data-css="tve-u-365a80572150698" data-tcb_hover_state_parent=""><button type="submit" class="tve-froala">Join Now!</button></div></div><div style="display: none;"></div></form></div><div class="thrv_lead_generation_code" style="display: none;"></div></div></div></div></div></div></div></div></div></div></div></div><div style="text-align: center; margin-top: 10px;">Already a member? <a href="https://thoughts-on-java.org/login/?redirect_to=http%3A%2F%2Fwww.thoughts-on-java.org%2Fcheat-sheets%2F%23977149b6406f10d261aa6a5f8a8339f2" target="_blank" rel="noopener">Login here.</a></div><br>
+<p></p>
+<p>&nbsp;</p>
+<h2>Summary</h2>
+<p>As you’ve seen,&nbsp;JPA offers 4 different ways to generate primary key values:</p>
+<ol>
+<li><em>AUTO</em>: Hibernate selects the generation strategy based on the used dialect,</li>
+<li><em>IDENTITY</em>: Hibernate relies on an auto-incremented database column to generate the primary key,</li>
+<li><em>SEQUENCE</em>: Hibernate requests the primary key value from a database sequence,</li>
+<li><em>TABLE</em>: Hibernate uses a database table to simulate a sequence.</li>
+</ol>
+<p>I prefer to use the <em>GenerationType.SEQUENCE</em> because it is 
+very efficient and allows Hibernate to decide when to perform the insert
+ statement. This provides the required flexibility to use other 
+performance optimization techniques like JDBC batching.<br>
+When you like to learn more about performance tuning and how Hibernate can optimize the <em>GenerationType.SEQUENCE</em>, have a look at my <a href="https://thoughts-on-java.org/course-hibernate-performance-tuning/">Hibernate Performance Tuning Online Training</a>.</p>
+<div class="shariff shariff-align-flex-start shariff-widget-align-flex-start" style="display:none"><ul class="shariff-buttons theme-color orientation-horizontal buttonsize-small"><li class="shariff-button twitter shariff-nocustomcolor" style="background-color:#32bbf5"><a href="https://twitter.com/share?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;text=How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate&amp;via=thjanssen123" title="Share on Twitter" aria-label="Share on Twitter" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#55acee; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 32"><path fill="#55acee" d="M29.7 6.8q-1.2 1.8-3 3.1 0 0.3 0 0.8 0 2.5-0.7 4.9t-2.2 4.7-3.5 4-4.9 2.8-6.1 1q-5.1 0-9.3-2.7 0.6 0.1 1.5 0.1 4.3 0 7.6-2.6-2-0.1-3.5-1.2t-2.2-3q0.6 0.1 1.1 0.1 0.8 0 1.6-0.2-2.1-0.4-3.5-2.1t-1.4-3.9v-0.1q1.3 0.7 2.8 0.8-1.2-0.8-2-2.2t-0.7-2.9q0-1.7 0.8-3.1 2.3 2.8 5.5 4.5t7 1.9q-0.2-0.7-0.2-1.4 0-2.5 1.8-4.3t4.3-1.8q2.7 0 4.5 1.9 2.1-0.4 3.9-1.5-0.7 2.2-2.7 3.4 1.8-0.2 3.5-0.9z"></path></svg></span><span class="shariff-text">tweet</span>&nbsp;</a></li><li class="shariff-button facebook shariff-nocustomcolor" style="background-color:#4273c8"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on Facebook" aria-label="Share on Facebook" role="button" rel="nofollow" class="shariff-link" style="; background-color:#3b5998; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 32"><path fill="#3b5998" d="M17.1 0.2v4.7h-2.8q-1.5 0-2.1 0.6t-0.5 1.9v3.4h5.2l-0.7 5.3h-4.5v13.6h-5.5v-13.6h-4.5v-5.3h4.5v-3.9q0-3.3 1.9-5.2t5-1.8q2.6 0 4.1 0.2z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button googleplus shariff-nocustomcolor" style="background-color:#f75b44"><a href="https://plus.google.com/share?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on Google+" aria-label="Share on Google+" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#d34836; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#d34836" d="M31.6 14.7h-3.3v-3.3h-2.6v3.3h-3.3v2.6h3.3v3.3h2.6v-3.3h3.3zM10.8 14v4.1h5.7c-0.4 2.4-2.6 4.2-5.7 4.2-3.4 0-6.2-2.9-6.2-6.3s2.8-6.3 6.2-6.3c1.5 0 2.9 0.5 4 1.6v0l2.9-2.9c-1.8-1.7-4.2-2.7-7-2.7-5.8 0-10.4 4.7-10.4 10.4s4.7 10.4 10.4 10.4c6 0 10-4.2 10-10.2 0-0.8-0.1-1.5-0.2-2.2 0 0-9.8 0-9.8 0z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button linkedin shariff-nocustomcolor" style="background-color:#1488bf"><a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;title=How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate" title="Share on LinkedIn" aria-label="Share on LinkedIn" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#0077b5; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 32"><path fill="#0077b5" d="M6.2 11.2v17.7h-5.9v-17.7h5.9zM6.6 5.7q0 1.3-0.9 2.2t-2.4 0.9h0q-1.5 0-2.4-0.9t-0.9-2.2 0.9-2.2 2.4-0.9 2.4 0.9 0.9 2.2zM27.4 18.7v10.1h-5.9v-9.5q0-1.9-0.7-2.9t-2.3-1.1q-1.1 0-1.9 0.6t-1.2 1.5q-0.2 0.5-0.2 1.4v9.9h-5.9q0-7.1 0-11.6t0-5.3l0-0.9h5.9v2.6h0q0.4-0.6 0.7-1t1-0.9 1.6-0.8 2-0.3q3 0 4.9 2t1.9 6z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button reddit shariff-nocustomcolor" style="background-color:#ff5700"><a href="https://www.reddit.com/submit?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on Reddit" aria-label="Share on Reddit" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#ff4500; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#ff4500" d="M440.3 203.5c-15 0-28.2 6.2-37.9 15.9-35.7-24.7-83.8-40.6-137.1-42.3L293 52.3l88.2 19.8c0 21.6 17.6 39.2 39.2 39.2 22 0 39.7-18.1 39.7-39.7s-17.6-39.7-39.7-39.7c-15.4 0-28.7 9.3-35.3 22l-97.4-21.6c-4.9-1.3-9.7 2.2-11 7.1L246.3 177c-52.9 2.2-100.5 18.1-136.3 42.8-9.7-10.1-23.4-16.3-38.4-16.3-55.6 0-73.8 74.6-22.9 100.1-1.8 7.9-2.6 16.3-2.6 24.7 0 83.8 94.4 151.7 210.3 151.7 116.4 0 210.8-67.9 210.8-151.7 0-8.4-.9-17.2-3.1-25.1 49.9-25.6 31.5-99.7-23.8-99.7zM129.4 308.9c0-22 17.6-39.7 39.7-39.7 21.6 0 39.2 17.6 39.2 39.7 0 21.6-17.6 39.2-39.2 39.2-22 .1-39.7-17.6-39.7-39.2zm214.3 93.5c-36.4 36.4-139.1 36.4-175.5 0-4-3.5-4-9.7 0-13.7 3.5-3.5 9.7-3.5 13.2 0 27.8 28.5 120 29 149 0 3.5-3.5 9.7-3.5 13.2 0 4.1 4 4.1 10.2.1 13.7zm-.8-54.2c-21.6 0-39.2-17.6-39.2-39.2 0-22 17.6-39.7 39.2-39.7 22 0 39.7 17.6 39.7 39.7-.1 21.5-17.7 39.2-39.7 39.2z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button xing shariff-nocustomcolor" style="background-color:#29888a"><a href="https://www.xing.com/social_plugins/share?url=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F" title="Share on XING" aria-label="Share on XING" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#126567; color:#fff" target="_blank"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 32"><path fill="#126567" d="M10.7 11.9q-0.2 0.3-4.6 8.2-0.5 0.8-1.2 0.8h-4.3q-0.4 0-0.5-0.3t0-0.6l4.5-8q0 0 0 0l-2.9-5q-0.2-0.4 0-0.7 0.2-0.3 0.5-0.3h4.3q0.7 0 1.2 0.8zM25.1 0.4q0.2 0.3 0 0.7l-9.4 16.7 6 11q0.2 0.4 0 0.6-0.2 0.3-0.6 0.3h-4.3q-0.7 0-1.2-0.8l-6-11.1q0.3-0.6 9.5-16.8 0.4-0.8 1.2-0.8h4.3q0.4 0 0.5 0.3z"></path></svg></span><span class="shariff-text">share</span>&nbsp;</a></li><li class="shariff-button mailto shariff-nocustomcolor" style="background-color:#a8a8a8"><a href="mailto:?body=https%3A%2F%2Fthoughts-on-java.org%2Fjpa-generate-primary-keys%2F&amp;subject=How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate" title="Send by email" aria-label="Send by email" role="button" rel="noopener nofollow" class="shariff-link" style="; background-color:#999; color:#fff"><span class="shariff-icon" style=""><svg width="32px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#999" d="M32 12.7v14.2q0 1.2-0.8 2t-2 0.9h-26.3q-1.2 0-2-0.9t-0.8-2v-14.2q0.8 0.9 1.8 1.6 6.5 4.4 8.9 6.1 1 0.8 1.6 1.2t1.7 0.9 2 0.4h0.1q0.9 0 2-0.4t1.7-0.9 1.6-1.2q3-2.2 8.9-6.1 1-0.7 1.8-1.6zM32 7.4q0 1.4-0.9 2.7t-2.2 2.2q-6.7 4.7-8.4 5.8-0.2 0.1-0.7 0.5t-1 0.7-0.9 0.6-1.1 0.5-0.9 0.2h-0.1q-0.4 0-0.9-0.2t-1.1-0.5-0.9-0.6-1-0.7-0.7-0.5q-1.6-1.1-4.7-3.2t-3.6-2.6q-1.1-0.7-2.1-2t-1-2.5q0-1.4 0.7-2.3t2.1-0.9h26.3q1.2 0 2 0.8t0.9 2z"></path></svg></span><span class="shariff-text">e-mail</span>&nbsp;</a></li></ul></div><span id="tve_leads_end_content" style="display: block; visibility: hidden; border: 1px solid transparent;"></span><div class="yarpp-related">
+<h3>Related posts:</h3><ol>
+<li><a href="https://thoughts-on-java.org/hibernate-tips-map-enum-database-column/" rel="bookmark" title="Hibernate Tips: How to map an Enum to a database column">Hibernate Tips: How to map an Enum to a database column </a></li>
+<li><a href="https://thoughts-on-java.org/hibernate-tips-map-bidirectional-many-one-association/" rel="bookmark" title="Hibernate Tips: How to map a bidirectional many-to-one association">Hibernate Tips: How to map a bidirectional many-to-one association </a></li>
+<li><a href="https://thoughts-on-java.org/hibernate-tips-limit-jpql-query-results-specific-subclass/" rel="bookmark" title="Hibernate Tips: How to select a specific subclass from an inheritance hierarchy">Hibernate Tips: How to select a specific subclass from an inheritance hierarchy </a></li>
+<li><a href="https://thoughts-on-java.org/hibernate-tip-fastest-option-delete-100-records/" rel="bookmark" title="Hibernate Tip: What is the fastest option to delete 100 database records">Hibernate Tip: What is the fastest option to delete 100 database records </a></li>
+</ol>
+</div>
+<!--<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+			xmlns:dc="http://purl.org/dc/elements/1.1/"
+			xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+		<rdf:Description rdf:about="https://thoughts-on-java.org/jpa-generate-primary-keys/"
+    dc:identifier="https://thoughts-on-java.org/jpa-generate-primary-keys/"
+    dc:title="How to generate primary keys with JPA and Hibernate"
+    trackback:ping="https://thoughts-on-java.org/jpa-generate-primary-keys/trackback/" />
+</rdf:RDF>-->
+<div class="supporterFooter">Become a <a href="http://thoughts-on-java.org/become-a-thoughts-on-java-supporter/?utm_source=blog&amp;utm_medium=header&amp;utm_campaign=supporter">Thoughts on Java Supporter</a> to claim your member perks and to help me write more articles like this.</div> </div><footer class="entry-footer"><p class="entry-meta"><span class="entry-categories">Filed Under: <a href="https://thoughts-on-java.org/category/hibernate/" rel="category tag">Hibernate</a>, <a href="https://thoughts-on-java.org/category/jpa/" rel="category tag">JPA</a></span> </p></footer></article><div class="after-entry widget-area"><section id="custom_html-2" class="widget_text widget widget_custom_html"><div class="widget_text widget-wrap"><div class="textwidget custom-html-widget"><h3>Implement Your Persistence Layer with Ease</h3>
+<a href="http://www.hibernate-tips.com/"><img class="lazy-hidden" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2017/10/Thorben-Janssen-Facebook-Ad-3-1.png"><noscript><img src="/wp-content/uploads/2017/10/Thorben-Janssen-Facebook-Ad-3-1.png"></noscript></a>
+
+<h3 style="margin-top: 40px">Learn More About Hibernate</h3>
+<a href="https://thoughts-on-java.org/jpa-for-beginners/"><img class="lazy-hidden" style="width: 49%; float: left;" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2018/07/JPA-for-Beginners.png"><noscript><img style="width: 49%; float: left;" src="/wp-content/uploads/2018/07/JPA-for-Beginners.png"></noscript></a><a href="https://thoughts-on-java.org/advanced-hibernate-online-training-wst/"><img class="lazy-hidden" style="width: 49%;" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2016/10/AdvancedHibernateOnlineTraining1.png"><noscript><img style="width: 49%;" src="/wp-content/uploads/2016/10/AdvancedHibernateOnlineTraining1.png"></noscript></a><a href="https://thoughts-on-java.org/hibernate-performance-tuning-online-training-wst/"><img class="lazy-hidden" style="width: 49%; float: left;" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2016/10/HibernatePerformanceTuning2.png"><noscript><img style="width: 49%; float: left;" src="/wp-content/uploads/2016/10/HibernatePerformanceTuning2.png"></noscript></a><a href="https://thoughts-on-java.org/hibernate-expert-bundle-wst/"><img class="lazy-hidden" style="width: 49%;" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2016/10/HibernateExpertBundle.png"><noscript><img style="width: 49%;" src="/wp-content/uploads/2016/10/HibernateExpertBundle.png"></noscript></a>
+
+<h3 style="margin-top: 40px">Need Some Help with Your Project?</h3>
+<a href="https://bookme.name/thjanssen"><img class="lazy-hidden" style="width: 49%; float: left" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2017/12/450px-x-300px-–-Consulting-Call-2-1.png"><noscript><img style="width: 49%; float: left" src="/wp-content/uploads/2017/12/450px-x-300px-–-Consulting-Call-2-1.png"></noscript></a><a href="https://thoughts-on-java.org/project-coaching"><img class="lazy-hidden" style="width: 49%;" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/lazy_placeholder.gif" data-lazy-type="image" data-src="/wp-content/uploads/2017/12/Project-Coaching-3-1.png"><noscript><img style="width: 49%;" src="/wp-content/uploads/2017/12/Project-Coaching-3-1.png"></noscript></a></div></div></section>
+</div><h2 class="screen-reader-text">Reader Interactions</h2><div class="entry-comments" id="comments"><h3>Comments</h3><ol class="comment-list">
+	<li class="comment even thread-even depth-1" id="comment-349">
+	<article itemprop="comment" itemscope="" itemtype="https://schema.org/Comment">
+
+		
+		<header class="comment-header">
+			<p class="comment-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+				<span itemprop="name">Mark</span> <span class="says">says</span>			</p>
+
+			<p class="comment-meta"><time class="comment-time" datetime="2017-03-20T23:23:54+00:00" itemprop="datePublished"><a href="https://thoughts-on-java.org/jpa-generate-primary-keys/#comment-349" class="comment-time-link" itemprop="url">March 20, 2017 at 11:23 pm</a></time></p>		</header>
+
+		<div class="comment-content" itemprop="text">
+			
+			<p>Hello</p>
+<p>What if I have a table with a unique ID field (PK Key) that is 
+entered manually (or via a code), and for entering a new record, next 
+record pk is set MAX(ID) + 1.   </p>
+<p>How do I annotate the entity so that jpa will let me insert (save) a 
+record while allowing the id value to be provided as part of the post?</p>
+<p>Thank you</p>
+		</div>
+
+		<div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="#comment-349" onclick='return addComment.moveForm( "comment-349", "349", "respond", "3536" )' aria-label="Reply to Mark">Reply</a></div>
+		
+	</article>
+	<ul class="children">
+
+	<li class="comment byuser comment-author-rainmakerthoughts-on-java-org bypostauthor odd alt depth-2" id="comment-350">
+	<article itemprop="comment" itemscope="" itemtype="https://schema.org/Comment">
+
+		
+		<header class="comment-header">
+			<p class="comment-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+				<span itemprop="name">Thorben Janssen</span> <span class="says">says</span>			</p>
+
+			<p class="comment-meta"><time class="comment-time" datetime="2017-03-21T06:47:21+00:00" itemprop="datePublished"><a href="https://thoughts-on-java.org/jpa-generate-primary-keys/#comment-350" class="comment-time-link" itemprop="url">March 21, 2017 at 6:47 am</a></time></p>		</header>
+
+		<div class="comment-content" itemprop="text">
+			
+			<p>Hi Mark,</p>
+<p>just skip the @GeneratedValue annotation, if you want to set the primary key value programmatically.</p>
+<p>Regards,<br>
+Thorben</p>
+		</div>
+
+		<div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="#comment-350" onclick='return addComment.moveForm( "comment-350", "350", "respond", "3536" )' aria-label="Reply to Thorben Janssen">Reply</a></div>
+		
+	</article>
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li class="comment even thread-odd thread-alt depth-1" id="comment-1569">
+	<article itemprop="comment" itemscope="" itemtype="https://schema.org/Comment">
+
+		
+		<header class="comment-header">
+			<p class="comment-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+				<span itemprop="name">Robert Oschwald</span> <span class="says">says</span>			</p>
+
+			<p class="comment-meta"><time class="comment-time" datetime="2017-08-11T14:32:46+00:00" itemprop="datePublished"><a href="https://thoughts-on-java.org/jpa-generate-primary-keys/#comment-1569" class="comment-time-link" itemprop="url">August 11, 2017 at 2:32 pm</a></time></p>		</header>
+
+		<div class="comment-content" itemprop="text">
+			
+			<p>With Hibernate 5.x, GenerationType.AUTO leads to the TABLE 
+generator being used on MySQL DBs. This has performance impacts and it 
+is not working with Galera cluster, as Galera needs a PK on every table,
+ but the hibernate_sequence table does not define a PK.</p>
+<p>Setting<br>
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator=”native”)<br>
+@GenericGenerator(name = “native”, strategy = “native”)</p>
+<p>would use the IDENTITY generator on MySQL, but that leads to other 
+problems when using TABLE_PER_CLASS, as MySQL does not support 
+GenerationType.SEQUENCE. </p>
+<p>See <a href="https://hibernate.atlassian.net/browse/HHH-11014" rel="nofollow">https://hibernate.atlassian.net/browse/HHH-11014</a></p>
+		</div>
+
+		<div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="#comment-1569" onclick='return addComment.moveForm( "comment-1569", "1569", "respond", "3536" )' aria-label="Reply to Robert Oschwald">Reply</a></div>
+		
+	</article>
+	<ul class="children">
+
+	<li class="comment byuser comment-author-rainmakerthoughts-on-java-org bypostauthor odd alt depth-2" id="comment-2318">
+	<article itemprop="comment" itemscope="" itemtype="https://schema.org/Comment">
+
+		
+		<header class="comment-header">
+			<p class="comment-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+				<span itemprop="name">Thorben Janssen</span> <span class="says">says</span>			</p>
+
+			<p class="comment-meta"><time class="comment-time" datetime="2017-09-04T06:29:19+00:00" itemprop="datePublished"><a href="https://thoughts-on-java.org/jpa-generate-primary-keys/#comment-2318" class="comment-time-link" itemprop="url">September 4, 2017 at 6:29 am</a></time></p>		</header>
+
+		<div class="comment-content" itemprop="text">
+			
+			<p>Hi Robert,</p>
+<p>that’s a great question. I answered it in this post: <a href="https://thoughts-on-java.org/hibernate-tips-override-primary-key-generation-strategy/" rel="nofollow">https://thoughts-on-java.org/hibernate-tips-override-primary-key-generation-strategy/</a></p>
+<p>Regards,<br>
+Thorben</p>
+		</div>
+
+		<div class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="#comment-2318" onclick='return addComment.moveForm( "comment-2318", "2318", "respond", "3536" )' aria-label="Reply to Thorben Janssen">Reply</a></div>
+		
+	</article>
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ol></div>	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://thoughts-on-java.org/jpa-generate-primary-keys/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://thoughts-on-java.org/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" size="30" maxlength="200"></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="3536" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="555a26196b"></p><p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1544020192828"></form>
+			</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p></main><aside class="sidebar sidebar-primary widget-area" role="complementary" aria-label="Primary Sidebar" itemscope="" itemtype="https://schema.org/WPSideBar" id="genesis-sidebar-primary"><h2 class="genesis-sidebar-title screen-reader-text">Primary Sidebar</h2><section id="text-8" class="widget widget_text"><div class="widget-wrap">			<div class="textwidget">
+<div style="background-color: #f69914; padding: 40px; margin-top:-32px">
+<div style="text-align: center;">
+<h4>Join over 7.000 developers<br>in the<br>Thoughts on Java Library</h4>
+<img src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/EbooksSidebar1.png" data-lazy-type="image" data-src="/wp-content/uploads/2016/12/EbooksSidebar1.png" alt="Ebooks Sidebar" style="margin-left: -40px; margin-right: -40px; max-width: 280px;margin-top: 25px;" class="aligncenter size-full wp-image-9496 lazy-loaded"><noscript><img src="/wp-content/uploads/2016/12/EbooksSidebar1.png" alt="Ebooks Sidebar" style="margin-left: -40px; margin-right: -40px; max-width: 280px;margin-top: 25px;" class="aligncenter size-full wp-image-9496" /></noscript>
+Get free access to ebooks, cheat sheets and training videos.</div>
+<div style="text-align: center;"><a class="button button-cta button-small button-block" style="margin-top: 10px;" href="https://thoughts-on-java.org/free-member-library-signup/?utm_source=sidebar&amp;utm_medium=blog&amp;utm_campaign=lib-sidebar" xlink="href">Join Now!</a></div></div>
+</div>
+		</div></section>
+<section id="custom_html-4" class="widget_text widget widget_custom_html"><div class="widget_text widget-wrap"><div class="textwidget custom-html-widget"><div style="max-width: none; margin-left: -40px;">
+<script type="text/javascript" data-cookieconsent="marketing">
+    googletag.cmd.push(function() {
+        if (window.innerWidth >= 768) {
+            googletag.defineSlot('/53015287/thoughts-on-java.org_d_300x250_1', [300, 250], 'div-gpt-ad-1407836277118-0').addService(googletag.pubads());
+        }
+
+if (window.innerWidth < 768) {
+            googletag.defineSlot('/53015287/thoughts-on-java.org_m_300x250_2', [300, 250], 'div-gpt-ad-1407836277118-0').addService(googletag.pubads());
+        }
+
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+    });
+</script>
+<div id="div-gpt-ad-1407836277118-0">
+    <script type="text/javascript" data-cookieconsent="marketing">
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1407836277118-0'); });
+    </script>
+</div>
+<div style="text-align: center">Don't like ads?<br>
+<a href="https://thoughts-on-java.org/become-a-thoughts-on-java-supporter/" target="_blank">Become a Thoughts on Java Supporter.</a></div>
+</div>  </div></div></section>
+<section id="text-4" class="widget widget_text"><div class="widget-wrap">			<div class="textwidget"><a href="http://www.hibernate-tips.com/?utm_source=BookLaunch&amp;utm_medium=Sidebar" xlink="href"><img class="aligncenter size-full wp-image-13206 lazy-loaded" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/HibernateTipsBook1.png" data-lazy-type="image" data-src="/wp-content/uploads/2017/04/HibernateTipsBook1.png" alt="Special Launch Price" style="max-width: none; margin-left: -40px; margin-bottom: 32px" width="330" height="330"><noscript><img class="aligncenter size-full wp-image-13206" src="/wp-content/uploads/2017/04/HibernateTipsBook1.png" alt="Special Launch Price" width="330" height="330" style="max-width: none; margin-left: -40px; margin-bottom: 32px"></noscript></a></div>
+		</div></section>
+<section id="text-3" class="widget widget_text"><div class="widget-wrap"><h3 class="widgettitle widget-title">Let’s Connect</h3>
+			<div class="textwidget"><div style="text-align: center;margin-top: 15px;width:100%;margin-bottom:-20px;"><img class="profile-foto-sidebar lazy-loaded" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/ThorbenJanssen140x140.png" data-lazy-type="image" data-src="/wp-content/uploads/2015/11/ThorbenJanssen140x140.png"><noscript><img class="profile-foto-sidebar" src="/wp-content/uploads/2015/11/ThorbenJanssen140x140.png"></noscript><br>
+<a href="https://thoughts-on-java.org/about/" style="font-size: 18px">Thorben Janssen</a><br>
+Independent consultant, trainer and author</div></div>
+		</div></section>
+<section id="simple-social-icons-2" class="widget simple-social-icons"><div class="widget-wrap"><ul class="aligncenter"><li class="ssi-facebook"><a href="https://www.facebook.com/thoughtsonjava"><svg role="img" class="social-facebook" aria-labelledby="social-facebook-2"><title id="social-facebook-2">Facebook</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-facebook"></use></svg></a></li><li class="ssi-github"><a href="https://github.com/thjanssen"><svg role="img" class="social-github" aria-labelledby="social-github-2"><title id="social-github-2">GitHub</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-github"></use></svg></a></li><li class="ssi-gplus"><a href="https://plus.google.com/u/0/104438663880735057595?rel=author"><svg role="img" class="social-gplus" aria-labelledby="social-gplus-2"><title id="social-gplus-2">Google+</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-gplus"></use></svg></a></li><li class="ssi-linkedin"><a href="https://www.linkedin.com/in/thorbenjanssen/"><svg role="img" class="social-linkedin" aria-labelledby="social-linkedin-2"><title id="social-linkedin-2">LinkedIn</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-linkedin"></use></svg></a></li><li class="ssi-twitter"><a href="https://twitter.com/thjanssen123"><svg role="img" class="social-twitter" aria-labelledby="social-twitter-2"><title id="social-twitter-2">Twitter</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-twitter"></use></svg></a></li><li class="ssi-xing"><a href="https://www.xing.com/profile/Thorben_Janssen"><svg role="img" class="social-xing" aria-labelledby="social-xing-2"><title id="social-xing-2">xing</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-xing"></use></svg></a></li><li class="ssi-youtube"><a href="https://www.youtube.com/channel/UCYeDPubBiFCZXIOgGYoyADw"><svg role="img" class="social-youtube" aria-labelledby="social-youtube-2"><title id="social-youtube-2">YouTube</title><use xlink:href="https://thoughts-on-java.org/wp-content/plugins/simple-social-icons/symbol-defs.svg#social-youtube"></use></svg></a></li></ul></div></section>
+<section id="custom_html-3" class="widget_text widget widget_custom_html"><div class="widget_text widget-wrap"><h3 class="widgettitle widget-title">Speaking at</h3>
+<div class="textwidget custom-html-widget"><b>10th October 2018</b><br>
+<b>JUG Bielefeld (Germany):</b><br>
+<a href="https://www.meetup.com/de-DE/Java-User-Group-Bielefeld/events/254954551/" target="_blank" rel="nofollow">
+Hibernate Tips ‘n’ Tricks - Lösungen für typische Probleme und Anwendungsfälle (Talk - German)</a>
+<br><br>
+<b>7th November 2018</b><br>
+<b>W-JAX 2018 (Germany):</b><br>
+<a href="https://jax.de/serverside-enterprise-java/das-hibernate-universum-fernab-bekannter-crud-galaxien/" target="_blank" rel="nofollow">
+Das Hibernate-Universum – Fernab bekannter CRUD-Galaxien (Talk - German)</a>
+<br><br>
+<b>8th November 2018</b><br>
+<b>W-JAX 2018 (Germany):</b><br>
+<a href="https://jax.de/performance-security/hibernate-performance-tuning-wie-du-probleme-fruehzeitig-erkennen-und-beheben-kannst/" target="_blank" rel="nofollow">
+Hibernate Performance Tuning – Wie Du Probleme frühzeitig erkennen und beheben kannst (Talk - German)</a>
+<br><br>
+<b>9th November 2018</b><br>
+<b>W-JAX 2018 (Germany):</b><br>
+<a href="https://jax.de/serverside-enterprise-java/hibernate-workshop-performance-tuning-fuer-enterprise-anwendungen/" target="_blank" rel="nofollow">
+SOLD OUT - 
+Hibernate-Workshop – Performance-Tuning für Enterprise-Anwendungen (1-day Workshop - German</a>
+<br><br>
+<b>14th November 2018</b><br>
+<b>JUG Hannover (Germany):</b><br>
+Hibernate Tips ‘n’ Tricks - Lösungen für typische Probleme und Anwendungsfälle (Talk - German)
+<br><br>
+<b>19th March 2019</b><br>
+<b>JavaLand 2019 (Germany):</b><br>
+<a href="https://programm.javaland.eu/2019/#/scheduledEvent/569656" target="_blank" rel="nofollow">
+Hibernate Tips 'n' Tricks: Typische Probleme schnell gelöst (Talk - German)</a>
+<br><br>
+<b>21st March 2019</b><br>
+<b>JavaLand 2019 (Germany):</b><br>
+<a href="https://programm.javaland.eu/2019/#/scheduledEvent/569050" target="_blank" rel="nofollow">
+Hibernate + jOOQ + Flyway = Die besten Frameworks in einem Stack (1-day Workshop - German)</a>
+<br><br>
+Looking for an <a href="https://thoughts-on-java.org/onsite-training/">on-site training</a>?</div></div></section>
+<section id="featured-post-2" class="widget featured-content featuredpost"><div class="widget-wrap"><h3 class="widgettitle widget-title">Featured Post</h3>
+<article class="post-18584 post type-post status-publish format-standard has-post-thumbnail category-featured category-hibernate category-jpa entry"><a href="https://thoughts-on-java.org/hibernate-getting-started/" class="alignnone" aria-hidden="true"><img src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/Hibernate-Getting-Started-300x167.png" data-lazy-type="image" data-src="https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started-300x167.png" class="entry-image attachment-post lazy-loaded" alt="Getting Started With Hibernate" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started.png 810w" data-srcset="" sizes="(max-width: 300px) 100vw, 300px" width="300" height="167"><noscript><img width="300" height="167" src="https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started-300x167.png" class="entry-image attachment-post" alt="Getting Started With Hibernate" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/12/Hibernate-Getting-Started.png 810w" sizes="(max-width: 300px) 100vw, 300px" /></noscript></a><header class="entry-header"><h4 class="entry-title" itemprop="headline"><a href="https://thoughts-on-java.org/hibernate-getting-started/">Getting Started With Hibernate</a></h4></header></article><article class="post-18546 post type-post status-publish format-standard has-post-thumbnail category-featured category-uncategorized entry"><a href="https://thoughts-on-java.org/java-youtube-2018/" class="alignnone" aria-hidden="true"><img src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/12-Java-YouTube-Channels-You-Should-Follow-In-2018-300x167.png" data-lazy-type="image" data-src="https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018-300x167.png" class="entry-image attachment-post lazy-loaded" alt="12 Java YouTube Channels You Should Follow In 2018" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018.png 810w" data-srcset="" sizes="(max-width: 300px) 100vw, 300px" width="300" height="167"><noscript><img width="300" height="167" src="https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018-300x167.png" class="entry-image attachment-post" alt="12 Java YouTube Channels You Should Follow In 2018" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/12/12-Java-YouTube-Channels-You-Should-Follow-In-2018.png 810w" sizes="(max-width: 300px) 100vw, 300px" /></noscript></a><header class="entry-header"><h4 class="entry-title" itemprop="headline"><a href="https://thoughts-on-java.org/java-youtube-2018/">12 Java YouTube Channels You Should Follow In 2018</a></h4></header></article><article class="post-14293 post type-post status-publish format-standard has-post-thumbnail category-featured category-hibernate category-jpa entry"><a href="https://thoughts-on-java.org/ultimate-guide-association-mappings-jpa-hibernate/" class="alignnone" aria-hidden="true"><img src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/EntityMappings-UltimateGuidetoAssociationMappings1-300x167.png" data-lazy-type="image" data-src="https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-300x167.png" class="entry-image attachment-post lazy-loaded" alt="Ultimate Guide – Association Mappings with JPA and Hibernate" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-1024x569.png 1024w" data-srcset="" sizes="(max-width: 300px) 100vw, 300px" width="300" height="167"><noscript><img width="300" height="167" src="https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-300x167.png" class="entry-image attachment-post" alt="Ultimate Guide &#8211; Association Mappings with JPA and Hibernate" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/05/EntityMappings-UltimateGuidetoAssociationMappings1-1024x569.png 1024w" sizes="(max-width: 300px) 100vw, 300px" /></noscript></a><header class="entry-header"><h4 class="entry-title" itemprop="headline"><a href="https://thoughts-on-java.org/ultimate-guide-association-mappings-jpa-hibernate/">Ultimate Guide – Association Mappings with JPA and Hibernate</a></h4></header></article><article class="post-3080 post type-post status-publish format-standard has-post-thumbnail category-featured category-hibernate category-jpa category-jpa2-1 entry"><a href="https://thoughts-on-java.org/jpql/" class="alignnone" aria-hidden="true"><img src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/UltimateGuidetoJPQLQuerieswithJPAandHibernate-300x167.png" data-lazy-type="image" data-src="https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-300x167.png" class="entry-image attachment-post lazy-loaded" alt="Ultimate Guide to JPQL Queries with JPA and Hibernate" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-1024x569.png 1024w" data-srcset="" sizes="(max-width: 300px) 100vw, 300px" width="300" height="167"><noscript><img width="300" height="167" src="https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-300x167.png" class="entry-image attachment-post" alt="Ultimate Guide to JPQL Queries with JPA and Hibernate" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-300x167.png 300w, https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-768x427.png 768w, https://thoughts-on-java.org/wp-content/uploads/2017/01/UltimateGuidetoJPQLQuerieswithJPAandHibernate-1024x569.png 1024w" sizes="(max-width: 300px) 100vw, 300px" /></noscript></a><header class="entry-header"><h4 class="entry-title" itemprop="headline"><a href="https://thoughts-on-java.org/jpql/">Ultimate Guide to JPQL Queries with JPA and Hibernate</a></h4></header></article><article class="post-4646 post type-post status-publish format-standard has-post-thumbnail category-featured category-hibernate entry"><a href="https://thoughts-on-java.org/hibernate-best-practices/" class="alignnone" aria-hidden="true"><img src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/Hibernate-BestPractices-300x167.jpg" data-lazy-type="image" data-src="https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices-300x167.jpg" class="entry-image attachment-post lazy-loaded" alt="Hibernate Best Practices" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices-300x167.jpg 300w, https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices-768x427.jpg 768w, https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices.jpg 810w" data-srcset="" sizes="(max-width: 300px) 100vw, 300px" width="300" height="167"><noscript><img width="300" height="167" src="https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices-300x167.jpg" class="entry-image attachment-post" alt="Hibernate Best Practices" itemprop="image" srcset="https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices-300x167.jpg 300w, https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices-768x427.jpg 768w, https://thoughts-on-java.org/wp-content/uploads/2016/09/Hibernate-BestPractices.jpg 810w" sizes="(max-width: 300px) 100vw, 300px" /></noscript></a><header class="entry-header"><h4 class="entry-title" itemprop="headline"><a href="https://thoughts-on-java.org/hibernate-best-practices/">Hibernate Best Practices</a></h4></header></article></div></section>
+		<section id="recent-posts-2" class="widget widget_recent_entries"><div class="widget-wrap">		<h3 class="widgettitle widget-title">Recent Posts</h3>
+		<ul>
+											<li>
+					<a href="https://thoughts-on-java.org/hibernate-tips-exclude-deactivated-elements-from-association/">Hibernate Tips: How to Exclude Deactivated Elements from an Association</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/parse-string-into-entitygraph/">How to parse a String into an EntityGraph with Hibernate 5.4</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/hibernate-tips-how-to-map-a-boolean-to-y-n/">Hibernate Tips: How to map a Boolean to Y/N</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/ultimate-guide-to-implementing-equals-and-hashcode-with-hibernate/">Ultimate Guide to Implementing equals() and hashCode() with Hibernate</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/5-things-beginners-need-to-know-before-using-jpa-hibernate-eclipselink/">5 Things Beginners Need to Know Before Using JPA / Hibernate / EclipseLink</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/hibernate-tips-validate-1-of-2-associations-not-null/">Hibernate Tips: Validate that only 1 of 2 associations is not null</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/join-the-jpa-for-beginners-beta-group/">Join the “JPA for Beginners Beta Group”</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/hibernate-tips-map-1-attribute-2-columns/">Hibernate Tips: Map 1 Entity Attribute to 2 Columns</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/custom-sequence-based-idgenerator/">How to Implement a Custom, Sequence-Based ID Generator</a>
+									</li>
+											<li>
+					<a href="https://thoughts-on-java.org/permanently-remove-when-using-soft-delete/">Hibernate Tips: Permanently remove records when using soft delete</a>
+									</li>
+					</ul>
+		</div></section>
+<section id="custom_html-5" class="widget_text widget widget_custom_html"><div class="widget_text widget-wrap"><div class="textwidget custom-html-widget"><script type="text/javascript" data-cookieconsent="marketing">
+    googletag.cmd.push(function() {
+        if (window.innerWidth >= 768) {
+            googletag.defineSlot('/53015287/thoughts-on-java.org_d_160x600_1', [160, 600], 'div-gpt-ad-1407836135764-0').addService(googletag.pubads());
+        }
+
+if (window.innerWidth < 768) {
+            googletag.defineSlot('/53015287/thoughts-on-java.org_m_300x250_1', [300, 250], 'div-gpt-ad-1407836135764-0').addService(googletag.pubads());
+        }
+
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+    });
+</script>
+<div id="div-gpt-ad-1407836135764-0">
+    <script type="text/javascript" data-cookieconsent="marketing">
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1407836135764-0'); });
+    </script>
+</div>
+<div style="text-align: center">Don't like ads?<br>
+<a href="https://thoughts-on-java.org/become-a-thoughts-on-java-supporter/" target="_blank">Become a Thoughts on Java Supporter.</a></div>  </div></div></section>
+</aside></div></div></div><footer class="site-footer" itemscope="" itemtype="https://schema.org/WPFooter"><div class="wrap"><p>Copyright ©&nbsp;2018 <a href="https://thoughts-on-java.org/">Thoughts on Java</a></p><nav class="nav-secondary" aria-label="Secondary" itemscope="" itemtype="https://schema.org/SiteNavigationElement"><div class="wrap"><ul id="menu-widget-menu" class="menu genesis-nav-menu menu-secondary js-superfish sf-js-enabled sf-arrows" style="touch-action: pan-y;"><li id="menu-item-14876" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14876"><a href="https://thoughts-on-java.org/impressum/" itemprop="url"><span itemprop="name">Impressum</span></a></li>
+<li id="menu-item-14877" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14877"><a href="https://thoughts-on-java.org/disclaimer/" itemprop="url"><span itemprop="name">Disclaimer</span></a></li>
+<li id="menu-item-19553" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19553"><a href="https://thoughts-on-java.org/datenschutz/" itemprop="url"><span itemprop="name">Privacy Policy</span></a></li>
+</ul></div></nav></div></footer></div><span style="display:none" class="tl-placeholder-f-type-lightbox"></span><div data-position="bottom" data-tl-type="ribbon" class="tl-state-root tve-leads-ribbon tve-tl-anim tve-leads-track-ribbon-51 tl-anim-slide_bot tve-leads-triggered" style="bottom: 0px; top: auto;"><div class="tl-style" id="tve_66_set" data-state="51" data-form-state=""><style type="text/css" class="tve_custom_style">@media (min-width: 300px){[data-css="tve-u-45c0785f25f098"] { border-radius: 0px; border-width: 0px; border-style: none; border-color: rgb(0, 0, 0); background-color: rgb(248, 199, 21) !important; background-image: none !important; padding: 13px 25px !important; }[data-css="tve-u-35c0785f25f058"] { margin: 0px auto; min-width: 100% !important; }[data-css="tve-u-35c0785f25f058"] .tcb-button-link { font-size: 20px; box-shadow: rgba(136, 97, 30, 0.26) 0px 2px 0px 0px; background-image: none !important; background-color: rgb(246, 153, 20) !important; }#tve_editor [data-css="tve-u-35c0785f25f058"] .tcb-button-link { font-family: Roboto, sans-serif; }#tve_editor [data-css="tve-u-35c0785f25f058"] .tcb-button-link span { color: rgb(120, 97, 15); text-shadow: none; }#tve_editor [data-css="tve-u-35c0785f25f058"]:hover .tcb-button-link { box-shadow: rgba(135, 90, 54, 0.26) 0px 2px 0px 0px !important; background-image: none !important; background-color: rgb(247, 173, 66) !important; }#tve_editor [data-css="tve-u-55c0785f25f0d8"] { color: rgb(255, 255, 255) !important; }[data-css="tve-u-05c0785f25ef94"] { max-width: 78.5%; }[data-css="tve-u-25c0785f25f017"] { max-width: 21.5%; }[data-css="tve-u-15c0785f25efd7"] { margin-top: 0px !important; margin-bottom: 0px !important; }}[data-tve-custom-colour="88456517"] { border-color: rgb(30, 64, 78) !important; background-color: rgb(30, 64, 78) !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 8px 3px !important; }</style><div class="tve-leads-conversion-object" data-tl-type="ribbon"><div class="tve_flt"><div id="tve_editor" class="tve_shortcode_editor"><div class="thrv-ribbon tve_no_drag tve_no_icons tve_element_hover thrv_wrapper tve_66_set tve_teal" data-tve-custom-colour="88456517">
+<div class="tve-ribbon-content tve_editor_main_content tve_empty_dropzone" style="max-width: 1161px;">
+<div class="thrv_wrapper thrv-columns"><div class="tcb-flex-row tcb--cols--2 tcb-resized" style="margin-top: 0;margin-bottom: 0;">
+<div class="tve_empty_dropzone tcb-flex-col" data-css="tve-u-05c0785f25ef94" style="">
+<div class="tcb-col"><div class="thrv_wrapper thrv_heading" data-tag="h4" data-css="tve-u-15c0785f25efd7"><h4 class="" style="color: rgb(255, 255, 255); font-size: 23px; margin-top: 6px; margin-bottom: 0px;"><strong>Become a Hibernate Expert</strong> - Enroll in the Hibernate Expert Bundle and claim your Bonus</h4></div></div>
+</div>
+<div class="tve_empty_dropzone tcb-flex-col" data-css="tve-u-25c0785f25f017" style="">
+<div class="tcb-col"><div class="thrv_wrapper thrv-button" data-tve-style="1" data-css="tve-u-35c0785f25f058" data-tcb_hover_state_parent="">
+<a class="tcb-button-link" href="https://thoughts-on-java.org/hibernate-expert-bundle-wst/" data-tcb-events="__TCB_EVENT_[]_TNEVE_BCT__" target="_blank" data-css="tve-u-45c0785f25f098" rel="">
+<span class="tcb-button-icon">
+<i></i>
+</span>
+<span class="tcb-button-texts"><span class="tcb-button-text thrv-inline-text" data-tve-custom-colour="69374675" data-css="tve-u-55c0785f25f0d8">Enroll Now!</span></span>
+</a>
+</div></div>
+</div>
+</div></div>
+</div>
+<a href="javascript:void(0)" class="tve-ribbon-close" title="Close" data-tve-custom-colour="73160017">x</a>
+</div></div></div></div></div></div><script type="text/javascript">var bU='https://thoughts-on-java.org/wp-content/plugins/wp-youtube-lyte/lyte/';var mOs=null;style = document.createElement('style');style.type = 'text/css';rules = document.createTextNode(".lyte-wrapper-audio div, .lyte-wrapper div {margin:0px; overflow:hidden;} .lyte,.lyMe{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background-color:#777;} .fourthree .lyMe, .fourthree .lyte {padding-bottom:75%;} .lidget{margin-bottom:5px;} .lidget .lyte, .widget .lyMe {padding-bottom:0!important;height:100%!important;} .lyte-wrapper-audio .lyte{height:38px!important;overflow:hidden;padding:0!important} .lyMe iframe, .lyte iframe,.lyte .pL{position:absolute !important;top:0;left:0;width:100%;height:100%!important;background:no-repeat scroll center #000;background-size:cover;cursor:pointer} .tC{left:0;position:absolute;top:0;width:100%} .tC{background-image:linear-gradient(to bottom,rgba(0,0,0,0.6),rgba(0,0,0,0))} .tT{color:#FFF;font-family:Roboto,sans-serif;font-size:16px;height:auto;text-align:left;padding:5px 10px 50px 10px} .play{background:no-repeat scroll 0 0 transparent;width:88px;height:63px;position:absolute;left:43%;left:calc(50% - 44px);left:-webkit-calc(50% - 44px);top:38%;top:calc(50% - 31px);top:-webkit-calc(50% - 31px);} .widget .play {top:30%;top:calc(45% - 31px);top:-webkit-calc(45% - 31px);transform:scale(0.6);-webkit-transform:scale(0.6);-ms-transform:scale(0.6);} .lyte:hover .play{background-position:0 -65px;} .lyte-audio .pL{max-height:38px!important} .lyte-audio iframe{height:438px!important} .ctrl{background:repeat scroll 0 -220px rgba(0,0,0,0.3);width:100%;height:40px;bottom:0px;left:0;position:absolute;} .lyte-wrapper .ctrl{display:none}.Lctrl{background:no-repeat scroll 0 -137px transparent;width:158px;height:40px;bottom:0;left:0;position:absolute} .Rctrl{background:no-repeat scroll -42px -179px transparent;width:117px;height:40px;bottom:0;right:0;position:absolute;padding-right:10px;}.lyte-audio .play{display:none}.lyte-audio .ctrl{background-color:rgba(0,0,0,1)}.hidden{display:none}" );if(style.styleSheet) { style.styleSheet.cssText = rules.nodeValue;} else {style.appendChild(rules);}document.getElementsByTagName('head')[0].appendChild(style);</script>
+
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var tve_frontend_options = {"is_editor_page":"","page_events":[],"is_single":"1","ajaxurl":"https:\/\/thoughts-on-java.org\/wp-admin\/admin-ajax.php","social_fb_app_id":"","dash_url":"https:\/\/thoughts-on-java.org\/wp-content\/plugins\/thrive-visual-editor\/thrive-dashboard","translations":{"Copy":"Copy"}};
+/* ]]> */
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var tve_dash_front = {"ajaxurl":"https:\/\/thoughts-on-java.org\/wp-admin\/admin-ajax.php","force_ajax_send":"","is_crawler":""};
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var a3_lazyload_params = {"apply_images":"1","apply_videos":""};
+/* ]]> */
+</script>
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var a3_lazyload_extend_params = {"edgeY":"0"};
+/* ]]> */
+</script>
+
+
+
+<script type="text/javascript">/*<![CDATA[*/if ( !window.TL_Const ) {var TL_Const={"security":"66b9dff409","ajax_url":"https:\/\/thoughts-on-java.org\/wp-admin\/admin-ajax.php","forms":[],"action_conversion":"tve_leads_ajax_conversion","action_impression":"tve_leads_ajax_impression","ajax_load":1,"main_group_id":17646,"display_options":{"allowed_post_types":[],"flag_url_match":false},"shortcode_ids":["17881"],"custom_post_data":{"http_referrer":"https:\/\/www.google.fr\/"},"current_screen":{"screen_type":4,"screen_id":3536},"ignored_fields":["email","_captcha_size","_captcha_theme","_captcha_type","_submit_option","_use_captcha","g-recaptcha-response","__tcb_lg_fc","__tcb_lg_msg","_state","_form_type","_error_message_option","_back_url","_submit_option","url","_asset_group","_asset_option","mailchimp_optin"]};} else {ThriveGlobal.$j.extend(true, TL_Const, {"security":"66b9dff409","ajax_url":"https:\/\/thoughts-on-java.org\/wp-admin\/admin-ajax.php","forms":[],"action_conversion":"tve_leads_ajax_conversion","action_impression":"tve_leads_ajax_impression","ajax_load":1,"main_group_id":17646,"display_options":{"allowed_post_types":[],"flag_url_match":false},"shortcode_ids":["17881"],"custom_post_data":{"http_referrer":"https:\/\/www.google.fr\/"},"current_screen":{"screen_type":4,"screen_id":3536},"ignored_fields":["email","_captcha_size","_captcha_theme","_captcha_type","_submit_option","_use_captcha","g-recaptcha-response","__tcb_lg_fc","__tcb_lg_msg","_state","_form_type","_error_message_option","_back_url","_submit_option","url","_asset_group","_asset_option","mailchimp_optin"]})} /*]]> */</script><script type="text/javascript" defer="defer" src="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/autoptimize_94780e0b7b2bbafc862b72b2ab11fa53.js"></script>
+<script type="text/javascript">
+	(function ($) {
+	$(function () {
+		var event_data = {"form_id":"tve-leads-track-ribbon-51","form_type":"ribbon"};
+		event_data.source = 'page_load';
+		setTimeout(function () {
+			ThriveGlobal.$j(TL_Front).trigger('showform.thriveleads', event_data);
+			}, 200);
+		});
+	})
+(ThriveGlobal.$j);
+</script><script type="text/javascript">
+	(function ($) {
+	$(function () {
+		var event_data = {"form_id":"tve-leads-track-shortcode_17881","form_type":"shortcode"};
+		event_data.source = 'page_load';
+		setTimeout(function () {
+			ThriveGlobal.$j(TL_Front).trigger('showform.thriveleads', event_data);
+			}, 200);
+		});
+	})
+(ThriveGlobal.$j);
+</script><link rel="stylesheet" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/load-styles.css" type="text/css" media="all">
+<link rel="stylesheet" id="yarppWidgetCss-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/widget.css" type="text/css" media="all">
+<link rel="stylesheet" id="pdfemb_admin_other_css-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/pdfemb-admin-other.css" type="text/css" media="all">
+<link rel="stylesheet" id="thickbox-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/thickbox.css" type="text/css" media="all">
+<link rel="stylesheet" id="tve-leads-font-b45dc0952dc6dc22530dec3481bbcba3-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/css_005.css" type="text/css" media="all">
+<link rel="stylesheet" id="tve-leads-font-ecb81ee48a399e1c04f25423eb661708-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/css_004.css" type="text/css" media="all">
+
+<link rel="stylesheet" id="tcf_d41705477b1f59cae049f21548257411-css" href="How%20to%20generate%20primary%20keys%20with%20JPA%20and%20Hibernate_files/css.css" type="text/css" media="all"></body></html>

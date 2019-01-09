@@ -1,0 +1,32 @@
+configure (subprojects - project(':utils')){
+    apply plugin: 'war'
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+    
+    def srcVersion = 1.8
+    def tomcatDeployDir="/var/lib/tomcat8/webapps"
+
+    sourceCompatibility = srcVersion
+    targetCompatibility = srcVersion
+
+    version = 0.1
+    group = 'com.luv2code'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        compile fileTree(dir: '../spring-framework-5.0.7.RELEASE/libs/', include: ['*.jar'])
+        providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+        compile project(':utils')
+    }
+    //deploy to tomcat
+    task deploy(type: Copy) {
+		from war.archivePath
+		into tomcatDeployDir
+		doLast{
+			println "cp ${war.archivePath} -> ${tomcatDeployDir}"
+		}
+	}
+}

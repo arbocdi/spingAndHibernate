@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html class="client-js ve-not-available" dir="ltr" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Java Persistence/Querying - Wikibooks, open books for an open world</title>
+<script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Java_Persistence/Querying","wgTitle":"Java Persistence/Querying","wgCurRevisionId":3420974,"wgRevisionId":3420974,"wgArticleId":134839,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Book:Java Persistence","Book:Java Persistence/Runtime"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Java_Persistence/Querying","wgRelevantArticleId":134839,"wgRequestId":"XBCB2ApAMFsAAJq8-5gAAAAJ","wgCSPNonce":false,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgFlaggedRevsParams":{"tags":{"value":{"levels":3,"quality":2,"pristine":3}}},"wgStableRevisionId":3420974,"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgWikiEditorEnabledModules":[],"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en","usePageImages":false,"usePageDescriptions":true},"wgMFExpandAllSectionsUserOption":true,"wgMFEnableFontChanger":true,"wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":false},"wgWMESchemaEditAttemptStepOversample":false,"wgULSCurrentAutonym":"English","wgNoticeProject":"wikibooks","wgCentralNoticeCookiesToDelete":[],"wgCentralNoticeCategoriesUsingLegacy":["Fundraising","fundraising"],"wgScoreNoteLanguages":{"arabic":"العربية","catalan":"català","deutsch":"Deutsch","english":"English","espanol":"español","italiano":"italiano","nederlands":"Nederlands","norsk":"norsk","portugues":"português","suomi":"suomi","svenska":"svenska","vlaams":"West-Vlams"},"wgScoreDefaultNoteLanguage":"nederlands","wgCentralAuthMobileDomain":false,"wgCodeMirrorEnabled":true,"wgVisualEditorToolbarScrollOffset":0,"wgVisualEditorUnsupportedEditParams":["undo","undoafter","veswitched"],"wgEditSubmitButtonLabelPublish":true});mw.loader.state({"ext.globalCssJs.user.styles":"ready","ext.globalCssJs.site.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","ext.globalCssJs.site":"ready","user":"ready","user.options":"ready","user.tokens":"loading","ext.pygments":"ready","mediawiki.legacy.shared":"ready","mediawiki.legacy.commonPrint":"ready","mediawiki.toc.styles":"ready","wikibase.client.init":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","ext.wikimediaBadges":"ready","ext.3d.styles":"ready","ext.flaggedRevs.basic":"ready","mediawiki.skinning.interface":"ready","skins.vector.styles":"ready"});mw.loader.implement("user.tokens@0tffind",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+});RLPAGEMODULES=["site","mediawiki.page.startup","mediawiki.user","mediawiki.page.ready","mediawiki.toc","mediawiki.searchSuggest","ext.gadget.wikidialog","ext.gadget.commons-file","ext.centralauth.centralautologin","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging.subscriber","ext.wikimediaEvents","ext.navigationTiming","ext.uls.eventlogger","ext.uls.init","ext.uls.compactlinks","ext.uls.interface","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.flaggedRevs.advanced","skins.vector.js"];mw.loader.load(RLPAGEMODULES);});</script>
+<link rel="stylesheet" href="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/load_002.css">
+<script async="" src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/load.php"></script>
+<style>
+.mw-editfont-monospace{font-family:monospace,monospace}.mw-editfont-sans-serif{font-family:sans-serif}.mw-editfont-serif{font-family:serif} .mw-editfont-monospace,.mw-editfont-sans-serif,.mw-editfont-serif{font-size:13px; }.mw-editfont-monospace.oo-ui-textInputWidget,.mw-editfont-sans-serif.oo-ui-textInputWidget,.mw-editfont-serif.oo-ui-textInputWidget{font-size:inherit}.mw-editfont-monospace > .oo-ui-inputWidget-input,.mw-editfont-sans-serif > .oo-ui-inputWidget-input,.mw-editfont-serif > .oo-ui-inputWidget-input{font-size:13px}
+.mw-ui-button{background-color:#f8f9fa;color:#222222;display:inline-block;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;min-width:4em;max-width:28.75em;margin:0;padding:0.546875em 1em;border:1px solid #a2a9b1;border-radius:2px;font-family:inherit;font-size:1em;font-weight:bold;line-height:1.286;text-align:center;-webkit-appearance:none;*display:inline; zoom:1;vertical-align:middle;cursor:pointer}.mw-ui-button:visited{color:#222222}.mw-ui-button:hover{background-color:#ffffff;color:#444444;border-color:#a2a9b1}.mw-ui-button:focus{background-color:#ffffff;color:#222222;border-color:#3366cc;box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff;outline-width:0}.mw-ui-button:focus::-moz-focus-inner{border-color:transparent;padding:0}.mw-ui-button:active,.mw-ui-button.is-on{background-color:#c8ccd1;color:#000000;border-color:#72777d;box-shadow:none}.mw-ui-button:disabled,.mw-ui-button.mw-ui-quiet.mw-ui-progressive,.mw-ui-button.mw-ui-quiet.mw-ui-destructive{background-color:#c8ccd1;color:#ffffff;border-color:#c8ccd1;cursor:default}.mw-ui-button:disabled:hover,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:hover,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:hover,.mw-ui-button:disabled:active,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:active,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:active{background-color:#c8ccd1;color:#ffffff;box-shadow:none;border-color:#c8ccd1}.mw-ui-button:not(:disabled){-webkit-transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms;-moz-transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms;transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms}.mw-ui-button.mw-ui-quiet{background-color:transparent;color:#222222;border-color:transparent}.mw-ui-button.mw-ui-quiet:hover{background-color:transparent;color:#444444;border-color:transparent;box-shadow:none}.mw-ui-button.mw-ui-quiet:active{background-color:transparent;color:#000000;border-color:transparent}.mw-ui-button.mw-ui-quiet:focus{background-color:transparent;color:#222222;border-color:transparent;box-shadow:none}.mw-ui-button.mw-ui-quiet:disabled{background-color:transparent;color:#c8ccd1;border-color:transparent}.mw-ui-button.mw-ui-progressive{background-color:#3366cc;color:#fff;border:1px solid #3366cc}.mw-ui-button.mw-ui-progressive:hover{background-color:#447ff5;border-color:#447ff5}.mw-ui-button.mw-ui-progressive:focus{box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-progressive:active,.mw-ui-button.mw-ui-progressive.is-on{background-color:#2a4b8d;border-color:#2a4b8d;box-shadow:none}.mw-ui-button.mw-ui-progressive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-progressive:disabled:hover,.mw-ui-button.mw-ui-progressive:disabled:active{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1;box-shadow:none}.mw-ui-button.mw-ui-progressive.mw-ui-quiet{color:#3366cc}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:hover{background-color:transparent;color:#447ff5}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:active{color:#2a4b8d}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:focus{background-color:transparent;color:#3366cc}.mw-ui-button.mw-ui-destructive{background-color:#dd3333;color:#fff;border:1px solid #dd3333}.mw-ui-button.mw-ui-destructive:hover{background-color:#ff4242;border-color:#ff4242}.mw-ui-button.mw-ui-destructive:focus{box-shadow:inset 0 0 0 1px #dd3333,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-destructive:active,.mw-ui-button.mw-ui-destructive.is-on{background-color:#b32424;border-color:#b32424;box-shadow:none}.mw-ui-button.mw-ui-destructive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-destructive:disabled:hover,.mw-ui-button.mw-ui-destructive:disabled:active{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1;box-shadow:none}.mw-ui-button.mw-ui-destructive.mw-ui-quiet{color:#dd3333}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:hover{background-color:transparent;color:#ff4242}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:active{color:#b32424}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:focus{background-color:transparent;color:#dd3333}.mw-ui-button.mw-ui-big{font-size:1.3em}.mw-ui-button.mw-ui-block{display:block;width:100%;margin-left:auto;margin-right:auto}input.mw-ui-button::-moz-focus-inner,button.mw-ui-button::-moz-focus-inner{margin-top:-1px;margin-bottom:-1px}a.mw-ui-button{text-decoration:none}a.mw-ui-button:hover,a.mw-ui-button:focus{text-decoration:none}.mw-ui-button-group > *{min-width:48px;border-radius:0;float:left}.mw-ui-button-group > *:first-child{border-top-left-radius:2px;border-bottom-left-radius:2px}.mw-ui-button-group > *:not(:first-child){border-left:0}.mw-ui-button-group > *:last-child{border-top-right-radius:2px;border-bottom-right-radius:2px}.mw-ui-button-group .is-on .button{cursor:default}
+.suggestions{overflow:hidden;position:absolute;top:0;left:0;width:0;border:0;z-index:1099;padding:0;margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:#fff;cursor:pointer;border:1px solid #a2a9b1;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:#fff;cursor:pointer;border:1px solid #a2a9b1;padding:0;margin:0}.suggestions-result{color:#000;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left; overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.suggestions-result-current{background-color:#2a4b8d;color:#fff}.suggestions-special .special-label{color:#72777d;text-align:left}.suggestions-special .special-query{color:#000;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:#c8ccd1}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:#fff}.highlight{font-weight:bold}
+@media screen {
+	.tochidden,.toctoggle{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.toctoggle{font-size:94%}}
+@media print {
+	.toc.tochidden,.toctoggle{display:none}}
+@-webkit-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-webkit-transform:translateY(-20px)}100%{opacity:1;-webkit-transform:translateY(0)}}@-moz-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-moz-transform:translateY(-20px)}100%{opacity:1;-moz-transform:translateY(0)}}@-o-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-o-transform:translateY(-20px)}100%{opacity:1;-o-transform:translateY(0)}}@keyframes centralAuthPPersonalAnimation{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}.centralAuthPPersonalAnimation{-webkit-animation-duration:1s;-moz-animation-duration:1s;-o-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;-o-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-name:centralAuthPPersonalAnimation;-moz-animation-name:centralAuthPPersonalAnimation;-o-animation-name:centralAuthPPersonalAnimation;animation-name:centralAuthPPersonalAnimation}
+@media print{#centralNotice{display:none}}.cn-closeButton{display:inline-block;zoom:1;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAElBMVEUAAAAQEBDPz88AAABAQEDv7+9oe1vvAAAABnRSTlMA3rLe3rJS22KzAAAARElEQVQI12PAAUIUQCSTK5BwFgIxFU1AhKECUFAYKAAioXwwBeZChMGCEGGQIFQYJohgIhQgtCEMQ7ECYTHCOciOxA4AADgJTXIb9s8AAAAASUVORK5CYII=) no-repeat;background:url(/w/extensions/CentralNotice/resources/subscribing/close.png?8e3d8) no-repeat!ie;width:20px;height:20px;text-indent:20px;white-space:nowrap;overflow:hidden}
+.uls-menu{border-radius:2px; font-size:medium}.uls-search,.uls-language-settings-close-block{border-top-right-radius:2px;border-top-left-radius:2px}.uls-language-list{border-bottom-right-radius:2px;border-bottom-left-radius:2px}.uls-menu.callout:before,.uls-menu.callout:after{border-top:10px solid transparent;border-bottom:10px solid transparent;display:inline-block; top:17px;position:absolute;content:''}.uls-menu.callout.selector-right:before{ border-left:10px solid #c8ccd1; right:-11px}.uls-menu.callout.selector-right:after{ border-left:10px solid #fff; right:-10px}.uls-menu.callout.selector-left:before{ border-right:10px solid #c8ccd1; left:-11px}.uls-menu.callout.selector-left:after{ border-right:10px solid #fff; left:-10px}.uls-ui-languages button{margin:5px 15px 5px 0;white-space:nowrap;overflow:hidden}.uls-search-wrapper-wrapper{position:relative;padding-left:40px;margin-top:5px;margin-bottom:5px}.uls-icon-back{background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.png?90e9b) no-repeat scroll center center;background-image:-webkit-linear-gradient(transparent,transparent),url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.svg?e226b);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22%3E %3Cpath fill=%22%2354595d%22 d=%22M7 13.1l8.9 8.9c.8-.8.8-2 0-2.8l-6.1-6.1 6-6.1c.8-.8.8-2 0-2.8L7 13.1z%22/%3E %3C/svg%3E");background-size:28px;background-position:center center;height:32px;width:40px;display:block;position:absolute;left:0;border-right:1px solid #c8ccd1;opacity:0.8}.uls-icon-back:hover{opacity:1;cursor:pointer}.uls-menu .uls-no-results-view .uls-no-found-more{background-color:#fff}.uls-menu .uls-no-results-view h3{padding:0 28px;margin:0;color:#54595d;font-size:1em;font-weight:normal}  .skin-vector .uls-menu{border-color:#c8ccd1;-webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,0.25);box-shadow:0 2px 2px 0 rgba(0,0,0,0.25);font-size:0.875em}.skin-vector .uls-search{border-bottom-color:#c8ccd1}.skin-vector .uls-filtersuggestion{color:#72777d}.skin-vector .uls-lcd-region-title{color:#54595d}</style><style>
+.suggestions a.mw-searchSuggest-link,.suggestions a.mw-searchSuggest-link:hover,.suggestions a.mw-searchSuggest-link:active,.suggestions a.mw-searchSuggest-link:focus{color:#000;text-decoration:none}.suggestions-result-current a.mw-searchSuggest-link,.suggestions-result-current a.mw-searchSuggest-link:hover,.suggestions-result-current a.mw-searchSuggest-link:active,.suggestions-result-current a.mw-searchSuggest-link:focus{color:#fff}.suggestions a.mw-searchSuggest-link .special-query{ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ve-init-mw-tempWikitextEditorWidget{border:0;padding:0;color:inherit;line-height:1.5em;width:100%; }.ve-init-mw-tempWikitextEditorWidget:focus{outline:0;padding:0}.ve-init-mw-tempWikitextEditorWidget::selection{background:rgba(109,169,247,0.5); }
+#p-lang .body ul .uls-trigger,#p-lang .pBody ul .uls-trigger{background-image:none;padding:0} .mw-interlanguage-selector,.mw-interlanguage-selector:active{cursor:pointer;padding:4px 6px 4px 25px;font-size:13px;font-weight:normal;background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/compact-links-trigger.png?b0c8e);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2218%22 height=%2218%22 viewBox=%220 0 24 24%22%3E %3Cpath fill=%22%2372777d%22 d=%22M13 19l.8-3h5.3l.9 3h2.2L18 6h-3l-4.2 13H13zm3.5-11l2 6h-4l2-6zM5 4l.938 1.906H1V8h1.594C3.194 9.8 4 11.206 5 12.406c-1.1.7-4.313 1.781-4.313 1.781L2 16s3.487-1.387 4.688-2.188c1 .7 2.319 1.188 3.719 1.688l.594-2c-1-.3-1.988-.688-2.688-1.188 1.1-1.1 1.9-2.506 2.5-4.406h2.188l.5-2H7.938L7 4H5zm-.188 4h3.781c-.4 1.3-.906 2-1.906 3-1.1-1-1.475-1.7-1.875-3z%22/%3E %3C/svg%3E");background-size:18px;background-repeat:no-repeat;background-position:left 4px center;margin:4px 0;text-align:left}.mw-interlanguage-selector:active,.mw-interlanguage-selector.selector-open{background-color:#c8ccd1;color:#54595d}.interlanguage-uls-menu:before,.interlanguage-uls-menu:after{border-top:10px solid transparent;border-bottom:10px solid transparent;display:inline-block; top:17px;position:absolute;content:''}.interlanguage-uls-menu.selector-right:before{ border-left:10px solid #c8ccd1; right:-11px}.interlanguage-uls-menu.selector-right:after{ border-left:10px solid #fff; right:-10px}.interlanguage-uls-menu.selector-left:before{ border-right:10px solid #c8ccd1; left:-11px}.interlanguage-uls-menu.selector-left:after{ border-right:10px solid #fff; left:-10px}
+#uls-settings-block{background-color:#f8f9fa;border-top:1px solid #c8ccd1;padding-left:10px;line-height:1.2em;border-radius:0 0 2px 2px}#uls-settings-block > button{background:left top transparent no-repeat;background-size:20px auto;color:#54595d;display:inline-block;margin:8px 15px;border:0;padding:0 0 0 26px;font-size:medium;cursor:pointer}#uls-settings-block > button:hover{color:#222}#uls-settings-block > button.display-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/display.png?d25f1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E %3Cpath fill=%22%23222%22 d=%22M.002 2.275V15.22h8.405c.535 1.624-.975 1.786-1.902 2.505 0 0 2.293-.024 3.439-.024 1.144 0 3.432.024 3.432.024-.905-.688-2.355-.868-1.902-2.505h8.527V2.275h-20zm6.81 1.84h.797l3.313 8.466H9.879L8.836 9.943H5.462l-1.043 2.638h-.982zm.368 1.104c-.084.369-.211.785-.368 1.227L5.83 9.023h2.699l-.982-2.577c-.128-.33-.234-.747-.368-1.227zm7.117.982c.753 0 1.295.157 1.656.491.365.334.552.858.552 1.595v4.294h-.675l-.184-.859h-.062c-.315.396-.605.655-.92.798-.311.138-.758.184-1.227.184-.626 0-1.115-.168-1.472-.491-.353-.323-.491-.754-.491-1.35 0-1.275 1.028-1.963 3.068-2.025h1.043v-.429c0-.495-.091-.87-.307-1.104-.211-.238-.574-.307-1.043-.307-.526 0-1.115.107-1.779.429l-.307-.675a4.748 4.748 0 0 1 1.043-.429 4.334 4.334 0 0 1 1.104-.123zm.307 3.313c-.761.027-1.318.157-1.656.368-.334.207-.491.54-.491.982 0 .346.1.617.307.798.211.181.544.245.92.245.595 0 1.012-.164 1.35-.491.342-.326.552-.762.552-1.35v-.552z%22/%3E %3C/svg%3E")}#uls-settings-block > button.input-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/input.png?aea9e);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E %3Cpath fill=%22%23222%22 d=%22M9 1.281c-.124.259-.185.599-.5.688-.55.081-1.133.018-1.688 0-.866-.032-1.733-.148-2.594 0-.588.157-.953.727-1.188 1.25-.178.416-.271.836-.344 1.281H-.002V16h20V4.5H3.654c.109-.52.203-1.057.563-1.469.222-.231.587-.17.875-.188 1.212.003 2.415.179 3.625.063.463-.058.812-.455.969-.875l.188-.438-.875-.313zM1.875 7.125h1.563c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188H1.875c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H4.719c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H7.563a.201.201 0 0 1-.188-.188V7.313c0-.094.093-.188.188-.188zm2.813 0h1.563c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188h-1.563c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H13.22c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.531c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188h-1.531a.201.201 0 0 1-.188-.188V7.313c0-.094.093-.188.188-.188zm-12.844 3h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156H3.22c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zm2.906 0h1.563c.094 0 .188.093.188.188v1.563c0 .094-.093.156-.188.156H6.126c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zm2.938 0h1.531c.094 0 .188.093.188.188v1.563c0 .094-.093.156-.188.156H9.064c-.094 0-.188-.062-.188-.156v-1.563c0-.094.093-.188.188-.188zm2.906 0h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156H11.97c-.094 0-.188-.062-.188-.156v-1.563c0-.094.093-.188.188-.188zm2.906 0h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156h-1.563c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zM4.001 13.688h12c.088 0 .156.068.156.156v.844a.154.154 0 0 1-.156.156h-12a.154.154 0 0 1-.156-.156v-.844c0-.088.068-.156.156-.156z%22/%3E %3C/svg%3E")}</style><style>
+.ve-activated .ve-init-mw-desktopArticleTarget-editableContent #toc,.ve-activated #siteNotice,.ve-activated .mw-indicators,.ve-activated #t-print,.ve-activated #t-permalink,.ve-activated #p-coll-print_export,.ve-activated #t-cite,.ve-deactivating .ve-ui-surface,.ve-active .ve-init-mw-desktopArticleTarget-editableContent,.ve-active .ve-init-mw-tempWikitextEditorWidget{display:none} .ve-activating .ve-ui-surface{height:0;padding:0 !important; overflow:hidden} .ve-loading #content > :not(.ve-init-mw-desktopArticleTarget-loading-overlay), .ve-activated .ve-init-mw-desktopArticleTarget-uneditableContent{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;opacity:0.5}.ve-activated #catlinks{cursor:pointer}.ve-activated #catlinks a{opacity:1} .ve-activated #content{position:relative} .ve-init-mw-desktopArticleTarget-loading-overlay{position:absolute;top:1.25em;left:0;right:0;z-index:1;margin-top:-0.5em}.ve-init-mw-desktopArticleTarget-progress{height:1em;overflow:hidden;margin:0 25%}.ve-init-mw-desktopArticleTarget-progress-bar{height:1em;width:0}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{transition:height 250ms ease;height:0; } .oo-ui-element-hidden{display:none !important; } .mw-editsection{white-space:nowrap; unicode-bidi:-moz-isolate;unicode-bidi:-webkit-isolate;unicode-bidi:isolate}.mw-editsection-divider{color:#54595d} .ve-init-mw-desktopArticleTarget-progress{height:0.75em;border:1px solid #36c;background:#fff;border-radius:2px;box-shadow:0 0.1em 0 0 rgba(0,0,0,0.15)}.ve-init-mw-desktopArticleTarget-progress-bar{height:0.75em;background:#36c}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{border-bottom:1px solid #c8ccd1;box-shadow:0 1px 1px 0 rgba(0,0,0,0.1)}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open{height:40px} .ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{font-size:0.875em; margin:-1.14em -1.14em 1.14em -1.14em; }@media screen and (min-width:982px){.ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{ margin:-1.43em -1.71em 1.43em -1.71em}}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/load.css">
+<meta name="generator" content="MediaWiki 1.33.0-wmf.6">
+<meta name="referrer" content="origin">
+<meta name="referrer" content="origin-when-crossorigin">
+<meta name="referrer" content="origin-when-cross-origin">
+<link rel="alternate" type="application/x-wiki" title="Edit" href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit">
+<link rel="edit" title="Edit" href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit">
+<link rel="shortcut icon" href="https://en.wikibooks.org/static/favicon/wikibooks.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://en.wikibooks.org/w/opensearch_desc.php" title="Wikibooks (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://en.wikibooks.org/w/api.php?action=rsd">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/">
+<link rel="alternate" type="application/atom+xml" title="Wikibooks Atom feed" href="https://en.wikibooks.org/w/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="canonical" href="https://en.wikibooks.org/wiki/Java_Persistence/Querying">
+<link rel="dns-prefetch" href="https://login.wikimedia.org/">
+<link rel="dns-prefetch" href="https://meta.wikimedia.org/">
+<!--[if lt IE 9]><script src="/w/load.php?debug=false&amp;lang=en&amp;modules=html5shiv&amp;only=scripts&amp;skin=vector&amp;sync=1"></script><![endif]-->
+<script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_014.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_008.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_007.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_004.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_013.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_010.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_012.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_011.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_003.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_006.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_002.php"></script><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_009.php"></script><link rel="stylesheet" href="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index.css"><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/index_005.php"></script></head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject mw-editable page-Java_Persistence_Querying rootpage-Java_Persistence skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+			<div id="siteNotice" class="mw-body-content"><div id="centralNotice"></div><!-- CentralNotice --></div><div class="mw-indicators mw-body-content">
+</div>
+<h1 id="firstHeading" class="firstHeading" lang="en">Java Persistence/Querying</h1>			<div id="bodyContent" class="mw-body-content">
+				<div id="siteSub" class="noprint">From Wikibooks, open books for an open world</div>				<div id="contentSub"><span class="subpages">&lt; <a href="https://en.wikibooks.org/wiki/Java_Persistence" title="Java Persistence">Java Persistence</a></span></div>
+				<div id="jump-to-nav"></div>				<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+				<a class="mw-jump-link" href="#p-search">Jump to search</a>
+				<div id="mw-content-text" dir="ltr" class="mw-content-ltr" lang="en"><div class="mw-parser-output"><div id="toc" class="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none"><div class="toctitle" dir="ltr" lang="en"><h2>Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Querying"><span class="tocnumber">1</span> <span class="toctext">Querying</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Named_Queries"><span class="tocnumber">1.1</span> <span class="toctext">Named Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-3"><a href="#Example_named_query_annotation"><span class="tocnumber">1.1.1</span> <span class="toctext">Example named query annotation</span></a></li>
+<li class="toclevel-3 tocsection-4"><a href="#Example_named_query_XML"><span class="tocnumber">1.1.2</span> <span class="toctext">Example named query XML</span></a></li>
+<li class="toclevel-3 tocsection-5"><a href="#Example_named_query_execution"><span class="tocnumber">1.1.3</span> <span class="toctext">Example named query execution</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-6"><a href="#Dynamic_Queries"><span class="tocnumber">1.2</span> <span class="toctext">Dynamic Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-7"><a href="#Example_dynamic_query_execution"><span class="tocnumber">1.2.1</span> <span class="toctext">Example dynamic query execution</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="#Criteria_API_(JPA_2.0)"><span class="tocnumber">1.2.2</span> <span class="toctext">Criteria API (JPA 2.0)</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-9"><a href="#JPQL"><span class="tocnumber">1.3</span> <span class="toctext">JPQL</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#Parameters"><span class="tocnumber">1.4</span> <span class="toctext">Parameters</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#Query_Results"><span class="tocnumber">1.5</span> <span class="toctext">Query Results</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="#Common_Queries"><span class="tocnumber">1.6</span> <span class="toctext">Common Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-13"><a href="#Joining,_querying_on_a_OneToMany_relationship"><span class="tocnumber">1.6.1</span> <span class="toctext"><i>Joining, querying on a OneToMany relationship</i></span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="#Subselect,_querying_all_of_a_to_many_relationship"><span class="tocnumber">1.6.2</span> <span class="toctext"><i>Subselect, querying all of a to many relationship</i></span></a></li>
+<li class="toclevel-3 tocsection-15"><a href="#Subselect,_querying_a_to_many_relationship_where_all_of_the_relations_are_in_a_list"><span class="tocnumber">1.6.3</span> <span class="toctext"><i>Subselect, querying a to many relationship where all of the relations are in a list</i></span></a></li>
+<li class="toclevel-3 tocsection-16"><a href="#Join_fetch,_read_both_employee_and_address_in_same_query"><span class="tocnumber">1.6.4</span> <span class="toctext"><i>Join fetch, read both employee and address in same query</i></span></a></li>
+<li class="toclevel-3 tocsection-17"><a href="#Inverse_ManyToMany,_all_employees_for_a_given_project"><span class="tocnumber">1.6.5</span> <span class="toctext"><i>Inverse ManyToMany, all employees for a given project</i></span></a></li>
+<li class="toclevel-3 tocsection-18"><a href="#How_to_simulate_casting_to_a_subclass"><span class="tocnumber">1.6.6</span> <span class="toctext"><i>How to simulate casting to a subclass</i></span></a></li>
+<li class="toclevel-3 tocsection-19"><a href="#How_to_select_the_first_element_in_a_collection"><span class="tocnumber">1.6.7</span> <span class="toctext"><i>How to select the first element in a collection</i></span></a></li>
+<li class="toclevel-3 tocsection-20"><a href="#How_to_order_by_the_size_of_a_collection"><span class="tocnumber">1.6.8</span> <span class="toctext"><i>How to order by the size of a collection</i></span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-21"><a href="#Advanced"><span class="tocnumber">2</span> <span class="toctext">Advanced</span></a>
+<ul>
+<li class="toclevel-2 tocsection-22"><a href="#Join_Fetch_and_Query_Optimization"><span class="tocnumber">2.1</span> <span class="toctext">Join Fetch and Query Optimization</span></a></li>
+<li class="toclevel-2 tocsection-23"><a href="#Timeouts,_Fetch_Size_and_other_JDBC_Optimizations"><span class="tocnumber">2.2</span> <span class="toctext">Timeouts, Fetch Size and other JDBC Optimizations</span></a></li>
+<li class="toclevel-2 tocsection-24"><a href="#Update_and_Delete_Queries"><span class="tocnumber">2.3</span> <span class="toctext">Update and Delete Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-25"><a href="#Example_update_query"><span class="tocnumber">2.3.1</span> <span class="toctext">Example update query</span></a></li>
+<li class="toclevel-3 tocsection-26"><a href="#Example_delete_query"><span class="tocnumber">2.3.2</span> <span class="toctext">Example delete query</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-27"><a href="#Flush_Mode"><span class="tocnumber">2.4</span> <span class="toctext">Flush Mode</span></a></li>
+<li class="toclevel-2 tocsection-28"><a href="#Pagination,_Max/First_Results"><span class="tocnumber">2.5</span> <span class="toctext">Pagination, Max/First Results</span></a>
+<ul>
+<li class="toclevel-3 tocsection-29"><a href="#Example_using_firstResult,_maxResults"><span class="tocnumber">2.5.1</span> <span class="toctext">Example using firstResult, maxResults</span></a></li>
+<li class="toclevel-3 tocsection-30"><a href="#Example_using_maxResults_and_order_by"><span class="tocnumber">2.5.2</span> <span class="toctext">Example using maxResults and order by</span></a></li>
+<li class="toclevel-3 tocsection-31"><a href="#Example_using_Ids_and_IN"><span class="tocnumber">2.5.3</span> <span class="toctext">Example using Ids and IN</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-32"><a href="#Native_SQL_Queries"><span class="tocnumber">2.6</span> <span class="toctext">Native SQL Queries</span></a>
+<ul>
+<li class="toclevel-3 tocsection-33"><a href="#Example_native_named_query_annotation"><span class="tocnumber">2.6.1</span> <span class="toctext">Example native named query annotation</span></a></li>
+<li class="toclevel-3 tocsection-34"><a href="#Example_native_named_query_XML"><span class="tocnumber">2.6.2</span> <span class="toctext">Example native named query XML</span></a></li>
+<li class="toclevel-3 tocsection-35"><a href="#Example_native_named_query_execution"><span class="tocnumber">2.6.3</span> <span class="toctext">Example native named query execution</span></a></li>
+<li class="toclevel-3 tocsection-36"><a href="#Example_dynamic_native_query_execution"><span class="tocnumber">2.6.4</span> <span class="toctext">Example dynamic native query execution</span></a></li>
+<li class="toclevel-3 tocsection-37"><a href="#Result_Set_Mapping"><span class="tocnumber">2.6.5</span> <span class="toctext">Result Set Mapping</span></a>
+<ul>
+<li class="toclevel-4 tocsection-38"><a href="#Example_result_set_mapping_annotation"><span class="tocnumber">2.6.5.1</span> <span class="toctext">Example result set mapping annotation</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-39"><a href="#ConstructorResult_(JPA_2.1)"><span class="tocnumber">2.6.6</span> <span class="toctext">ConstructorResult (JPA 2.1)</span></a>
+<ul>
+<li class="toclevel-4 tocsection-40"><a href="#Example_constructor_result_annotation"><span class="tocnumber">2.6.6.1</span> <span class="toctext">Example constructor result annotation</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-41"><a href="#Stored_Procedures"><span class="tocnumber">2.7</span> <span class="toctext">Stored Procedures</span></a></li>
+<li class="toclevel-2 tocsection-42"><a href="#Raw_JDBC"><span class="tocnumber">2.8</span> <span class="toctext">Raw JDBC</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h1><span class="mw-headline" id="Querying">Querying</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=1" title="Edit section: Querying">edit</a><span class="mw-editsection-bracket">]</span></span></h1>
+<p>Querying is a fundamental part of persistence.  Being able to persist
+ something is not very useful without being able to query it back.  
+There are many querying languages and frameworks; the most common query 
+language is SQL used in relational databases.
+</p><p>JPA provides several querying mechanisms:
+</p>
+<ul><li><a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL" title="Java Persistence/JPQL">JPQL</a>&nbsp;: (<a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL_BNF" title="Java Persistence/JPQL BNF">BNF</a>)</li>
+<li><a href="https://en.wikibooks.org/wiki/Java_Persistence/Criteria" title="Java Persistence/Criteria">Criteria API</a></li>
+<li><a href="#Native_SQL_Queries">Native SQL Queries</a></li></ul>
+<p>JPA primarily uses the Java Persistence Querying Language (JPQL), 
+which is based on the SQL language and evolved from the EJB Query 
+Language (EJBQL).  It basically provides the SQL syntax at the object 
+level instead of at the data level.  JPQL is similar in syntax to SQL 
+and can be defined through its <a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL_BNF" title="Java Persistence/JPQL BNF">BNF</a> definition.
+</p><p>JPA also provides the Criteria API that allows dynamic queries to
+ be easily built using a Java API.  The Criteria API mirrors the JPQL 
+syntax, but provides Java API for each operation/function instead of 
+using a separate query language.
+</p><p>JPA provides querying through the <code>Query</code> interface, and the <code>@NamedQuery</code> and <code>@NamedNativeQuery</code> annotations and the <code>&lt;named-query&gt;</code> and <code>&lt;named-native-query&gt;</code> XML elements.
+</p><p>Other querying languages and frameworks include:
+</p>
+<ul><li><a href="https://en.wikipedia.org/wiki/SQL" class="extiw" title="w:SQL">SQL</a></li>
+<li>EJBQL</li>
+<li>JDOQL</li>
+<li><a rel="nofollow" class="external text" href="http://wiki.eclipse.org/EclipseLink/UserGuide/JPA/Basic_JPA_Development/Querying/JPQL#EclipseLink_Extensions_.28EQL.29">EQL</a> (EclipseLink Query Language)</li>
+<li>Query By Example (QBE)</li>
+<li>TopLink Expressions</li>
+<li>Hibernate Criteria</li>
+<li><a href="https://en.wikipedia.org/wiki/Object_Query_Language" class="extiw" title="w:Object Query Language">Object Query Language (OQL)</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.querydsl.com/">Query DSL</a></li></ul>
+<h2><span class="mw-headline" id="Named_Queries">Named Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=2" title="Edit section: Named Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>There are two main types of queries in JPA, named queries and dynamic
+ queries.  A named query is used for a static query that will be used 
+many times in the application.  The advantage of a named query is that 
+it can be defined once, in one place, and reused in the application.  
+Most JPA providers also pre-parse/compile named queries, so they are 
+more optimized than dynamic queries which typically must be 
+parsed/compiled every time they are executed.  Since named queries are 
+part of the persistence meta-data they can also be optimized or 
+overridden in the orm.xml without changing the application code.
+</p><p>Named queries are defined through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/NamedQuery.html"><code>@NamedQuery</code></a> and <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/NamedQueries.html"><code>@NamedQueries</code></a> annotations, or <code>&lt;named-query&gt;</code> XML element.
+Named queries are accessed through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/EntityManager.html#createNamedQuery(java.lang.String)"><code>EntityManager.createNamedQuery</code></a> API, and executed through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html"><code>Query</code></a> interface.
+</p><p>Named queries can be defined on any annotated class, but are typically defined on the <code>Entity</code>
+ that they query for.  The name of the named query must be unique for 
+the entire persistence unit, they name is not local to the <code>Entity</code>.  In the orm.xml named queries can be defined either on the <code>&lt;entity-mappings&gt;</code> or on any <code>&lt;entity&gt;</code>.
+</p><p>Named queries are typically parametrized, so they can be executed
+ with different parameter values.  Parameters are defined in JPQL using 
+the <code>:&lt;name&gt;</code> syntax for named parameters, or the <code>?</code> syntax for positional parameters.
+</p><p>A collection of query hints can also be provided to a named 
+query.  Query hints can be used to optimize or to provide special 
+configuration to a query.  Query hints are specific to the JPA provider.
+  Query hints are defined through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/QueryHint.html"><code>@QueryHint</code></a> annotation or <code>query-hint</code> XML element.
+</p>
+<h3><span class="mw-headline" id="Example_named_query_annotation">Example named query annotation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=3" title="Edit section: Example named query annotation">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nd">@NamedQuery</span><span class="o">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s">"findAllEmployeesInCity"</span><span class="o">,</span>
+  <span class="n">query</span><span class="o">=</span><span class="s">"Select emp from Employee emp where emp.address.city = :city"</span>
+  <span class="n">hints</span><span class="o">={</span><span class="nd">@QueryHint</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"acme.jpa.batch"</span><span class="o">,</span> <span class="n">value</span><span class="o">=</span><span class="s">"emp.address"</span><span class="o">)}</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Employee</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+<h3><span class="mw-headline" id="Example_named_query_XML">Example named query XML</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=4" title="Edit section: Example named query XML">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nt">&lt;entity-mappings&gt;</span>
+  <span class="nt">&lt;entity</span> <span class="na">name=</span><span class="s">"Employee"</span> <span class="na">class=</span><span class="s">"org.acme.Employee"</span> <span class="na">access=</span><span class="s">"FIELD"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;named-query</span> <span class="na">name=</span><span class="s">"findAllEmployeesInCity"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;query&gt;</span>Select emp from Employee emp where emp.address.city = :city<span class="nt">&lt;/query&gt;</span>
+      <span class="nt">&lt;hint</span> <span class="na">name=</span><span class="s">"acme.jpa.batch"</span> <span class="na">value=</span><span class="s">"emp.address"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/named-query&gt;</span>
+    <span class="nt">&lt;attributes&gt;</span>
+        <span class="nt">&lt;id</span> <span class="na">name=</span><span class="s">"id"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/attributes&gt;</span>
+  <span class="nt">&lt;/entity&gt;</span>
+<span class="nt">&lt;/entity-mappings&gt;</span>
+</pre></div>
+<h3><span class="mw-headline" id="Example_named_query_execution">Example named query execution</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=5" title="Edit section: Example named query execution">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="n">getEntityManager</span><span class="o">();</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="s">"findAllEmployeesInCity"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"city"</span><span class="o">,</span> <span class="s">"Ottawa"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+<span class="o">...</span>
+</pre></div>
+<h2><span class="mw-headline" id="Dynamic_Queries">Dynamic Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=6" title="Edit section: Dynamic Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Dynamic queries are normally used when the query depends on the 
+context.  For example, depending on which items in the query form were 
+filled in, the query may have different parameters.  Dynamic queries are
+ also useful for uncommon queries, or prototyping.
+</p><p>JPA provides two main options for dynamic queries, JPQL and the Criteria API.
+</p><p>Dynamic queries can use parameters, and query hints the same as named queries.
+</p><p>Dynamic queries are accessed through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/EntityManager.html#createQuery(java.lang.String)"><code>EntityManager.createQuery</code></a> API, and executed through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html"><code>Query</code></a> interface.
+</p>
+<h4><span class="mw-headline" id="Example_dynamic_query_execution">Example dynamic query execution</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=7" title="Edit section: Example dynamic query execution">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="n">getEntityManager</span><span class="o">();</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select emp from Employee emp where emp.address.city = :city"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"city"</span><span class="o">,</span> <span class="s">"Ottawa"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setHint</span><span class="o">(</span><span class="s">"acme.jpa.batch"</span><span class="o">,</span> <span class="s">"emp.address"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+<span class="o">...</span>
+</pre></div>
+<h3><span id="Criteria_API_.28JPA_2.0.29"></span><span class="mw-headline" id="Criteria_API_(JPA_2.0)">Criteria API (JPA 2.0)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=8" title="Edit section: Criteria API (JPA 2.0)">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>See <a href="https://en.wikibooks.org/wiki/Java_Persistence/Criteria" title="Java Persistence/Criteria">Criteria API</a>.
+</p>
+<h2><span class="mw-headline" id="JPQL">JPQL</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=9" title="Edit section: JPQL">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>See <a href="https://en.wikibooks.org/wiki/Java_Persistence/JPQL" title="Java Persistence/JPQL">JPQL</a>.
+</p>
+<h2><span class="mw-headline" id="Parameters">Parameters</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=10" title="Edit section: Parameters">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Parameters are defined in JPQL using the <code>:&lt;param&gt;</code> syntax, i.e. <code>"Select e from Employee e where e.id = :id"</code>.  The parameter values are set on the <code>Query</code> using the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#setParameter(java.lang.String,%20java.lang.Object)"><code>Query.setParameter</code></a> API.
+</p><p>Parameters can also be defined using the <code>?</code>, mainly for native SQL queries.  You can also use <code>?&lt;int&gt;</code>.  These are positional parameters, not named parameters and are set using the <code>Query</code> API <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#setParameter(int,%20java.lang.Object)"><code>Query.setParameter</code></a>.  The <code>int</code> is the index of the parameter in the SQL.  Positional parameters start a 1 (not 0). Some JPA providers also allow the <code>:&lt;param&gt;</code> syntax for native queries.
+</p><p>For temporal parameters (<code>Date</code>, <code>Calendar</code>) you can also pass the temporal type, depending on if you want the <code>Date</code>, <code>Time</code> or <code>Timestamp</code> from the value.
+</p><p>Parameters are normally basic values, but you can also reference objects if comparing on their <code>Id</code>, i.e., <code>"Select e from Employee e where e.address = :address"</code> can take the <code>Address</code>
+ object as a parameter.  The parameter values are always at the object 
+level when comparing to a mapped attribute, for example if comparing a 
+mapped <code>enum</code> the <code>enum</code> value is used, not the database value.
+</p><p>Parameters are always set on the <code>Query</code>, no matter what type of query it is (JPQL, Criteria, native SQL, NamedQuery).
+</p><p>Named Parameter:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e from Employee e where e.name = :name"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="s">"Bob Smith"</span><span class="o">);</span>
+</pre></div>
+<p>Positional Parameter:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createNativeQuery</span><span class="o">(</span><span class="s">"SELECT * FROM EMPLOYEE WHERE NAME = ?"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Bob Smith"</span><span class="o">);</span>
+</pre></div>
+<h2><span class="mw-headline" id="Query_Results">Query Results</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=11" title="Edit section: Query Results">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Normally JPA queries return your persistent <code>Entity</code> objects.  The returned objects will be managed by the persistent context (<code>EntityManager</code>)
+ and changes made to the objects will be tracked as part of the current 
+transaction.  In some cases, more complex queries can be built that just
+ return data instead of <code>Entity</code> objects, or even perform <i>update</i> or <i>deletion</i> operations.
+</p><p>There are three methods to execute a <code>Query</code>, each returning different results:
+</p>
+<ul><li><a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#getResultList()"><code>Query.getResultList</code></a></li>
+<li><a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#getSingleResult()"><code>Query.getSingleResult</code></a></li>
+<li><a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#executeUpdate()"><code>Query.executeUpdate</code></a></li></ul>
+<p><code>getResultList</code> returns a <code>List</code> of the results.  This is normally a <code>List</code> of <code>Entity</code> objects, but could also be a list of data, or arrays.
+</p>
+<table cellspacing="0" cellpadding="0" border="1">
+<tbody><tr style="background:#ffdead"><td>JPQL / SQL</td><td>Result</td></tr>
+<tr><td><code>SELECT e FROM Employee e</code></td><td>This returns a <code>List&lt;Employee&gt;</code> (List of Employee objects).  The objects will be managed.</td></tr>
+<tr><td><code>SELECT e.firstName FROM Employee e</code></td><td>This returns a <code>List&lt;String&gt;</code> (List of String values).  The data is not managed.</td></tr>
+<tr><td><code>SELECT e.firstName, e.lastName FROM Employee e</code></td><td>This returns a <code>List&lt;Object[String, String]&gt;</code> (List of object arrays each with two String values).  The data is not managed.</td></tr>
+<tr><td><code>SELECT e, e.address FROM Employee e</code></td><td>This returns a <code>List&lt;Object[Employee, Address]&gt;</code> (List of object arrays each with an Employee and Address objects).  The objects will be managed.</td></tr>
+<tr><td><code>SELECT EMP_ID, F_NAME, L_NAME FROM EMP</code></td><td>This returns a <code>List&lt;Object[BigDecimal, String, String]&gt;</code> (List of object arrays each with the row data).  The data is not managed.</td></tr>
+</tbody></table>
+<p><br>
+<code>getSingleResult</code> returns the results.  This is normally an <code>Entity</code>
+ object, but could also be data, or an object array.  If the query 
+returns nothing, an exception is thrown.  This is unfortunate, as 
+typically just returning <code>null</code> would be desired.  Some JPA providers may have an option to return <code>null</code>
+ instead of throwing an exception if nothing is returned.  An exception 
+is also thrown if the query returns more than just a single row.  This 
+is also unfortunate, as typically just returning the first result is 
+desired.  Some JPA providers may have an option to return the first 
+result instead of throwing an exception, otherwise you need to call <code>getResultList</code> and get the first element.
+</p>
+<table cellspacing="0" cellpadding="0" border="1">
+<tbody><tr style="background:#ffdead"><td>JPQL / SQL</td><td>Result</td></tr>
+<tr><td><code>SELECT e FROM Employee e</code></td><td>This returns an <code>Employee</code>.  The object will be managed.</td></tr>
+<tr><td><code>SELECT e.firstName FROM Employee e</code></td><td>This returns a <code>String</code>.  The data is not managed.</td></tr>
+<tr><td><code>SELECT e.firstName, e.lastName FROM Employee e</code></td><td>This returns an <code>Object[String, String]</code> (object array with two String values).  The data is not managed.</td></tr>
+<tr><td><code>SELECT e, e.address FROM Employee e</code></td><td>This returns an <code>Object[Employee, Address]</code> (object array with an Employee and Address object).  The objects will be managed.</td></tr>
+<tr><td><code>SELECT EMP_ID, F_NAME, L_NAME FROM EMP</code></td><td>This returns an <code>Object[BigDecimal, String, String]</code> (object array with the row data).  The data is not managed.</td></tr>
+</tbody></table>
+<p><br>
+<code>executeUpdate</code> returns the database row count.  This can be used for <code>UPDATE</code> <code>DELETE</code> JPQL queries, or any native SQL (DML or DDL) query that does not return a result.
+</p>
+<h2><span class="mw-headline" id="Common_Queries">Common Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=12" title="Edit section: Common Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span id="Joining.2C_querying_on_a_OneToMany_relationship"></span><span class="mw-headline" id="Joining,_querying_on_a_OneToMany_relationship"><i>Joining, querying on a OneToMany relationship</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=13" title="Edit section: Joining, querying on a OneToMany relationship">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees with a phone number in 613 area code</i> a <i>join</i> is used.
+</p><p>JPQL:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">phoneNumbers</span> <span class="n">p</span> <span class="k">where</span> <span class="n">p</span><span class="p">.</span><span class="n">areaCode</span> <span class="o">=</span> <span class="s1">'613'</span>
+</pre></div>
+<p>Criteria:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">CriteriaBuilder</span> <span class="n">cb</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">getCriteriaBuilder</span><span class="o">();</span>
+<span class="n">CriteriaQuery</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cb</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Root</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">employee</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Join</span><span class="o">&lt;</span><span class="n">PhoneNumber</span><span class="o">&gt;</span> <span class="n">phone</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">"phoneNumbers"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">where</span><span class="o">(</span><span class="n">cb</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">phone</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"areaCode"</span><span class="o">),</span> <span class="s">"613"</span><span class="o">));</span>
+</pre></div>
+<h3><span id="Subselect.2C_querying_all_of_a_to_many_relationship"></span><span class="mw-headline" id="Subselect,_querying_all_of_a_to_many_relationship"><i>Subselect, querying all of a to many relationship</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=14" title="Edit section: Subselect, querying all of a to many relationship">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees whose projects are all in trouble</i> a <i>subselect</i> with a double negation is used.
+</p><p>JPQL:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">where</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">t</span> <span class="k">from</span> <span class="n">Project</span> <span class="n">t</span> <span class="k">where</span> <span class="n">p</span> <span class="o">=</span> <span class="n">t</span> <span class="k">AND</span> <span class="n">t</span><span class="p">.</span><span class="n">status</span> <span class="o">&lt;&gt;</span> <span class="s1">'In trouble'</span><span class="p">)</span>
+</pre></div>
+<p>Criteria:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">CriteriaBuilder</span> <span class="n">cb</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">getCriteriaBuilder</span><span class="o">();</span>
+<span class="n">CriteriaQuery</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">cb</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Root</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">employee</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Join</span><span class="o">&lt;</span><span class="n">Project</span><span class="o">&gt;</span> <span class="n">project</span> <span class="o">=</span> <span class="n">employee</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">"projects"</span><span class="o">);</span>
+<span class="n">Subquery</span><span class="o">&lt;</span><span class="n">Project</span><span class="o">&gt;</span> <span class="n">subquery</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">subquery</span><span class="o">(</span><span class="n">Project</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Root</span><span class="o">&lt;</span><span class="n">Project</span><span class="o">&gt;</span> <span class="n">subProject</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">Project</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">subquery</span><span class="o">.</span><span class="na">where</span><span class="o">(</span><span class="n">cb</span><span class="o">.</span><span class="na">and</span><span class="o">(</span><span class="n">cb</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">project</span><span class="o">,</span> <span class="n">subProject</span><span class="o">),</span> <span class="n">cb</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">subProject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"status"</span><span class="o">),</span> <span class="s">"In trouble"</span><span class="o">)));</span>
+<span class="n">query</span><span class="o">.</span><span class="na">where</span><span class="o">(</span><span class="n">cb</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">cb</span><span class="o">.</span><span class="na">exists</span><span class="o">(</span><span class="n">subquery</span><span class="o">));</span>
+</pre></div>
+<h3><span id="Subselect.2C_querying_a_to_many_relationship_where_all_of_the_relations_are_in_a_list"></span><span class="mw-headline" id="Subselect,_querying_a_to_many_relationship_where_all_of_the_relations_are_in_a_list"><i>Subselect, querying a to many relationship where all of the relations are in a list</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=15" title="Edit section: Subselect, querying a to many relationship where all of the relations are in a list">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees who are in all the list of projects</i> a <i>subselect</i> with a count is used.
+First collect the project ids from the projects (using the objects may work as well).  Then get the size of the list.
+Your query will need two arguments, one of the list of ids, and one for the size of the list.
+</p><p>JPQL:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">where</span> <span class="p">:</span><span class="k">size</span> <span class="o">=</span> <span class="p">(</span><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">from</span> <span class="n">Project</span> <span class="n">p</span><span class="p">,</span> <span class="n">Employee</span> <span class="n">e2</span> <span class="k">join</span> <span class="n">e2</span><span class="p">.</span><span class="n">projects</span> <span class="n">p2</span> <span class="k">where</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p2</span> <span class="k">AND</span> <span class="n">e</span> <span class="o">=</span> <span class="n">e2</span> <span class="k">AND</span> <span class="n">p</span><span class="p">.</span><span class="n">id</span> <span class="k">IN</span> <span class="p">:</span><span class="n">projects</span><span class="p">)</span>
+</pre></div>
+<h3><span id="Join_fetch.2C_read_both_employee_and_address_in_same_query"></span><span class="mw-headline" id="Join_fetch,_read_both_employee_and_address_in_same_query"><i>Join fetch, read both employee and address in same query</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=16" title="Edit section: Join fetch, read both employee and address in same query">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees and their address</i> a <i>join fetch</i> 
+is used.  This selects both the employee and address data in the same 
+query.
+If the join fetch was not used, the employee address would still be 
+available, but could cause a query for each employee for its address.
+This reduces <i>n+1</i> queries to <i>1</i> query.
+</p><p>Join fetch:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="k">FETCH</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span>
+</pre></div>
+<p>Join fetch can also be used on collection relationships:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">JOIN</span> <span class="k">FETCH</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="k">JOIN</span> <span class="k">FETCH</span> <span class="n">e</span><span class="p">.</span><span class="n">phones</span>
+</pre></div>
+<p>Outer joins can be used to avoid <code>null</code> and empty relationships from filtering the results:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">LEFT</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="k">FETCH</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="k">LEFT</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="k">FETCH</span> <span class="n">e</span><span class="p">.</span><span class="n">phones</span>
+</pre></div>
+<p>You can also select multiple objects in a query, but note that this 
+does not instantiate the relationship, so accessing the relationship 
+could still trigger another query:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">SELECT</span> <span class="n">e</span><span class="p">,</span> <span class="n">a</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span><span class="p">,</span> <span class="n">Address</span> <span class="n">a</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">a</span>
+</pre></div>
+<h3><span id="Inverse_ManyToMany.2C_all_employees_for_a_given_project"></span><span class="mw-headline" id="Inverse_ManyToMany,_all_employees_for_a_given_project"><i>Inverse ManyToMany, all employees for a given project</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=17" title="Edit section: Inverse ManyToMany, all employees for a given project">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees for a given project</i> where the employee project relationship is a ManyToMany.
+</p><p>If the relationship is bi-directional you could use:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">p</span><span class="p">.</span><span class="n">employees</span> <span class="k">from</span> <span class="n">Project</span> <span class="n">p</span> <span class="k">where</span> <span class="n">p</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">:</span><span class="n">name</span>
+</pre></div>
+<p>If it is uni-directional you could use:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e</span><span class="p">,</span> <span class="n">Project</span> <span class="n">p</span> <span class="k">where</span> <span class="n">p</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">:</span><span class="n">name</span> <span class="k">and</span> <span class="n">p</span> <span class="n">member</span> <span class="k">of</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span>
+</pre></div>
+<p>or,
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">join</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">where</span> <span class="n">p</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">:</span><span class="n">name</span>
+</pre></div>
+<h3><span class="mw-headline" id="How_to_simulate_casting_to_a_subclass"><i>How to simulate casting to a subclass</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=18" title="Edit section: How to simulate casting to a subclass">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees who have a large project with a budget greater than 1,000,000</i>
+ where the employee only has a relationship to Project, not to
+the LargeProject subclass.  JPA 1.0 JPQL does not define a cast 
+operation (JPA 2.0 may define this), so querying on an attribute of a 
+subclass is not obvious.
+This can be done indirectly however, if you add a secondary join to the 
+subclass to the query.
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">join</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span><span class="p">,</span> <span class="n">LargeProject</span> <span class="n">lproject</span> <span class="k">where</span> <span class="n">p</span> <span class="o">=</span> <span class="n">lproject</span> <span class="k">and</span> <span class="n">lproject</span><span class="p">.</span><span class="n">budget</span> <span class="o">&gt;</span> <span class="mi">1000000</span>
+</pre></div>
+<h3><span class="mw-headline" id="How_to_select_the_first_element_in_a_collection"><i>How to select the first element in a collection</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=19" title="Edit section: How to select the first element in a collection">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>the employees first project</i> for a particular employee.  There are a few different ways to do this, some using straight JPQL, and some using the <code>Query</code> <code>setMaxResuls</code> API.  If a JPA 2.0 indexed list is used to map the collection, then the <code>INDEX</code> function can be used.
+</p><p><b>setMaxResults:</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e.projects from Employee e where e.id = :id"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setMaxResults</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</pre></div>
+<p><br>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select p from Employee e join e.projects p where e.id = :id"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setMaxResults</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</pre></div>
+<p><b>JPQL:</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">p</span> <span class="k">from</span> <span class="n">Project</span> <span class="n">p</span> <span class="k">where</span> <span class="n">p</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="p">(</span><span class="k">Select</span> <span class="k">MAX</span><span class="p">(</span><span class="n">p2</span><span class="p">.</span><span class="n">id</span><span class="p">)</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">join</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p2</span> <span class="k">where</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="p">:</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+<p><b>JPA 2.0:</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">p</span> <span class="k">from</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">join</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">where</span> <span class="n">e</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="p">:</span><span class="n">id</span> <span class="k">and</span> <span class="k">INDEX</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+<h3><span class="mw-headline" id="How_to_order_by_the_size_of_a_collection"><i>How to order by the size of a collection</i></span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=20" title="Edit section: How to order by the size of a collection">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>To query <i>all employees ordered by the number of projects</i>.  
+There are a few different ways to do this, some end up using sub selects
+ in SQL, and some use group by.  Depending on your JPA provider and 
+database you solution may be limited to one or the other.
+</p><p><b>Using SIZE function (uses sub-select in SQL)</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span> <span class="k">from</span> <span class="n">Employee</span> <span class="k">order</span> <span class="k">by</span> <span class="k">SIZE</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">projects</span><span class="p">)</span> <span class="k">DESC</span>
+</pre></div>
+<p><b>Using SIZE function, also selects the size (uses group by)</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span><span class="p">,</span> <span class="k">SIZE</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">projects</span><span class="p">)</span> <span class="k">from</span> <span class="n">Employee</span> <span class="k">order</span> <span class="k">by</span> <span class="k">SIZE</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">projects</span><span class="p">)</span> <span class="k">DESC</span>
+</pre></div>
+<p><b>Using GROUP BY</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span><span class="p">,</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">from</span> <span class="n">Employee</span> <span class="k">join</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">order</span> <span class="k">by</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">DESC</span>
+</pre></div>
+<p><b>Using GROUP BY and alias</b>
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">Select</span> <span class="n">e</span><span class="p">,</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">as</span> <span class="n">pcount</span> <span class="k">from</span> <span class="n">Employee</span> <span class="k">join</span> <span class="n">e</span><span class="p">.</span><span class="n">projects</span> <span class="n">p</span> <span class="k">order</span> <span class="k">by</span> <span class="n">pcount</span> <span class="k">DESC</span>
+</pre></div>
+<h1><span class="mw-headline" id="Advanced">Advanced</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=21" title="Edit section: Advanced">edit</a><span class="mw-editsection-bracket">]</span></span></h1>
+<h2><span class="mw-headline" id="Join_Fetch_and_Query_Optimization">Join Fetch and Query Optimization</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=22" title="Edit section: Join Fetch and Query Optimization">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>There are several ways to optimize queries in JPA. The typical query 
+performance issue is that an object is read first, then its related 
+objects are read one by one. This can be optimized using <code>JOIN FETCH</code> in JPQL, otherwise by query hints specific for each JPA provider.
+</p><p>See,
+</p>
+<ul><li><a href="https://en.wikibooks.org/wiki/Java_Persistence/Relationships#Join_Fetching" title="Java Persistence/Relationships">Join Fetching</a></li>
+<li><a href="https://en.wikibooks.org/wiki/Java_Persistence/Relationships#Batch_Fetching" title="Java Persistence/Relationships">Batch Fetching</a></li></ul>
+<h2><span id="Timeouts.2C_Fetch_Size_and_other_JDBC_Optimizations"></span><span class="mw-headline" id="Timeouts,_Fetch_Size_and_other_JDBC_Optimizations">Timeouts, Fetch Size and other JDBC Optimizations</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=23" title="Edit section: Timeouts, Fetch Size and other JDBC Optimizations">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>There are several JDBC options that can be used when executing a query.
+These JDBC options are not exposed by JPA, but some JPA providers may support query hints for them.
+</p>
+<ul><li>Fetch size&nbsp;: Configures the number of rows to fetch from 
+the database in each page.  A larger fetch size is more efficient for 
+large queries.</li>
+<li>Timeout&nbsp;: Instructs the database to cancel the query if its execution takes too long.</li></ul>
+<p><br>
+</p>
+<dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>/<a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a>&nbsp;: Provide many query hints including:
+<dl><dd>"eclipselink.jdbc.fetch-size" - Fetch size.</dd>
+<dd>"eclipselink.jdbc.timeout" - Timeout.</dd>
+<dd>"eclipselink.read-only" - The objects returned from the query are 
+not managed by the persistence context, and not tracked for changes.</dd>
+<dd>"eclipselink.query-type" - Defines the native type of query to use for the query.</dd>
+<dd>"eclipselink.sql.hint" - Allows an SQL hint to be included in the SQL for the query.</dd>
+<dd>"eclipselink.jdbc.bind-parameters" - Specifies if parameter binding should be used or not, (is used by default).</dd></dl></dd></dl>
+<h2><span class="mw-headline" id="Update_and_Delete_Queries">Update and Delete Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=24" title="Edit section: Update and Delete Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>JPQL also allows for <code>UPDATE</code> and <code>DELETE</code> 
+queries to be executed.  This is not the recommend or normal way to 
+modify objects in JPA.  Normally in JPA you first read the object, then 
+either modify it directly using its <code>set</code> methods to update it, or call the <code>EntityManager.remove()</code> method to delete it.
+</p><p><code>UPDATE</code> and <code>DELETE</code> queries in JPQL are 
+for performing batch updates or deletions.  There allow a set of objects
+ to be updated or deleted in a single query.  These queries are useful 
+for performing batch operations, or clearing test data.
+</p><p><code>UPDATE</code> and <code>DELETE</code> queries have a <code>WHERE</code> the same as <code>SELECT</code> queries, and can use the same functions and operations, and traverse relationships and make use of <i>sub selects</i>.  <code>UPDATE</code> and <code>DELETE</code> queries are executed using the <code>Query.executeUpdate()</code>
+ method, and return the row count from the database.  Note that some 
+caution should be used in execute these queries in an active persistence
+ context, as the queries may effect the objects that have already been 
+registered in the <code>EntityManager</code>.  Normally it is a good idea to <code>clear()</code> the <code>EntityManager</code> after executing the query, or to execute the query in a new <code>EntityManager</code> or transaction.
+</p>
+<h3><span class="mw-headline" id="Example_update_query">Example update query</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=25" title="Edit section: Example update query">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">UPDATE</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">SET</span> <span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">salary</span> <span class="o">+</span> <span class="mi">1000</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="p">:</span><span class="n">city</span>
+</pre></div>
+<h3><span class="mw-headline" id="Example_delete_query">Example delete query</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=26" title="Edit section: Example delete query">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">Employee</span> <span class="n">e</span> <span class="k">WHERE</span> <span class="n">e</span><span class="p">.</span><span class="n">address</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="p">:</span><span class="n">city</span>
+</pre></div>
+<h2><span class="mw-headline" id="Flush_Mode">Flush Mode</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=27" title="Edit section: Flush Mode">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Within a transaction context in JPA, changes made to the managed 
+objects are normally not flushed (written) to the database until commit.
+  So if a query were executed against the database directly, it would 
+not see the changes made within the transaction, as these changes are 
+only made in memory within the Java.  This can cause issues if new 
+objects have been persisted, or objects have been removed or changed, as
+ the application may expect the query to return these results.  Because 
+of this JPA requires that the JPA provider performs a flush of all 
+changes to the database before any query operation.  This however can 
+cause issues if the application is not expecting that a flush as a side 
+effect of a query operation.  If the application changes are not yet in a
+ state to be flushed, a flush may not be desired.  Flushing also can be 
+expensive and causes the database transaction, and database locks are 
+other resources to be held for the duration of the transaction, which 
+can effect performance and concurrency.
+</p><p>JPA allows the flush mode for a query to be configured using the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/FlushModeType.html"><code>FlushModeType</code></a> enum and the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#setFlushMode(javax.persistence.FlushModeType)"><code>Query.setFlushMode()</code></a> API.  The flush mode is either <code>AUTO</code> the default which means flush before every query execution, or <code>COMMIT</code> which means only flush on commit.  The flush mode can also be set on an <code>EntityManager</code> using the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/EntityManager.html#setFlushMode(javax.persistence.FlushModeType)"><code>EntityManager.setFlushMode()</code></a> API, to affect all queries executed with the <code>EntityManager</code>.  The <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/EntityManager.html#flush()"><code>EntityManager.flush()</code></a> API can be called directly on the <code>EntityManager</code> anytime that a flush is desired.
+</p><p>Some JPA providers also let the flush mode be configured through 
+persistence unit properties, or offer alternatives to flushing, such as 
+performing the query against the in memory objects.
+</p>
+<dl><dd><dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> / <a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: Allow the auto flush to be disabled using the persistence unit property <code>"eclipselink.persistence-context.flush-mode"="COMMIT"</code>.</dd></dl></dd></dl>
+<h2><span id="Pagination.2C_Max.2FFirst_Results"></span><span class="mw-headline" id="Pagination,_Max/First_Results">Pagination, Max/First Results</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=28" title="Edit section: Pagination, Max/First Results">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>A common requirement is to allow the user to page through a large 
+query result.  Typically a web user is given the first page of <i>n</i> results
+after a query execution, and can click <i>next</i> to go to the next page, or <i>previous</i> to go back.
+</p><p>If you are not concerned about performance, or the results are 
+not too big, the easiest way to implement this is to query all of the 
+results, then access the sub-list from
+the result list to populate your page.  However, you will then have to 
+re-query the entire results on every page request.
+</p><p>One simple solution is to store the query results in a <i>stateful</i> <code>SessionBean</code> or an <i>http session</i>.
+  This means the initial query make take a while, but paging will be 
+fast.
+Some JPA providers also support the caching of query results, so you can
+ cache the results in your JPA providers cache and just re-execute the 
+query to obtain the cached results.
+</p><p>If the query result is quite large, then another solution may be required.  JPA provides the <code>Query</code> API <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#setFirstResult(int)"><code>setFirstResult</code></a>, <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/Query.html#setMaxResults(int)"><code>setMaxResults</code></a> to allow paging through a large query result.  The <code>maxResults</code> can also be used as a safeguard to avoid letting users execute queries that return too many objects.
+</p><p>How these query properties are implemented depends on the JPA provider and database.  JDBC allows the <code>maxResults</code>
+ to be set, and most JDBC drivers support this, so it will normally work
+ for most JPA providers and most databases.  Support for <code>firstResult</code>
+ can be less guaranteed to be efficient, as it normally requires 
+database specific SQL.  There is no standard SQL for pagination, so 
+whether if this is supported depends on your database, and your JPA 
+providers support.
+</p><p>When performing pagination, it is also important to <i>order</i> 
+the result.  If the query does not order the result, then each 
+subsequent query could potentially return the results in a different 
+order, and give a different page.  Also if rows are insert/deleted in 
+between the queries, the results can be slightly different.
+</p>
+<h3><span id="Example_using_firstResult.2C_maxResults"></span><span class="mw-headline" id="Example_using_firstResult,_maxResults">Example using firstResult, maxResults</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=29" title="Edit section: Example using firstResult, maxResults">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e from Employee e order by e.id"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setFirstResult</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setMaxResults</span><span class="o">(</span><span class="mi">200</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></div>
+<p><br>
+An alternative to using <code>firstResult</code> is to filter the first result in the where clause based on the order by and the value from the previous page.
+</p>
+<h3><span class="mw-headline" id="Example_using_maxResults_and_order_by">Example using maxResults and order by</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=30" title="Edit section: Example using maxResults and order by">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e from Employee e where e.id &gt; :lastId order by e.id"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"lastId"</span><span class="o">,</span> <span class="n">previousPage</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">previousPage</span><span class="o">.</span><span class="na">size</span><span class="o">()-</span><span class="mi">1</span><span class="o">).</span><span class="na">getId</span><span class="o">());</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setMaxResults</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">nextPage</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></div>
+<p><br>
+Another alternative is to only query the <code>Id</code>s, and store this result in a <i>stateful</i> <code>SessionBean</code> or an <i>http session</i>.
+Then query for the set of <code>Id</code>s for each page.
+</p>
+<h3><span class="mw-headline" id="Example_using_Ids_and_IN">Example using Ids and IN</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=31" title="Edit section: Example using Ids and IN">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e.id from Employee e"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">ids</span><span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+
+<span class="n">Query</span> <span class="n">pageQuery</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"Select e from Employee e where e.id in :ids"</span><span class="o">);</span>
+<span class="n">pageQuery</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"ids"</span><span class="o">,</span> <span class="n">ids</span><span class="o">.</span><span class="na">subList</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="mi">200</span><span class="o">));</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="n">pageQuery</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></div>
+<p><br>
+Pagination can also be used for server processes, or batch jobs.  On the
+ server, it is normally used to avoid using too much memory upfront, and
+ allow processing each batch one at a time.  Any of these techniques can
+ be used, also some JPA providers support returning a database <i>cursor</i> for the query results that allows scrolling through the results.
+</p>
+<dl><dd><dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> / <a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: Support streams and scrollable cursors through the query hints <code>"eclipselink.cursor.scrollable"</code> and <code>"eclipselink.cursor"</code>, and <code>CursoredStream</code> and <code>ScrollableCursor</code> classes.</dd></dl></dd></dl>
+<h2><span class="mw-headline" id="Native_SQL_Queries">Native SQL Queries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=32" title="Edit section: Native SQL Queries">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Typically queries in JPA are defined through JPQL.  JPQL allows the 
+queries to be defined in terms of the object model, instead of the data 
+model.  Since developers are programming in Java using the object model,
+ this is normally more intuitive.  This also allows for data abstraction
+ and database schema and database platform independence.  JPQL supports 
+much of the SQL syntax, but some aspects of SQL, or specific database 
+extensions or functions may not be possible through JPQL, so native SQL 
+queries are sometimes required.  Also some developers have more 
+experience with SQL than JPQL, so may prefer to use SQL queries.  Native
+ queries can also be used for calling some types of stored procedures or
+ executing DML or DDL operations.
+</p><p>Native queries are defined through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/NamedNativeQuery.html"><code>@NamedNativeQuery</code></a> and <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/NamedNativeQueries.html"><code>@NamedNativeQueries</code></a> annotations, or <code>&lt;named-native-query&gt;</code> XML element.  Native queries can also be defined dynamically using the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/EntityManager.html#createNativeQuery(java.lang.String)"><code>EntityManager.createNativeQuery()</code></a> API.
+</p><p>A native query can be for a query for instances of a class, a 
+query for raw data, an update or DML or DDL operation, or a query for a 
+complex query result.  If the query is for a class, the <code>resultClass</code> attribute of the query must be set.  If the query result is complex, a <a href="#Result_Set_Mapping">Result Set Mapping</a> can be used.
+</p><p>Native queries can be parameterized, so they can be executed with
+ different parameter values.  Parameters are defined in SQL using the <code>?</code>
+ syntax for positional parameters, JPA does not require native queries 
+support named parameters, but some JPA providers may.  For positional 
+parameter the position starts a 1 (not 0).
+</p><p>A collection of query hints can also be provided to a native 
+query.  Query hints can be used to optimize or to provide special 
+configuration to a query.  Query hints are specific to the JPA provider.
+  Query hints are defined through the <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/QueryHint.html"><code>@QueryHint</code></a> annotation or <code>query-hint</code> XML element.
+</p>
+<h4><span class="mw-headline" id="Example_native_named_query_annotation">Example native named query annotation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=33" title="Edit section: Example native named query annotation">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nd">@NamedNativeQuery</span><span class="o">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s">"findAllEmployeesInCity"</span><span class="o">,</span>
+  <span class="n">query</span><span class="o">=</span><span class="s">"SELECT E.* from EMP E, ADDRESS A WHERE E.EMP_ID = A.EMP_ID AND A.CITY = ?"</span><span class="o">,</span>
+  <span class="n">resultClass</span><span class="o">=</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Employee</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+<h4><span class="mw-headline" id="Example_native_named_query_XML">Example native named query XML</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=34" title="Edit section: Example native named query XML">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nt">&lt;entity-mappings&gt;</span>
+  <span class="nt">&lt;entity</span> <span class="na">name=</span><span class="s">"Employee"</span> <span class="na">class=</span><span class="s">"org.acme.Employee"</span> <span class="na">access=</span><span class="s">"FIELD"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;named-native-query</span> <span class="na">name=</span><span class="s">"findAllEmployeesInCity"</span> <span class="na">result-class=</span><span class="s">"org.acme.Employee"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;query&gt;</span>SELECT E.* from EMP E, ADDRESS A WHERE E.EMP_ID = A.EMP_ID AND A.CITY = ?<span class="nt">&lt;/query&gt;</span>
+    <span class="nt">&lt;/named-native-query&gt;</span>
+    <span class="nt">&lt;attributes&gt;</span>
+        <span class="nt">&lt;id</span> <span class="na">name=</span><span class="s">"id"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/attributes&gt;</span>
+  <span class="nt">&lt;/entity&gt;</span>
+<span class="nt">&lt;/entity-mappings&gt;</span>
+</pre></div>
+<h4><span class="mw-headline" id="Example_native_named_query_execution">Example native named query execution</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=35" title="Edit section: Example native named query execution">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="n">getEntityManager</span><span class="o">();</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="s">"findAllEmployeesInCity"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Ottawa"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+<span class="o">...</span>
+</pre></div>
+<h4><span class="mw-headline" id="Example_dynamic_native_query_execution">Example dynamic native query execution</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=36" title="Edit section: Example dynamic native query execution">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">EntityManager</span> <span class="n">em</span> <span class="o">=</span> <span class="n">getEntityManager</span><span class="o">();</span>
+<span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createNativeQuery</span><span class="o">(</span><span class="s">"SELECT E.* from EMP E, ADDRESS A WHERE E.EMP_ID = A.EMP_ID AND A.CITY = ?"</span><span class="o">,</span> <span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"Ottawa"</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+<span class="o">...</span>
+</pre></div>
+<h3><span class="mw-headline" id="Result_Set_Mapping">Result Set Mapping</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=37" title="Edit section: Result Set Mapping">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>When a native SQL query returns objects, the SQL must ensure it returns the correct data to build the <code>resultClass</code>
+ using the correct
+column names as specified in the mappings.  If the SQL is more complex 
+and returns different column names, or returns data for multiple objects
+then a <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/SqlResultSetMapping.html"><code>@SqlResultSetMapping</code></a> must be used.
+</p><p><code>@SqlResultSetMapping</code> is a fairly complex annotation containing an array of <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/EntityResult.html"><code>@EntityResult</code></a>, <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/7/docs/api/javax/persistence/ConstructorResult.html"><code>@ConstructorResult</code></a>, and <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/ColumnResult.html"><code>@ColumnResult</code></a>.  This allows multiple <code>Entity</code> objects in combination with raw data, and non-mapped classes, to be returned.  The <code>@EntityResult</code> contains an array of <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/5/docs/api/javax/persistence/FieldResult.html"><code>@FieldResult</code></a>,
+ which can be used to map the alias name used in the SQL to the column 
+name required by the mapping.  This is required if you need to return 
+two different instances of the same class, or if the SQL needs to alias 
+the columns differently for some reason.  Note that in the <code>@FieldResult</code> the <code>name</code>
+ is the name of the attribute in the object, not the column name in the 
+mapping.  This seems odd, because this would make mapping an <code>Embedded</code> or composite id relationship not possible.
+</p><p>Normally it is easiest to either select raw data or a single object with native SQL queries, so <code>@SqlResultSetMapping</code>s can normally be avoided, as they are quite complex.  Also note that even if you select the <code>Employee</code> and its <code>Address</code>
+ with the SQL, these are two unrelated objects, the employee's address 
+is not set, and may trigger a query if accessed unless a cache hit 
+occurs.  Some JPA providers may provide a query hint to allow join 
+fetching to be used with native SQL queries.
+</p>
+<dl><dd><dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> / <a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: Support join fetching with native SQL queries through the  <code>"eclipselink.join-fetch"</code> query hint.</dd></dl></dd></dl>
+<h4><span class="mw-headline" id="Example_result_set_mapping_annotation">Example result set mapping annotation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=38" title="Edit section: Example result set mapping annotation">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nd">@NamedNativeQuery</span><span class="o">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s">"findAllEmployeesInCity"</span><span class="o">,</span>
+  <span class="n">query</span><span class="o">=</span><span class="s">"SELECT E.*, A.* from EMP E, ADDRESS A WHERE E.EMP_ID = A.EMP_ID AND A.CITY = ?"</span><span class="o">,</span>
+  <span class="n">resultSetMapping</span><span class="o">=</span><span class="s">"employee-address"</span>
+<span class="o">)</span>
+<span class="nd">@SqlResultSetMapping</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"employee-address"</span><span class="o">,</span> 
+  <span class="n">entities</span><span class="o">={</span> 
+    <span class="nd">@EntityResult</span><span class="o">(</span><span class="n">entityClass</span><span class="o">=</span><span class="n">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+    <span class="nd">@EntityResult</span><span class="o">(</span><span class="n">entityClass</span><span class="o">=</span><span class="n">Address</span><span class="o">.</span><span class="na">class</span><span class="o">)}</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Employee</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+<h3><span id="ConstructorResult_.28JPA_2.1.29"></span><span class="mw-headline" id="ConstructorResult_(JPA_2.1)">ConstructorResult (JPA 2.1)</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=39" title="Edit section: ConstructorResult (JPA 2.1)">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>JPA 2.1 defines a <a rel="nofollow" class="external text" href="https://java.sun.com/javaee/7/docs/api/javax/persistence/ConstructorResult.html"><code>@ConstructorResult</code></a> annotation to allow the returning of non-mapped classes from native SQL queries.  The <code>ConstructorResult</code> is similar to the JPQL <code>NEW</code> operator that allows the calling of a class constructor passing in the raw data.  The <code>ConstructorResult</code> has a <code>targetClass</code> and <code>columns</code> array of <code>ColumnResults</code>.  The target class must define a constructor taking the same number of arguments and types as defined by the <code>columns</code>.
+</p>
+<h4><span class="mw-headline" id="Example_constructor_result_annotation">Example constructor result annotation</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=40" title="Edit section: Example constructor result annotation">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="nd">@NamedNativeQuery</span><span class="o">(</span>
+  <span class="n">name</span><span class="o">=</span><span class="s">"findAllEmployeeDetails"</span><span class="o">,</span>
+  <span class="n">query</span><span class="o">=</span><span class="s">"SELECT E.EMP_ID, E.F_NAME, E.L_NAME, A.CITY from EMP E, ADDRESS A WHERE E.EMP_ID = A.EMP_ID"</span><span class="o">,</span>
+  <span class="n">resultSetMapping</span><span class="o">=</span><span class="s">"employee-details"</span>
+<span class="o">)</span>
+<span class="nd">@SqlResultSetMapping</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"employee-details"</span><span class="o">,</span> 
+  <span class="n">classes</span><span class="o">={</span> 
+    <span class="nd">@ConstructorResult</span><span class="o">(</span><span class="n">targetClass</span><span class="o">=</span><span class="n">EmployeeDetails</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">columns</span><span class="o">={</span>
+        <span class="nd">@ColumnResult</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"EMP_ID"</span><span class="o">,</span> <span class="n">type</span><span class="o">=</span><span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+        <span class="nd">@ColumnResult</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"F_NAME"</span><span class="o">,</span> <span class="n">type</span><span class="o">=</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+        <span class="nd">@ColumnResult</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"L_NAME"</span><span class="o">,</span> <span class="n">type</span><span class="o">=</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+        <span class="nd">@ColumnResult</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"CITY"</span><span class="o">,</span> <span class="n">type</span><span class="o">=</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">})</span>
+  <span class="o">}</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Employee</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+<h2><span class="mw-headline" id="Stored_Procedures">Stored Procedures</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=41" title="Edit section: Stored Procedures">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>See <a href="https://en.wikibooks.org/wiki/Java_Persistence/Advanced_Topics#Stored_Procedures" title="Java Persistence/Advanced Topics">Stored Procedures</a>
+</p>
+<h2><span class="mw-headline" id="Raw_JDBC">Raw JDBC</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit&amp;section=42" title="Edit section: Raw JDBC">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>It can sometimes be required to mix JDBC code with JPA code.  This 
+may be to access certain JDBC driver specific features, or to integrate 
+with another application that uses JDBC instead of JPA.
+</p><p>If you just require a JDBC connection, you could access one from your JEE server's <code>DataSource</code>, or connect directly to <code>DriverManager</code>
+ or a third party connection pool.  If you need a JDBC connection in the
+ same transaction context and your JPA application, you could use a JTA <code>DataSource</code>
+ for JPA and your JDBC access to have them share the same global 
+transaction.  If you are not using JEE, or not using JTA, then you may 
+be able to access the JDBC connection directly from your JPA provider.
+</p><p>Some JPA providers provide an API to access a raw JDBC connection
+ from their internal connection pool, or from their transaction context.
+In JPA 2.0 this API is somewhat standardized by the <code>unwrap</code> API on <code>EntityManager</code>.
+</p><p>To access a JDBC connection from an <code>EntityManager</code>, some JPA 2.0 providers may support:
+</p>
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span></span><span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">entityManager</span><span class="o">.</span><span class="na">unwrap</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Connection</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</pre></div>
+<p>This connection could then be used for raw JDBC access.  It normally 
+should not be close when finished, as the connection is being used by 
+the <code>EntityManager</code> and will be released when the <code>EntityManager</code> is closed or transaction committed.
+</p>
+<dl><dd><dl><dd><a href="https://en.wikibooks.org/wiki/Java_Persistence/TopLink" title="Java Persistence/TopLink">TopLink</a> / <a href="https://en.wikibooks.org/wiki/Java_Persistence/EclipseLink" title="Java Persistence/EclipseLink">EclipseLink</a>&nbsp;: Support unwrapping the JDBC <code>Connection</code>.</dd></dl></dd></dl>
+
+<!-- 
+NewPP limit report
+Parsed by mw1252
+Cached time: 20181129082526
+Cache expiry: 1900800
+Dynamic content: false
+CPU time usage: 0.172 seconds
+Real time usage: 0.901 seconds
+Preprocessor visited node count: 604/1000000
+Preprocessor generated node count: 0/1500000
+Post‐expand include size: 939/2097152 bytes
+Template argument size: 1309/2097152 bytes
+Highest expansion depth: 13/40
+Expensive parser function count: 0/500
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 39416/5000000 bytes
+Number of Wikibase entities loaded: 0/400
+Lua time usage: 0.030/10.000 seconds
+Lua memory usage: 1.28 MB/50 MB
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   72.745      1 -total
+ 58.05%   42.228      1 Template:BookCat
+ 30.95%   22.512      4 Template:Evalx
+ 26.12%   19.000      1 Template:BOOKSORTKEY
+ 22.62%   16.452      2 Template:BOOKPAGENAME
+ 21.32%   15.510      2 Template:BOOKCATEGORY
+ 19.21%   13.975      2 Template:BOOKPAGENAME/core
+ 15.51%   11.283      1 Template:BOOKNAME
+ 12.75%    9.276      1 Template:BOOKNAME/core
+  3.09%    2.250      1 Template:NAIVEBOOKNAME
+-->
+
+<!-- Saved in parser cache with key enwikibooks:pcache:idhash:134839-0!canonical and timestamp 20181129082525 and revision id 3420974
+ -->
+</div><noscript><img src="//en.wikibooks.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;oldid=3420974">https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;oldid=3420974</a>"					</div>
+				<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="https://en.wikibooks.org/wiki/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="https://en.wikibooks.org/wiki/Category:Book:Java_Persistence" title="Category:Book:Java Persistence">Book:Java Persistence</a></li><li><a href="https://en.wikibooks.org/wiki/Category:Book:Java_Persistence/Runtime" title="Category:Book:Java Persistence/Runtime">Book:Java Persistence/Runtime</a></li></ul></div></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-anonuserpage">Not logged in</li><li id="pt-anontalk"><a href="https://en.wikibooks.org/wiki/Special:MyTalk" title="Discussion about edits from this IP address [Alt+Shift+n]" accesskey="n">Discussion for this IP address</a></li><li id="pt-anoncontribs"><a href="https://en.wikibooks.org/wiki/Special:MyContributions" title="A list of edits made from this IP address [Alt+Shift+y]" accesskey="y">Contributions</a></li><li id="pt-createaccount"><a href="https://en.wikibooks.org/w/index.php?title=Special:CreateAccount&amp;returnto=Java+Persistence%2FQuerying" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="https://en.wikibooks.org/w/index.php?title=Special:UserLogin&amp;returnto=Java+Persistence%2FQuerying" title="You are encouraged to log in; however, it is not mandatory [Alt+Shift+o]" accesskey="o">Log in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+							<li id="ca-nstab-main" class="selected"><span><a href="https://en.wikibooks.org/wiki/Java_Persistence/Querying" title="View the content page [Alt+Shift+c]" accesskey="c">Book</a></span></li><li id="ca-talk" class="new"><span><a href="https://en.wikibooks.org/w/index.php?title=Talk:Java_Persistence/Querying&amp;action=edit&amp;redlink=1" rel="discussion" title="Discussion about the content page (does not exist) [Alt+Shift+t]" accesskey="t">Discussion</a></span></li>						</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<input type="checkbox" class="vectorMenuCheckbox" aria-labelledby="p-variants-label">
+						<h3 id="p-variants-label">
+							<span>Variants</span>
+						</h3>
+						<ul class="menu">
+													</ul>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+							<li id="ca-view" class="collapsible selected"><span><a href="https://en.wikibooks.org/wiki/Java_Persistence/Querying">Read</a></span></li><li id="ca-edit" class="collapsible"><span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=edit" title="Edit this page [Alt+Shift+e]" accesskey="e">Edit</a></span></li><li id="ca-history" class="collapsible"><span><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=history" title="Past revisions of this page [Alt+Shift+h]" accesskey="h">View history</a></span></li>						</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label" style="">
+						<input type="checkbox" class="vectorMenuCheckbox" aria-labelledby="p-cactions-label">
+						<h3 id="p-cactions-label"><span>More</span></h3>
+						<ul class="menu">
+													</ul>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+						<form action="/w/index.php" id="searchform">
+							<div id="simpleSearch">
+								<input type="search" name="search" placeholder="Search Wikibooks" title="Search Wikibooks [Alt+Shift+f]" accesskey="f" id="searchInput" tabindex="1" autocomplete="off"><input type="hidden" value="Special:Search" name="title"><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton">							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="https://en.wikibooks.org/wiki/Main_Page" title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id="p-Navigation" aria-labelledby="p-Navigation-label">
+			<h3 id="p-Navigation-label">Navigation</h3>
+			<div class="body">
+								<ul>
+					<li id="n-mainpage"><a href="https://en.wikibooks.org/wiki/Main_Page" title="Visit the main page [Alt+Shift+z]" accesskey="z">Main Page</a></li><li id="n-help"><a href="https://en.wikibooks.org/wiki/Help:Contents" title="Find help on how to use and edit Wikibooks">Help</a></li><li id="n-Browse"><a href="https://en.wikibooks.org/wiki/Wikibooks:Card_Catalog_Office" title="Check out what Wikibooks has to offer">Browse</a></li><li id="n-Cookbook"><a href="https://en.wikibooks.org/wiki/Cookbook:Table_of_Contents" title="Learn recipes from around the world">Cookbook</a></li><li id="n-Wikijunior"><a href="https://en.wikibooks.org/wiki/Wikijunior" title="Books for children">Wikijunior</a></li><li id="n-Featured-books"><a href="https://en.wikibooks.org/wiki/Wikibooks:Featured_books" title="The best of Wikibooks">Featured books</a></li><li id="n-recentchanges"><a href="https://en.wikibooks.org/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [Alt+Shift+r]" accesskey="r">Recent changes</a></li><li id="n-sitesupport"><a href="https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_en.wikibooks.org&amp;uselang=en" title="Support Wikibooks">Donations</a></li><li id="n-randomrootpage"><a href="https://en.wikibooks.org/wiki/Special:RandomInCategory/Book:Wikibooks_Stacks/Books">Random book</a></li><li id="n-Using-Wikibooks"><a href="https://en.wikibooks.org/wiki/Using_Wikibooks">Using Wikibooks</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-Community" aria-labelledby="p-Community-label">
+			<h3 id="p-Community-label">Community</h3>
+			<div class="body">
+								<ul>
+					<li id="n-Reading-room"><a href="https://en.wikibooks.org/wiki/Wikibooks:Reading_room" title="Discuss Wikibooks-related questions and concerns with others">Reading room</a></li><li id="n-portal"><a href="https://en.wikibooks.org/wiki/Wikibooks:Community_Portal" title="Find your way around the Wikibooks community">Community portal</a></li><li id="n-currentevents"><a href="https://en.wikibooks.org/wiki/Wikibooks:Reading_room/Bulletin_Board" title="Important community news">Bulletin Board</a></li><li id="n-maintenance"><a href="https://en.wikibooks.org/wiki/Wikibooks:Maintenance" title="Frequent tasks that you can help with">Help out!</a></li><li id="n-Policies-and-guidelines"><a href="https://en.wikibooks.org/wiki/Wikibooks:Policies_and_guidelines" title="Pages detailing important rules and procedures">Policies and guidelines</a></li><li id="n-contact"><a href="https://en.wikibooks.org/wiki/Wikibooks:Contact_us" title="Alternative methods of communication">Contact us</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-tb" aria-labelledby="p-tb-label">
+			<h3 id="p-tb-label">Tools</h3>
+			<div class="body">
+								<ul>
+					<li id="t-whatlinkshere"><a href="https://en.wikibooks.org/wiki/Special:WhatLinksHere/Java_Persistence/Querying" title="A list of all wiki pages that link here [Alt+Shift+j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="https://en.wikibooks.org/wiki/Special:RecentChangesLinked/Java_Persistence/Querying" rel="nofollow" title="Recent changes in pages linked from this page [Alt+Shift+k]" accesskey="k">Related changes</a></li><li id="t-upload"><a href="https://commons.wikimedia.org/wiki/Special:UploadWizard?uselang=en" title="Upload files [Alt+Shift+u]" accesskey="u">Upload file</a></li><li id="t-specialpages"><a href="https://en.wikibooks.org/wiki/Special:SpecialPages" title="A list of all special pages [Alt+Shift+q]" accesskey="q">Special pages</a></li><li id="t-permalink"><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;oldid=3420974" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;action=info" title="More information about this page">Page information</a></li><li id="t-cite"><a href="https://en.wikibooks.org/w/index.php?title=Special:CiteThisPage&amp;page=Java_Persistence%2FQuerying&amp;id=3420974" title="Information on how to cite this page">Cite this page</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-lang" aria-labelledby="p-lang-label"><button class="uls-settings-trigger" title="Language settings"></button>
+			<h3 id="p-lang-label">Languages</h3>
+			<div class="body">
+								<ul>
+									</ul>
+				<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-add wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:NewItem?site=enwikibooks&amp;page=Java+Persistence%2FQuerying" title="Add interlanguage links" class="wbc-editpage">Add links</a></span></div>			</div>
+		</div>
+			<div class="portal" role="navigation" id="p-Sister_projects" aria-labelledby="p-Sister_projects-label">
+			<h3 id="p-Sister_projects-label">Sister projects</h3>
+			<div class="body">
+								<ul>
+					<li id="n-Wikipedia"><a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></li><li id="n-Wikiversity"><a href="https://en.wikiversity.org/wiki/Wikiversity:Main_Page">Wikiversity</a></li><li id="n-Wiktionary"><a href="https://en.wiktionary.org/wiki/Wiktionary:Main_Page">Wiktionary</a></li><li id="n-Wikiquote"><a href="https://en.wikiquote.org/wiki/Main_Page">Wikiquote</a></li><li id="n-Wikisource"><a href="https://en.wikisource.org/wiki/Main_Page">Wikisource</a></li><li id="n-Wikinews"><a href="https://en.wikinews.org/wiki/Main_Page">Wikinews</a></li><li id="n-Wikivoyage"><a href="https://en.wikivoyage.org/wiki/Main_Page">Wikivoyage</a></li><li id="n-Commons"><a href="https://commons.wikimedia.org/wiki/Main_Page">Commons</a></li><li id="n-Wikidata"><a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-coll-print_export" aria-labelledby="p-coll-print_export-label">
+			<h3 id="p-coll-print_export-label">Print/export</h3>
+			<div class="body">
+								<ul>
+					<li id="coll-create_a_book"><a href="https://en.wikibooks.org/w/index.php?title=Special:Book&amp;bookcmd=book_creator&amp;referer=Java+Persistence%2FQuerying">Create a collection</a></li><li id="coll-download-as-rdf2latex"><a href="https://en.wikibooks.org/w/index.php?title=Special:ElectronPdf&amp;page=Java+Persistence%2FQuerying&amp;action=show-download-screen">Download as PDF</a></li><li id="t-print"><a href="https://en.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;printable=yes" title="Printable version of this page [Alt+Shift+p]" accesskey="p">Printable version</a></li>				</ul>
+							</div>
+		</div>
+				</div>
+		</div>
+				<div id="footer" role="contentinfo">
+						<ul id="footer-info">
+								<li id="footer-info-lastmod"> This page was last edited on 7 May 2018, at 20:47.</li>
+								<li id="footer-info-copyright">Text is available under the <a href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike License.</a>; additional terms may apply.  By using this site, you agree to the <a href="https://wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> and <a href="https://wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy.</a></li>
+							</ul>
+						<ul id="footer-places">
+								<li id="footer-places-privacy"><a href="https://foundation.wikimedia.org/wiki/Privacy_policy" class="extiw" title="wmf:Privacy policy">Privacy policy</a></li>
+								<li id="footer-places-about"><a href="https://en.wikibooks.org/wiki/Wikibooks:Welcome" title="Wikibooks:Welcome">About Wikibooks</a></li>
+								<li id="footer-places-disclaimer"><a href="https://en.wikibooks.org/wiki/Wikibooks:General_disclaimer" title="Wikibooks:General disclaimer">Disclaimers</a></li>
+								<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
+								<li id="footer-places-cookiestatement"><a href="https://foundation.wikimedia.org/wiki/Cookie_statement">Cookie statement</a></li>
+								<li id="footer-places-mobileview"><a href="https://en.m.wikibooks.org/w/index.php?title=Java_Persistence/Querying&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+							</ul>
+										<ul id="footer-icons" class="noprint">
+										<li id="footer-copyrightico">
+						<a href="https://wikimediafoundation.org/"><img src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/wikimedia-button.png" srcset="/static/images/wikimedia-button-1.5x.png 1.5x, /static/images/wikimedia-button-2x.png 2x" alt="Wikimedia Foundation" width="88" height="31"></a>					</li>
+										<li id="footer-poweredbyico">
+						<a href="https://www.mediawiki.org/"><img src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/poweredby_mediawiki_132x47.png 1.5x, /static/images/poweredby_mediawiki_176x62.png 2x" width="88" height="31"></a>					</li>
+									</ul>
+						<div style="clear: both;"></div>
+		</div>
+		
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.172","walltime":"0.901","ppvisitednodes":{"value":604,"limit":1000000},"ppgeneratednodes":{"value":0,"limit":1500000},"postexpandincludesize":{"value":939,"limit":2097152},"templateargumentsize":{"value":1309,"limit":2097152},"expansiondepth":{"value":13,"limit":40},"expensivefunctioncount":{"value":0,"limit":500},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":39416,"limit":5000000},"entityaccesscount":{"value":0,"limit":400},"timingprofile":["100.00%   72.745      1 -total"," 58.05%   42.228      1 Template:BookCat"," 30.95%   22.512      4 Template:Evalx"," 26.12%   19.000      1 Template:BOOKSORTKEY"," 22.62%   16.452      2 Template:BOOKPAGENAME"," 21.32%   15.510      2 Template:BOOKCATEGORY"," 19.21%   13.975      2 Template:BOOKPAGENAME/core"," 15.51%   11.283      1 Template:BOOKNAME"," 12.75%    9.276      1 Template:BOOKNAME/core","  3.09%    2.250      1 Template:NAIVEBOOKNAME"]},"scribunto":{"limitreport-timeusage":{"value":"0.030","limit":"10.000"},"limitreport-memusage":{"value":1338196,"limit":52428800}},"cachereport":{"origin":"mw1252","timestamp":"20181129082526","ttl":1900800,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":120,"wgHostname":"mw1256"});});</script>
+	
+
+<div style="display: none; font-size: 13px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div></body><script src="Java%20Persistence_Querying%20-%20Wikibooks,%20open%20books%20for%20an%20open%20world_files/inject.js"></script></html>
