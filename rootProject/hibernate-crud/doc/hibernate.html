@@ -814,6 +814,7 @@ It is a factory of JDBC connections. It abstracts the application from DriverMan
 <ol>
 <li>transient:сохраняет и переводит в состояние persistent</li>
 <li>detached:обновляет и переводит в состояние persistent</li>
+<li>Если в рамках одной сессии получить объект по id а затем выполнить saveOrUpdate() для другого объекта с тем же id, то будет выброшено <b>NonUniqueObjectException</b> - т.к. кеш сессии уже содержит объект с данным id. Решение - очистить кеш сессии <b>session.clear()</b>.</li>
 </ol>
 </li>
 <li>

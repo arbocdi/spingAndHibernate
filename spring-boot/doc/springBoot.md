@@ -1,5 +1,5 @@
 # SpringBoot
-* см. SpringAndHibernate/spring-boot/mycoolapp/
+* см. SpringAndHibernate/spring-boot/*
 
 ![learningSubject](learningSubject.png)
 ![springBootSolution](springBootSolution.png)
@@ -138,3 +138,114 @@ java -jar jarname.jar
 mvn[w] package
 mvn[w] spring-boot:run
 ```
+##### Configuring spring boot server
+* Spring boot конфигурируется (помимо прочего) через свойства в application.properties.
+
+![propertiesGroups](propertiesGroups.png)
+![coreProperties](coreProperties.png)
+![webProperties](webProperties.png)
+![actuatorProperties](actuatorProperties.png)
+![securityProperties](securityProperties.png)
+![dataProperties](dataProperties.png)
+##### Adding ORM+rest api
+![apiRequirements](apiRequirements.png)
+![restApi](restApi.png)
+![appArchitecture](appArchitecture.png)
+![springInitializrCRUD](springInitializrCRUD.png)
+* Нужно сконфигурировать datasource в application.properties (можно определить размер пула и прочие свойства):
+```properties
+# ===============================
+# = DATA SOURCE / HicariCP
+# ===============================
+# Set here configurations for the database connection
+spring.datasource.url= jdbc:postgresql://localhost:5432/hb_student_tracker
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+#hikariCP
+spring.datasource.hikari.maximumPoolSize=10
+# ===============================
+# = JPA / HIBERNATE
+# ===============================
+# Show or not log for each sql query
+spring.jpa.show-sql=true
+# Hibernate ddl auto (create, create-drop, update): with "create-drop" the database
+# schema will be automatically created afresh for every start of application
+spring.jpa.hibernate.ddl-auto=none
+
+# Allows Hibernate to generate SQL optimized for a particular DBMS
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+#sprinng naming conventions by default will:
+#spring.jpa.hibernate.naming.physical-strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+#spring.jpa.hibernate.naming.implicit-strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+#Replace dots with underscores
+#Change camel case to snake case, and
+#Lower-case table names   
+```
+![autoDatasourceConfig](autoDatasourceConfig.png)
+* Hibernate является JPA-провайдером по умолчанию.
+* Auto-choosing connection pool:
+  1. We prefer HikariCP for its performance and concurrency. If HikariCP is available, we always choose it.
+  2. Otherwise, if the Tomcat pooling DataSource is available, we use it.
+  3. If neither HikariCP nor the Tomcat pooling datasource are available and if Commons DBCP2 is available, we use it.
+##### Using JPA
+  ![hibernateVSjpaMethods](hibernateVSjpaMethods.png)
+##### Sping Data JPA
+* Большинство кода в DAO повторяется, обычно отличается только сущность и первичный ключ. Spring Data Jpa автоматически реализует CRUD-методы.
+
+![springDataJpa1](springDataJpa1.png)
+![springDataJpa2](springDataJpa2.png)
+* JpaRepository уже содержит @Transactional, можно убрать эту аннотацию из сервиса.
+* Чтобы jackson2 нормально работал с прокси-сущносятми, возвращаемыми Hibernate нужно добавить зависимость:
+```xml
+<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate5</artifactId>
+			<version>2.9.8</version>
+</dependency>
+```
+* <b>Jackson2ObjectMapperBuilder</b> используется для конфигурации ObjectMapper:
+  1. If Jackson is on the classpath, you already get the default converter(s) provided by Jackson2ObjectMapperBuilder, an instance of which is auto-configured for you.
+  2. Any beans of type <b>com.fasterxml.jackson.databind.Module</b> are automatically registered with the auto-configured <b>Jackson2ObjectMapperBuilder</b> and are applied to any <b>ObjectMapper</b> instances that it creates. This provides a global mechanism for contributing custom modules when you add new features to your application.
+  3. <b>Jackson2ObjectMapperBuilder</b> can be customized by one or more <b>Jackson2ObjectMapperBuilderCustomizer</b> beans:
+  ```java
+  @Bean
+    public Jackson2ObjectMapperBuilderCustomizer addCustomBigDecimalDeserialization() {
+        return new Jackson2ObjectMapperBuilderCustomizer() {
+            @Override
+            public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
+                jacksonObjectMapperBuilder.featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+                //adding Hibernate5Module
+                jacksonObjectMapperBuilder.modules(new Hibernate5Module());
+            }
+
+        };
+    }
+  ```
+  4. <b>Jackson2ObjectMapperBuilder</b> конфигурируется свойствами в <b>application.properties</b>
+
+см. https://docs.spring.io/spring-boot/docs/current/reference/html/howto-spring-mvc.html#howto-customize-the-jackson-objectmapper
+##### Spring Data Rest
+* Spring data rest позволяет автоматически генерировать @RestController, содержащий crud-методы используя Spring Data JpaRepository.
+
+![springDataRestEndpoints](springDataRestEndpoints.png)
+![springDataRestWork](springDataRestWork.png)
+![springDataRestEndpointsNaming](springDataRestEndpointsNaming.png)
+![addingSpringDataRest](addingSpringDataRest.png)
+![springDataRestNutshell](springDataRestNutshell.png)
+![sdrAppArchitecture](sdrAppArchitecture.png)
+* HATEOAS - Hypermedia as the Engine of Application State: Spring Data Rest добавляет в ответе некую мета информацию о переданных данных (например размер страницы).
+
+![hateoasExample](hateoasExample.png)
+![spdrAdvanced](spdrAdvanced.png)
+```properties
+#
+# Spring Data REST properties
+#
+spring.data.rest.base-path=/api
+spring.data.rest.default-page-size=20
+```
+![customResourceName](customResourceName.png)
+![sdrPagination](sdrPagination.png)
+![sdrConfig](sdrConfig.png)
+![sdrSorting](sdrSorting.png)

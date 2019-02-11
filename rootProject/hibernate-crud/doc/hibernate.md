@@ -123,6 +123,7 @@ session.update(person);
 * <b>saveOrUpdate</b>(hibernate specific)
   1. transient:сохраняет и переводит в состояние persistent
   2. detached:обновляет и переводит в состояние persistent
+  3. Если в рамках одной сессии получить объект по id а затем выполнить saveOrUpdate() для другого объекта с тем же id, то будет выброшено <b>NonUniqueObjectException</b> - т.к. кеш сессии уже содержит объект с данным id. Решение - очистить кеш сессии <b>session.clear()</b>.
 
 * <b>\<T> T get(Class\<T> entityType,Serializable id)</b>(hibernate) Получить объект по его id, возвращает null, если объект не найден.
 * <b>\<T> T find(Class\<T> entityClass,
